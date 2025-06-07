@@ -1,0 +1,11 @@
+<button class="btn btn-success mt-3" (click)="openAddModal()">Créer</button>
+
+<!-- Liste des utilisateurs ici -->
+<ul class="list-group">
+  <!--<li class="list-group-item" *ngFor="let user of users">
+    {{ user.nom }} {{ user.prenom }} ({{ user.email }})
+  </li>-->
+</ul>
+
+<!-- Intégration du modal -->
+<app-user-modal *ngIf="showModal" [show]="showModal" (close)="closeModal()" (save)="onSaveUser($event)"></app-user-modal>

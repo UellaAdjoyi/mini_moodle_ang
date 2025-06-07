@@ -1,0 +1,74 @@
+<div class="modal fade show d-block" tabindex="-1" *ngIf="show" style="background-color: rgba(0, 0, 0, 0.5)">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content p-3">
+      <div class="modal-header">
+        <h5 class="modal-title">Inscription</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="close.emit()"></button>
+      </div>
+
+      <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+        <div class="modal-body">
+          <!-- Nom -->
+          <div class="mb-3">
+            <input type="text" class="form-control" formControlName="nom" placeholder="Nom" required>
+          </div>
+
+          <!-- Prénom -->
+          <div class="mb-3">
+            <input type="text" class="form-control" formControlName="prenom" placeholder="Prénom" required>
+          </div>
+
+          <!-- Email -->
+          <div class="mb-3">
+            <input type="email" class="form-control" formControlName="email" placeholder="Email" required>
+          </div>
+
+          <!-- Mot de passe -->
+          <div class="mb-3">
+            <input type="password" class="form-control" formControlName="password" placeholder="Mot de passe" required>
+          </div>
+
+          <!-- Date de naissance -->
+          <div class="mb-3">
+            <input type="date" class="form-control" formControlName="date_naissance">
+          </div>
+
+          <!-- Photo -->
+          <div class="mb-3">
+            <input type="file" class="form-control" (change)="onFileChange($event)">
+          </div>
+
+          <!-- Service Professeur -->
+          <div class="mb-3">
+            <input type="text" class="form-control" formControlName="service_prof" placeholder="Service Professeur">
+          </div>
+
+          <!-- Bureau Professeur -->
+          <div class="mb-3">
+            <input type="text" class="form-control" formControlName="bureau_prof" placeholder="Bureau Professeur">
+          </div>
+
+          <!-- Dernier accès -->
+          <div class="mb-3">
+            <input type="datetime-local" class="form-control" formControlName="dernier_acces">
+          </div>
+
+          <!-- Rôles -->
+          <div class="mb-3">
+            <select class="form-select" formControlName="roles" multiple required>
+              <option value="ROLE_ETUDIANT">Étudiant</option>
+              <option value="ROLE_PROF">Professeur</option>
+              <option value="ROLE_ADMIN">Administrateur</option>
+              <option value="ROLE_PROFADMIN">Professeur & Administrateur</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="close.emit()">Annuler</button>
+          <button type="submit" class="btn btn-primary" [disabled]="userForm.invalid">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+<h2>Liste des UEs</h2>
+<button class="btn btn-success mt-3" (click)="openAddModal()">Créer</button>
+
+<input type="text" [(ngModel)]="searchTerm" class="form-control mt-3 mb-3" placeholder="Rechercher une ue...">
+
+<div class="list-group mb-5">
+  <div *ngFor="let ue of filteredUes()" class="list-group-item d-flex justify-content-between">
+    <div>
+      <h5>{{ ue.nomUe }}</h5>
+<!--      <p>{{ ue.libelleUe }}</p>-->
+    </div>
+    <button class="btn btn-sm btn-outline-primary" (click)="openEditModal(ue)">Modifier</button>
+  </div>
+</div>
+
+<app-ue-modal [show]="showModal" [editUe]="selectedUe" (close)="closeModal()" (refresh)="loadUes()"></app-ue-modal>

@@ -1,1 +1,32 @@
-<p>login works!</p>
+<div class="container">
+  <div class="row mt-5">
+    <div class="col-lg-4 bg-white m-auto rounded-top p-4 shadow">
+      <img src="assets/images/utbm.png" alt="utbm-logos" class="mx-auto d-block mb-3" width="300" height="184"/>
+
+      <h2 class="text-center mb-4">Connexion</h2>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <!-- Email -->
+        <div class="input-group mb-3">
+          <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+          <input type="email" name="email" formControlName="email"  class="form-control" placeholder="Adresse e-mail"  autofocus/>
+        </div>
+
+        <!-- Mot de passe -->
+        <div class="input-group mb-3">
+          <span class="input-group-text"><i class="bi bi-lock"></i></span>
+          <input type="password" name="password" formControlName="password" class="form-control" placeholder="Mot de passe" />
+        </div>
+
+        <!-- Bouton connexion -->
+        <div class="d-grid p-2">
+          <button type="submit" [disabled]="!loginForm.valid"  class="btn btn-primary mb-3">Connexion</button>
+          <p class="text-center">
+            <a routerLink="/forgot-password">Mot de passe oublié ?</a>
+          </p>
+          <hr />
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

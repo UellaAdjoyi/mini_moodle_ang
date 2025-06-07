@@ -1,0 +1,15 @@
+<div class="container mt-5">
+  <div class="d-flex justify-content-center mb-4">
+    <button (click)="setTab('ue')" [ngClass]="{'btn btn-primary me-2': activeTab === 'ue', 'btn btn-secondary me-2': activeTab !== 'ue'}">
+      UEs
+    </button>
+    <button (click)="setTab('user')" [ngClass]="{'btn btn-primary': activeTab === 'user', 'btn btn-secondary': activeTab !== 'user'}">
+      Utilisateurs
+    </button>
+  </div>
+  <!--
+  affichage des onglets
+  -->
+  <app-ue-list *ngIf="activeTab === 'ue'"></app-ue-list>
+  <app-user-list *ngIf="activeTab === 'user'"></app-user-list>
+</div>

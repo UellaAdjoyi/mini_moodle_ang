@@ -1,1 +1,70 @@
-<p>home works!</p>
+<div class="container">
+  <!-- texte et image  -->
+  <div class="row mt-5 mb-5">
+    <div class="col-lg-12 bg-white m-auto rounded-top">
+      <h3>Bonjour !</h3>
+
+      <div class="bg-success text-light text-center">
+        <h2>Bienvenue à tous pour la rentrée de primptemps</h2>
+        <p>L'équipe Moodle se tient à votre disposition pour faciliter votre travail sur la plateforme. Nous vous souhaitons un excellent semestre riche en apprentissages.</p>
+      </div>
+      <div class="row mt-5">
+        <div class="col-md-4">
+          <a href="#" target="_blank">
+            <img src="" alt="utbm-campus" width="300">
+          </a>
+        </div>
+        <div class="col-md-4">
+          <a href="#" target="_blank">
+            <img src="" alt="utbm-campus" width="300">
+          </a>
+        </div>
+        <div class="col-md-4">
+          <a href="#" target="_blank">
+            <img src="" alt="utbm-campus" width="300">
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Barre de recherche -->
+  <div class="input-group mx-auto w-50 mt-5 mb-5">
+    <input type="text" class="form-control" placeholder="Rechercher des cours">
+    <button class="btn btn-primary" type="button">
+      🔍
+    </button>
+  </div>
+
+  <!-- Titre -->
+  <h4>Catégories de cours</h4>
+
+  <div class="ms-auto w-25 ">
+    <a href="#" class="mb-3 d-block " onclick="expandAll(event)">Tout déplier</a>
+  </div>
+
+  <!-- Liste de catégories -->
+  <div id="categories" class="mb-5" >
+    <div class="mb-2">
+      <a href="#" onclick="toggleSubList(event)">▶ Administration (4)</a>
+      <ul class="list-unstyled sub-list d-none">
+        <li> <a href="#"> responsable branches</a></li>
+        <li> <a href="#"> Responsable filière</a></li>
+      </ul>
+    </div>
+    <div class="mb-2">
+      <a href="#" onclick="toggleSubList(event)">▶ Cellule d'appui à l'innovation pédagogique (15)</a>
+      <ul class="list-unstyled sub-list d-none">
+        <li><a href="#"> Module 1</a></li>
+        <li><a href="#"> Module 2</a></li>
+      </ul>
+    </div>
+    <div class="mb-2">
+      <a href="#" onclick="toggleSubList(event)">▶ Organisation de vos études / Continuité Pédagogique (3)</a>
+      <ul class="list-unstyled sub-list d-none">
+        <li><a href="#"> Crunch Time</a></li>
+        <li><a href="#"> Semestre 1</a></li>
+      </ul>
+    </div>
+    <!-- Ajouter d'autres catégories ici -->
+  </div>
+</div>
