@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Ue} from "../models/ue.model";
 
 @Component({
   selector: 'app-ue-card',
@@ -10,6 +11,14 @@ export class UeCardComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  @Input() ue!: Ue;
+  @Input() role!: string; // étudiant ou professeur
+  @Output() openDetails = new EventEmitter<Ue>();
+
+  onOpenDetails() {
+    this.openDetails.emit(this.ue);
   }
 
 }

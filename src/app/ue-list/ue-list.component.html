@@ -7,10 +7,12 @@
   <div *ngFor="let ue of filteredUes()" class="list-group-item d-flex justify-content-between">
     <div>
       <h5>{{ ue.nomUe }}</h5>
-<!--      <p>{{ ue.libelleUe }}</p>-->
+      <p>{{ ue.libelleUe }}</p>
     </div>
     <button class="btn btn-sm btn-outline-primary" (click)="openEditModal(ue)">Modifier</button>
+    <button class="btn btn-sm btn-danger" (click)="deleteUe(ue.codeUe)">Supprimer</button>
+
   </div>
 </div>
 
-<app-ue-modal [show]="showModal" [editUe]="selectedUe" (close)="closeModal()" (refresh)="loadUes()"></app-ue-modal>
+<app-ue-modal *ngIf="showModal" [show]="showModal" [editUe]="selectedUe" (close)="closeModal()" (save)="onSaveUe($event)"></app-ue-modal>

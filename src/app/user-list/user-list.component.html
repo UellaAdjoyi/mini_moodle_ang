@@ -1,11 +1,18 @@
 <button class="btn btn-success mt-3" (click)="openAddModal()">Créer</button>
+<input type="text" [(ngModel)]="searchTerm" class="form-control mt-3 mb-3" placeholder="Rechercher un utilisateur...">
 
 <!-- Liste des utilisateurs ici -->
-<ul class="list-group">
-  <!--<li class="list-group-item" *ngFor="let user of users">
+<li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let user of filteredUsers()">
+  <div>
     {{ user.nom }} {{ user.prenom }} ({{ user.email }})
-  </li>-->
-</ul>
+  </div>
+  <div>
+    <button class="btn btn-sm btn-primary me-2" (click)="openEditModal(user)">Modifier</button>
+    <button class="btn btn-sm btn-danger" (click)="deleteUser(user.id)">Supprimer</button>
+  </div>
+</li>
+
+
 
 <!-- Intégration du modal -->
 <app-user-modal *ngIf="showModal" [show]="showModal" (close)="closeModal()" (save)="onSaveUser($event)"></app-user-modal>

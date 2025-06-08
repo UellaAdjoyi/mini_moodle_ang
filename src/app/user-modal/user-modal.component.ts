@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {UserService} from "../services/user.service";
 
 @Component({
   selector: 'app-user-modal',
@@ -7,54 +8,59 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
   styleUrls: ['./user-modal.component.css']
 })
 export class UserModalComponent implements OnInit {
-  @Input() show: boolean = false;
   @Output() close = new EventEmitter<void>();
+  @Input() show: boolean = false;
+  // @Output() close = new EventEmitter<void>();
   @Output() save = new EventEmitter<FormData>();
   selectedFile: File | null = null;
-  isProfSelected = false;
-  userForm: FormGroup;
+  userForm!: FormGroup;
+  selectedRoles: string[] = [];
 
-  constructor(private fb: FormBuilder) {
+
+  constructor(
+    private fb: FormBuilder,
+    private userService: UserService,
+              ) {}
+
+  ngOnInit(): void {
     this.userForm = this.fb.group({
       nom: ['', Validators.required],
       prenom: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
       date_naissance: [''],
-      photo: [null],
       service_prof: [''],
       bureau_prof: [''],
       dernier_acces: [''],
       roles: [[], Validators.required]
     });
 
+    this.userForm.get('roles')?.valueChanges.subscribe((roles: string[]) => {
+      this.selectedRoles = roles;
+    });
   }
 
-  ngOnInit(): void {
-        throw new Error('Method not implemented.');
-    }
-
-  onFileChange(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      this.selectedFile = input.files[0];
-    }
+  onFileChange(event: any) {
+    const file = event.target.files[0];
   }
 
-  onSubmit(): void {
+  onSubmit() {
     if (this.userForm.invalid) return;
 
-    const formValues = this.userForm.value;
-    const formData = new FormData();
+    const user = this.userForm.value;
+    this.userService.createUser(user).subscribe({
+      next: res => {
+        console.log('Utilisateur créé avec succès', res);
+        this.close.emit();
+      },
+      error: err => {
+        console.error('Erreur lors de la création', err);
+      }
+    });
 
+    console.log("User à enregistrer :", user);
 
-    // Ajouter le fichier sélectionné s'il existe
-    if (this.selectedFile) {
-      formData.append('photo', this.selectedFile);
-    }
-
-    this.save.emit(formData);
-    this.close.emit();
+    this.close.emit(); // ferme le modal après enregistrement
   }
 
 }

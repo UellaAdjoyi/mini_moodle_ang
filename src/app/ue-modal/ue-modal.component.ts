@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Ue} from "../models/ue.model";
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {UeService} from "../services/ue.service";
 
 @Component({
@@ -10,48 +10,44 @@ import {UeService} from "../services/ue.service";
 })
 export class UeModalComponent implements OnInit {
 
-  @Input() show = false;
+  @Input() show: boolean = false;
   @Input() editUe: Ue | null = null;
   @Output() close = new EventEmitter<void>();
-  @Output() refresh = new EventEmitter<void>();
+  @Output() save = new EventEmitter<FormData>();
 
-  ueform: FormGroup;
-  selectedImage: File | null = null;
+  ueform!: FormGroup;
+  selectedFile?: File;
 
-  constructor(private fb: FormBuilder, private ueService: UeService) {
+  constructor(private fb: FormBuilder) {}
+
+  ngOnInit(): void {
     this.ueform = this.fb.group({
-      codeUe: [''],
-      nomUe: [''],
-      libelleUe: [''],
-      image: [null],
+      codeUe: [this.editUe?.codeUe || '', Validators.required],
+      nomUe: [this.editUe?.nomUe || '', Validators.required],
+      libelleUe: [this.editUe?.libelleUe || '']
     });
   }
 
-  ngOnInit(): void {
-        throw new Error('Method not implemented.');
-    }
-
-
-
   onFileChange(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.selectedImage = file;
+    if (event.target.files && event.target.files.length > 0) {
+      this.selectedFile = event.target.files[0];
     }
   }
 
   submitForm() {
-    const formData = new FormData();
-    formData.append('codeUe', this.ueform.value.codeUe);
-    formData.append('nomUe', this.ueform.value.nomUe);
-    formData.append('libelleUe', this.ueform.value.libelleUe);
+    if (this.ueform.invalid) return;
 
-    if (this.selectedImage) {
-      formData.append('image', this.selectedImage);
+    const formData = new FormData();
+    formData.append('codeUe', this.ueform.get('codeUe')?.value);
+    formData.append('nomUe', this.ueform.get('nomUe')?.value);
+    formData.append('libelleUe', this.ueform.get('libelleUe')?.value);
+
+    if (this.selectedFile) {
+      formData.append('image', this.selectedFile);
     }
 
-    const action = this.editUe
-
+    this.save.emit(formData);
+    this.close.emit();
   }
 
 }
