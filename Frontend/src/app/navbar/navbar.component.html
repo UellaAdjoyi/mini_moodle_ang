@@ -1,17 +1,19 @@
 <!--
 Utiliser ngIf pour les conditions
 -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary ">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">
-      <img id="logo" src="assets/images/utbm.png" alt="UTBM Logo" width="40" height="30">
+      <img id="logo" ngSrc="assets/images/utbm.png" alt="UTBM Logo" width="75" height="50">
     </a>
 
     <div class="navbar-nav">
       <a class="nav-item nav-link" routerLink="/mesCours">Mes cours</a>
       <a class="nav-item nav-link" routerLink="">Activités récentes</a>
-      <a routerLink="/login" class="nav-link">Connexion</a>
-
+      <a class="nav-item nav-link" routerLink="/login">Connexion</a>
+      <div *ngIf="userRole=='admin'">
+        <a class="nav-item nav-link" routerLink="/catalogue">Catalogue</a>
+      </div>
     </div>
   </div>
 </nav>

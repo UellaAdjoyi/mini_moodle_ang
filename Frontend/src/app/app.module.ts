@@ -15,6 +15,7 @@ import { UeCardComponent } from './ue-card/ue-card.component';
 import { UeModalComponent } from './ue-modal/ue-modal.component';
 import { UserModalComponent } from './user-modal/user-modal.component';
 import { MesCoursComponent } from './mes-cours/mes-cours.component';
+import {NgOptimizedImage} from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { MesCoursComponent } from './mes-cours/mes-cours.component';
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
+    NgOptimizedImage,
   ],
   providers: [],
   bootstrap: [AppComponent]
