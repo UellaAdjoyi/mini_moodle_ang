@@ -3,10 +3,12 @@ const dotenv = require('dotenv');
 const cors = require('cors');   
 const authRoutes = require('./routes/authRoutes');
 const connectDB = require('./config/db');
+const ueRoutes = require('./routes/ueRoutes');
 
 dotenv.config();
 const app = express();
 
+connectDB(); // Connexion à la base de données MongoDB
 
 
 // Middlewares
@@ -15,8 +17,7 @@ app.use(express.json()); // Pour parser le JSON des requêtes entrantes
 app.use(express.urlencoded({ extended: false })); // Pour parser les données de formulaires
 
 // Routes
-const courseRoutes = require('./routes/courseRoutes');
-app.use('/api/courses', courseRoutes);
+app.use('/api/ues', ueRoutes);
 app.use('/api/auth', authRoutes); // Authentification des utilisateurs
 
 
