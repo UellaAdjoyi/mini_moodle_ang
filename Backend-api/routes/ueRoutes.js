@@ -14,8 +14,8 @@ const { protect } = require('../middlewares/authMiddleware');
 
 // Routes pour /api/courses
 router.route('/')
-  .get(getAllUes)  // GET /api/courses
-  .post(createUe);  // POST /api/courses
+  .get(protect, getAllUes)  // GET /api/courses
+  .post(protect, createUe);  // POST /api/courses
 
 router.route('/:id')
     .get(getUeById)
