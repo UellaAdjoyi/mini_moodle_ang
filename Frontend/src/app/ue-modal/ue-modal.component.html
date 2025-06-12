@@ -27,7 +27,7 @@
         </div>
 
         <div class="modal-footer">
-          <button type="submit" class="btn btn-primary" [disabled]="ueform.valid">
+          <button type="submit" class="btn btn-primary" [disabled]="!ueform.valid">
             {{ editUe ? 'Mettre à jour' : 'Ajouter' }}
           </button>
           <button type="button" class="btn btn-secondary" (click)="close.emit()">Annuler</button>

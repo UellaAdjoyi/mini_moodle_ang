@@ -8,7 +8,7 @@ import {HttpClient} from "@angular/common/http";
 })
 export class UeService {
 
-  private apiUrl = 'http://localhost:5000/api/ues';
+  private apiUrl = 'http://localhost:3000/api/ues';
 
   constructor(private http: HttpClient) { }
 

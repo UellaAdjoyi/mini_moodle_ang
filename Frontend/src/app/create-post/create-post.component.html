@@ -1,0 +1,68 @@
+<div class="rectangle">
+  <div class="container mt-4">
+    <div class="btn-container">
+      <button class="btn btn-primary" (click)="toggleForm('message')">Message Texte</button>
+      <button class="btn btn-secondary" (click)="toggleForm('fichier')">Partager Fichier</button>
+    </div>
+
+    <!-- Formulaire Message Texte -->
+    <div *ngIf="currentForm === 'message'" class="form-container">
+      <div class="form-title">Créer un Message Texte</div>
+      <form [formGroup]="messageForm" (ngSubmit)="submitMessageForm()">
+        <div class="radio-container">
+          <label>Autoriser les étudiants à ajouter une pièce jointe ?</label><br>
+          <input type="radio" formControlName="addFile" [value]="1" id="yes_add">
+          <label for="yes_add">Oui</label>
+          <input type="radio" formControlName="addFile" [value]="0" id="no_add">
+          <label for="no_add">Non</label>
+        </div>
+
+        <div class="form-group" *ngIf="messageForm.value.addFile == 1">
+          <label for="dateLimit">Date limite de dépôt</label>
+          <input type="date" class="form-control" id="dateLimit" formControlName="date_limit" [min]="today">
+        </div>
+
+        <div class="form-group">
+          <label for="msgTitle">Titre du Message</label>
+          <input type="text" class="form-control" id="msgTitle" formControlName="titre" required>
+        </div>
+
+        <div class="form-group">
+          <label for="msgContent">Contenu du Message</label>
+          <textarea class="form-control" id="msgContent" rows="4" formControlName="message" required></textarea>
+        </div>
+
+        <div class="button-container">
+          <button type="button" class="btn btn-danger" (click)="cancel()">Annuler</button>
+          <button type="submit" class="btn btn-success">Publier</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Formulaire Partage Fichier -->
+    <div *ngIf="currentForm === 'fichier'" class="form-container">
+      <div class="form-title">Partager un Fichier</div>
+      <form [formGroup]="fileForm" (ngSubmit)="submitFileForm()" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="fileTitle">Titre du Fichier</label>
+          <input type="text" class="form-control" formControlName="fileTitle" required>
+        </div>
+
+        <div class="form-group">
+          <label for="fileUpload">Choisir un Fichier</label>
+          <input type="file" class="form-control" (change)="onFileChange($event)" required>
+        </div>
+
+        <div class="form-group">
+          <label for="commentaire">Commentaire</label>
+          <textarea class="form-control" formControlName="commentaire"></textarea>
+        </div>
+
+        <div class="button-container">
+          <button type="button" class="btn btn-danger" (click)="cancel()">Annuler</button>
+          <button type="submit" class="btn btn-success">Publier</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

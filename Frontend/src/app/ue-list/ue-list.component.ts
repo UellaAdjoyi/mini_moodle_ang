@@ -33,7 +33,7 @@ export class UeListComponent implements OnInit {
   onSaveUe(formData: FormData) {
     if (this.selectedUe) {
       // une modification
-      this.ueService.updateUe(this.selectedUe.codeUe, formData).subscribe({
+      this.ueService.updateUe(this.selectedUe.code, formData).subscribe({
         next: () => {
           this.loadUes();
           this.closeModal();
@@ -55,7 +55,7 @@ export class UeListComponent implements OnInit {
 
 
   filteredUes() {
-    return this.ues.filter(ue => ue.nomUe.toLowerCase().includes(this.searchTerm.toLowerCase()));
+    return this.ues.filter(ue => ue.nom.toLowerCase().includes(this.searchTerm.toLowerCase()));
   }
 
   openAddModal() {
@@ -75,7 +75,7 @@ export class UeListComponent implements OnInit {
   deleteUe(id: number) {
     if (confirm('Voulez-vous vraiment supprimer cette UE ?')) {
       this.ueService.deleteUe(id).subscribe(() => {
-        this.ues = this.ues.filter(u => u.codeUe !== id);
+        this.ues = this.ues.filter(u => u.code!== id);
       });
     }
   }

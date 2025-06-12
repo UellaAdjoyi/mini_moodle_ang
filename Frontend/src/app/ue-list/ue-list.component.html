@@ -6,11 +6,11 @@
 <div class="list-group mb-5">
   <div *ngFor="let ue of filteredUes()" class="list-group-item d-flex justify-content-between">
     <div>
-      <h5>{{ ue.nomUe }}</h5>
-      <p>{{ ue.libelleUe }}</p>
+      <h5>{{ ue.nom}}</h5>
+      <p>{{ ue.libelle }}</p>
     </div>
     <button class="btn btn-sm btn-outline-primary" (click)="openEditModal(ue)">Modifier</button>
-    <button class="btn btn-sm btn-danger" (click)="deleteUe(ue.codeUe)">Supprimer</button>
+    <button class="btn btn-sm btn-danger" (click)="deleteUe(ue.code)">Supprimer</button>
 
   </div>
 </div>

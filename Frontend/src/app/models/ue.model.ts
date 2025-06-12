@@ -1,7 +1,7 @@
 export class Ue {
-  nomUe: any;
-  codeUe: any;
-  libelleUe:any;
+  nom: any;
+  code: any;
+  libelle:any;
   imageUrl:any;
   dernier_acc_etu: any;
 

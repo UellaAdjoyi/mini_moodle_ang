@@ -20,7 +20,18 @@ export class UserListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loadUsers()
   }
+
+  loadUsers() {
+    this.userService.getAllUsers().subscribe({
+      next: (data) => {
+        this.users = data;
+      },
+      error: (err) => console.error('Erreur lors du chargement des utilisateurs', err)
+    });
+  }
+
 
   showModal = false;
 

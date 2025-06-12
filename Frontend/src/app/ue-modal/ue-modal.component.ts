@@ -13,7 +13,7 @@ export class UeModalComponent implements OnInit {
   @Input() show: boolean = false;
   @Input() editUe: Ue | null = null;
   @Output() close = new EventEmitter<void>();
-  @Output() save = new EventEmitter<FormData>();
+  @Output() save = new EventEmitter<any>();
 
   ueform!: FormGroup;
   selectedFile?: File;
@@ -22,9 +22,9 @@ export class UeModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.ueform = this.fb.group({
-      codeUe: [this.editUe?.codeUe || '', Validators.required],
-      nomUe: [this.editUe?.nomUe || '', Validators.required],
-      libelleUe: [this.editUe?.libelleUe || '']
+      code: [this.editUe?.code|| '', Validators.required],
+      nom: [this.editUe?.nom || '', Validators.required],
+      libelle: [this.editUe?.libelle || '']
     });
   }
 
@@ -37,16 +37,14 @@ export class UeModalComponent implements OnInit {
   submitForm() {
     if (this.ueform.invalid) return;
 
-    const formData = new FormData();
-    formData.append('codeUe', this.ueform.get('codeUe')?.value);
-    formData.append('nomUe', this.ueform.get('nomUe')?.value);
-    formData.append('libelleUe', this.ueform.get('libelleUe')?.value);
+    const ueData = {
+      nom: this.ueform.get('nomUe')?.value,
+      code: this.ueform.get('codeUe')?.value,
+      description: this.ueform.get('libelleUe')?.value,
+      image: null
+    };
 
-    if (this.selectedFile) {
-      formData.append('image', this.selectedFile);
-    }
-
-    this.save.emit(formData);
+    this.save.emit(ueData);
     this.close.emit();
   }
 

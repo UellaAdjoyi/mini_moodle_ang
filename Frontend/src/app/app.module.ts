@@ -16,6 +16,8 @@ import { UeModalComponent } from './ue-modal/ue-modal.component';
 import { UserModalComponent } from './user-modal/user-modal.component';
 import { MesCoursComponent } from './mes-cours/mes-cours.component';
 import {NgOptimizedImage} from "@angular/common";
+import { CreatePostComponent } from './create-post/create-post.component';
+import { ForumComponent } from './forum/forum.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,9 @@ import {NgOptimizedImage} from "@angular/common";
     UeCardComponent,
     UeModalComponent,
     UserModalComponent,
-    MesCoursComponent
+    MesCoursComponent,
+    CreatePostComponent,
+    ForumComponent
   ],
   imports: [
     BrowserModule,
@@ -39,7 +43,9 @@ import {NgOptimizedImage} from "@angular/common";
     HttpClientModule,
     NgOptimizedImage,
   ],
-  providers: [],
+  providers: [
+    HttpClientModule
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -3,10 +3,10 @@
     <img [src]="ue.imageUrl || 'assets/images/ue.png'" (error)="ue.imageUrl = 'assets/images/ue.png'" class="card-img-top" alt="Image de l'UE">
   </div>
   <div class="card-body">
-    <a [routerLink]="['/post-etu', ue.codeUe, ue.nomUe]">
-      <h5 class="card-title">{{ ue.nomUe }}</h5>
+    <a [routerLink]="['/post-etu', ue.code, ue.nom]">
+      <h5 class="card-title">{{ ue.nom }}</h5>
     </a>
-    <p class="card-text">{{ ue.libelleUe }}</p>
+    <p class="card-text">{{ ue.libelle }}</p>
     <p class="text-muted" *ngIf="role === 'etudiant'">
       Dernier accès : {{ ue.dernier_acc_etu }}
     </p>

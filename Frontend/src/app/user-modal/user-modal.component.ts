@@ -42,12 +42,28 @@ export class UserModalComponent implements OnInit {
 
   onFileChange(event: any) {
     const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+    }
   }
+
 
   onSubmit() {
     if (this.userForm.invalid) return;
 
-    const user = this.userForm.value;
+    const user = {
+      nom: this.userForm.value.nom,
+      prenom: this.userForm.value.prenom,
+      email: this.userForm.value.email,
+      password: this.userForm.value.password,
+      date_naissance: this.userForm.value.date_naissance || '',
+      service_prof: this.userForm.value.service_prof || '',
+      bureau_prof: this.userForm.value.bureau_prof || '',
+      dernier_acces: this.userForm.value.dernier_acces || '',
+      role: this.userForm.value.roles[0],
+      // Tu peux ignorer le champ photo ici, ou l’envoyer sous forme de base64 si tu veux
+    };
+
     this.userService.createUser(user).subscribe({
       next: res => {
         console.log('Utilisateur créé avec succès', res);
@@ -57,10 +73,6 @@ export class UserModalComponent implements OnInit {
         console.error('Erreur lors de la création', err);
       }
     });
-
-    console.log("User à enregistrer :", user);
-
-    this.close.emit(); // ferme le modal après enregistrement
   }
 
 }

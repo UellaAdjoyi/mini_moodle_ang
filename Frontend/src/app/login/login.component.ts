@@ -30,16 +30,15 @@ export class LoginComponent implements OnInit {
     const { email, password } = this.loginForm.value;
 
     this.authService.login(email!, password!).subscribe({
-      next: () => {
-        const user = this.authService.getCurrentUser();
+      next: (user) => {
+        console.log('Utilisateur connecté:', user);
 
-        // Redirection selon le rôle
         if (user.role === 'etudiant') {
-          this.router.navigate(['/ueStudent']);
+          this.router.navigate(['/mesCours']);
         } else if (user.role === 'prof') {
           this.router.navigate(['/profs/alertes']);
-        } else if (user.role === 'admin') {
-          this.router.navigate(['/admin/dashboard']);
+        } else if (user.role.includes('ROLE_ADMIN')) {
+          this.router.navigate(['/catalogue']);
         } else {
           this.router.navigate(['/']);
         }
