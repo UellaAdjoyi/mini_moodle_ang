@@ -6,8 +6,6 @@ const {
     createUe,
     updateUe,
     deleteUe,
-    enrollUe,
-    unenrollUe,
 } = require('../controllers/ueController');
 
 const { protect } = require('../middlewares/authMiddleware');
@@ -18,15 +16,11 @@ router.route('/')
     .get(protect, getAllUes)
     .post(protect, upload.single('image'), createUe);
 
+router.get('/ueall', getAllUes)   
+    
 router.route('/:id')
     .put(protect, upload.single('image'), updateUe)
     .delete(protect, deleteUe);
-
-router.route('/:id/enroll')
-    .post(protect, enrollUe);
-
-router.route('/:id/unenroll')
-    .post(protect, unenrollUe);
 
 
 module.exports = router;

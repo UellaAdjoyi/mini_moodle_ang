@@ -7,6 +7,8 @@ import {MesCoursComponent} from "./mes-cours/mes-cours.component";
 import {CreatePostComponent} from "./create-post/create-post.component";
 import {ForumComponent} from "./forum/forum.component";
 import {ProfilComponent} from "./profil/profil.component";
+import {PostComponent} from "./prof/post/post.component";
+import {PageUeComponent} from "./prof/page-ue/page-ue.component";
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -16,6 +18,8 @@ const routes: Routes = [
   {path:'createPost',component: CreatePostComponent},
   {path: 'forum',component: ForumComponent},
   {path:'profil',component: ProfilComponent},
+  {path:'post',component: PostComponent},
+  {path:'page-ue',component:PageUeComponent}
 ];
 
 @NgModule({

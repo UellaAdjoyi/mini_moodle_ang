@@ -4,6 +4,7 @@ const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 const connectDB = require('./config/db');
 const ueRoutes = require('./routes/ueRoutes');
+const userRoutes = require('./routes/userRoutes');
 const {join} = require("node:path");
 
 dotenv.config();
@@ -22,7 +23,7 @@ app.use(express.urlencoded({ extended: false })); // Pour parser les données de
 // Routes
 app.use('/api/ues', ueRoutes);
 app.use('/api/auth', authRoutes); // Authentification des utilisateurs
-
+app.use('/api/user', userRoutes);
 
 // Route de test
 app.get('/', (req, res) => {
