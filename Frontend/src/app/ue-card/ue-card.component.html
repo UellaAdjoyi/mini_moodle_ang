@@ -6,7 +6,7 @@
     <a [routerLink]="['/post-etu', ue.code, ue.nom]">
       <h5 class="card-title">{{ ue.nom }}</h5>
     </a>
-    <p class="card-text">{{ ue.libelle }}</p>
+    <p class="card-text">{{ ue.description }}</p>
     <p class="text-muted" *ngIf="role === 'etudiant'">
       Dernier accès : {{ ue.dernier_acc_etu }}
     </p>

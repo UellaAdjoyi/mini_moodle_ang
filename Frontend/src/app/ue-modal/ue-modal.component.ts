@@ -24,7 +24,7 @@ export class UeModalComponent implements OnInit {
     this.ueform = this.fb.group({
       code: [this.editUe?.code|| '', Validators.required],
       nom: [this.editUe?.nom || '', Validators.required],
-      libelle: [this.editUe?.libelle || '']
+      libelle: [this.editUe?.description || '']
     });
   }
 
@@ -37,15 +37,17 @@ export class UeModalComponent implements OnInit {
   submitForm() {
     if (this.ueform.invalid) return;
 
-    const ueData = {
-      nom: this.ueform.get('nomUe')?.value,
-      code: this.ueform.get('codeUe')?.value,
-      description: this.ueform.get('libelleUe')?.value,
-      image: null
-    };
+    const formData = new FormData();
+    formData.append('nom', this.ueform.get('nom')?.value);
+    formData.append('code', this.ueform.get('code')?.value);
+    formData.append('description', this.ueform.get('libelle')?.value);
+    if (this.selectedFile) {
+      formData.append('image', this.selectedFile, this.selectedFile.name);
+    }
 
-    this.save.emit(ueData);
+    this.save.emit(formData);
     this.close.emit();
   }
+
 
 }

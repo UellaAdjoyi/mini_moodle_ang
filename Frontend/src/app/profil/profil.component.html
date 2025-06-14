@@ -1,0 +1,36 @@
+<div class="profile-container">
+  <h2>Mon Profil</h2>
+  <form [formGroup]="profilForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data" novalidate>
+
+    <div class="mb-3">
+      <label for="nom" class="form-label">Nom</label>
+      <input type="text" id="nom" formControlName="nom" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="prenom" class="form-label">Prénom</label>
+      <input type="text" id="prenom" formControlName="prenom" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="dtnaiss" class="form-label">Date de naissance</label>
+      <input type="date" id="date_naissance" formControlName="dtnaiss" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="password" class="form-label">Nouveau mot de passe</label>
+      <input type="password" id="password" formControlName="password" class="form-control" placeholder="Laissez vide pour ne pas changer">
+    </div>
+
+    <div class="mb-3">
+      <label for="photo" class="form-label">Photo de profil</label>
+      <input type="file" id="photo" (change)="onFileChange($event)" class="form-control" accept="image/*">
+    </div>
+
+    <div *ngIf="photoPreview" class="mb-3">
+      <img [src]="photoPreview" alt="Aperçu photo" style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%;">
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="profilForm.invalid">Mettre à jour</button>
+  </form>
+</div>

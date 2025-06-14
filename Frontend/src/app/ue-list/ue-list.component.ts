@@ -25,15 +25,19 @@ export class UeListComponent implements OnInit {
 
   loadUes() {
     this.ueService.getAllUes().subscribe({
-      next: (data) => this.ues = data,
+      next: (data) => {
+        console.log('UEs reçues:', data);
+        this.ues = data;
+      },
       error: (err) => console.error('Erreur lors du chargement des UEs', err)
     });
   }
 
+
   onSaveUe(formData: FormData) {
     if (this.selectedUe) {
       // une modification
-      this.ueService.updateUe(this.selectedUe.code, formData).subscribe({
+      this.ueService.updateUe(this.selectedUe._id, formData).subscribe({
         next: () => {
           this.loadUes();
           this.closeModal();

@@ -6,8 +6,9 @@
 <div class="list-group mb-5">
   <div *ngFor="let ue of filteredUes()" class="list-group-item d-flex justify-content-between">
     <div>
+      <img *ngIf="ue.image" [src]="ue.imageUrl || ue.image" alt="Image UE" class="ue-thumb" />
       <h5>{{ ue.nom}}</h5>
-      <p>{{ ue.libelle }}</p>
+      <p>{{ ue.description }}</p>
     </div>
     <button class="btn btn-sm btn-outline-primary" (click)="openEditModal(ue)">Modifier</button>
     <button class="btn btn-sm btn-danger" (click)="deleteUe(ue.code)">Supprimer</button>

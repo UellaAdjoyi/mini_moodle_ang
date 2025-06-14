@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Observable} from "rxjs";
 import {Ue} from "../models/ue.model";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,6 @@ export class UeService {
 
   constructor(private http: HttpClient) { }
 
-  // Récupérer toutes les UEs
   getAllUes(): Observable<Ue[]> {
     return this.http.get<Ue[]>(this.apiUrl);
   }
@@ -22,10 +21,12 @@ export class UeService {
     return this.http.post(this.apiUrl, formData);
   }
 
-  // Mettre à jour une UE existante
-  updateUe(id: number, formData: FormData): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, formData);
+  updateUe(code: string, formData: FormData): Observable<any> {
+    const token = localStorage.getItem('token');
+    const headers = token ? new HttpHeaders().set('Authorization', `Bearer ${token}`) : undefined;
+    return this.http.put(`${this.apiUrl}/${code}`, formData, { headers });
   }
+
 
   getUesSuivies(): Observable<Ue[]> {
     const userId = localStorage.getItem('user_id');
