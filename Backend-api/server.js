@@ -4,6 +4,11 @@ const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 const connectDB = require('./config/db');
 const ueRoutes = require('./routes/ueRoutes');
+const directPostRoutes = require('./routes/directPostRoutes');
+const forumRoutes = require('./routes/forumRoutes'); 
+const logRoutes = require('./routes/logRoutes');
+
+
 
 dotenv.config();
 const app = express();
@@ -17,9 +22,11 @@ app.use(express.json()); // Pour parser le JSON des requêtes entrantes
 app.use(express.urlencoded({ extended: false })); // Pour parser les données de formulaires
 
 // Routes
-app.use('/api/ues', ueRoutes);
+app.use('/api/ues', ueRoutes); // Routes pour les Unités d'Enseignement (UEs)
 app.use('/api/auth', authRoutes); // Authentification des utilisateurs
-
+app.use('/api/posts', directPostRoutes); // Routes pour les posts directs
+app.use('/api/forums', forumRoutes); // Routes pour les forums
+app.use('/api/logs', logRoutes); // Routes pour les logs
 
 
 // Charger les variables d'environnement

@@ -1,6 +1,6 @@
 const generateToken = require('../utils/generateToken');
-const User = require('../models/User'); // <-- IMPORTER LE MODÈLE MONGOOSE
-
+const User = require('../models/User'); 
+const { createLogEntry } = require('../utils/logger');
 
 // @desc    Enregistrer un nouvel utilisateur
 // @route   POST /api/auth/register
@@ -83,6 +83,8 @@ const loginUser = async (req, res) => {
 
     // Vérifier si l'utilisateur existe ET si le mot de passe correspond (méthode matchPassword du modèle)
     if (user && (await user.matchPassword(password))) {
+      // Créer un log de connexion APRÈS succès
+            await createLogEntry(user._id, 'connexion'); // Aucune cible spécifique pour le login simple
       res.json({
         _id: user._id,
         nom: user.nom,

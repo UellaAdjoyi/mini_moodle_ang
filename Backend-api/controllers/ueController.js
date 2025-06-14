@@ -1,5 +1,6 @@
 const UE = require('../models/Ue'); // Importer le modèle UE
 const User = require('../models/User'); // Importer le modèle User pour l'inscription/désinscription
+const { createLogEntry } = require('../utils/logger'); 
 
 // @desc    Récupérer toutes les UEs
 // @route   GET /api/ues
@@ -26,6 +27,12 @@ const getUeById = async (req, res) => {
             .populate('participants.user_id', 'nom prenom email photo'); // Populer les infos des participants
             
         if (ue) {
+// Créer un log de consultation
+            await createLogEntry(req.user._id, 'consultation_ue', {
+                cibleType: 'UE',
+                cibleId: ue._id,
+                cibleDetails: `UE: ${ue.nom} (${ue.code})`
+            });
             res.status(200).json(ue);
         } else {
             res.status(404).json({ message: 'UE non trouvée.' });
@@ -54,7 +61,7 @@ const createUe = async (req, res) => {
         if (!nom || !code || !description) {
             return res.status(400).json({ message: 'Veuillez fournir un nom, un code et une description pour l_UE.' });
         }
-
+        
         const ueExists = await UE.findOne({ code });
         if (ueExists) {
             return res.status(400).json({ message: `Une UE avec le code ${code} existe déjà.` });
@@ -94,6 +101,13 @@ const createUe = async (req, res) => {
                 }
             }
         }
+
+         // Créer un log
+        await createLogEntry(req.user._id, 'creation_ue', {
+            cibleType: 'UE',
+            cibleId: createdUe._id,
+            cibleDetails: `UE: ${createdUe.nom} (${createdUe.code})`
+        });
         
         res.status(201).json(createdUe);
 
@@ -143,6 +157,14 @@ const updateUe = async (req, res) => {
         // Pour l'instant, on ne modifie que les champs simples.
 
         const updatedUe = await ue.save();
+
+         await createLogEntry(req.user._id, 'modification_ue', { 
+            cibleType: 'UE',
+            cibleId: updatedUe._id,
+            cibleDetails: `UE: ${updatedUe.nom} (${updatedUe.code})`,
+            detailsAction: { previousDetails: oldDetails, updatedFields: Object.keys(req.body) } // Exemple de détails supplémentaires
+        });
+
         res.status(200).json(updatedUe);
 
     } catch (error) {
@@ -187,10 +209,14 @@ const deleteUe = async (req, res) => {
             { $pull: { cours: { ue_id: ue._id } } }
         );
 
-        // TODO: Supprimer les Posts, Forums, Logs liés à cette UE
-
         await ue.deleteOne(); // ou ue.remove() pour anciennes versions Mongoose
         
+        await createLogEntry(req.user._id, 'suppression_ue', { 
+            cibleType: 'UE',
+            cibleId: req.params.id, // L'ID de l'UE supprimée
+            cibleDetails: ueDetailsForLog
+        });
+
         res.status(200).json({ message: 'UE supprimée avec succès.' });
 
     } catch (error) {
@@ -249,6 +275,13 @@ const enrollUe = async (req, res) => {
         await ue.save();
         await user.save();
 
+        await createLogEntry(req.user._id, 'inscription_ue', { 
+            cibleType: 'UE',
+            cibleId: ue._id,
+            cibleDetails: `Inscription à l'UE: ${ue.nom}`,
+            detailsAction: { etudiantInscrit: { id: user._id, nom: user.nom, prenom: user.prenom } }
+        });
+
         res.status(200).json({ message: "Inscription à l'UE réussie.", ue: ue, userCourses: user.cours });
 
     } catch (error) {
@@ -286,6 +319,13 @@ const unenrollUe = async (req, res) => {
 
         await ue.save();
         await user.save();
+
+        await createLogEntry(req.user._id, 'desinscription_ue', { 
+            cibleType: 'UE',
+            cibleId: ue._id,
+            cibleDetails: `Désinscription de l'UE: ${ue.nom}`,
+            detailsAction: { etudiantDesinscrit: { id: user._id, nom: user.nom, prenom: user.prenom } }
+        });
             
         res.status(200).json({ message: "Désinscription de l'UE réussie." });
 

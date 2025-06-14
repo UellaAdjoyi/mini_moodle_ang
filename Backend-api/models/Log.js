@@ -11,12 +11,23 @@ const logSchema = new mongoose.Schema({
         required: true,
         enum: [ // Liste plus exhaustive pour les actions possibles
             'connexion', 'deconnexion',
-            'consultation_ue', 'inscription_ue', 'desinscription_ue',
-            'creation_post', 'consultation_post', 'modification_post', 'suppression_post',
-            'depot_devoir', 'consultation_devoir_remis', 'notation_devoir',
-            'creation_message_forum', 'consultation_forum',
+            'creation_ue',         
+            'consultation_ue',
+            'modification_ue',
+            'suppression_ue',
+            'inscription_ue',
+            'desinscription_ue',
+            'creation_post',
+            'consultation_post',
+            'modification_post',
+            'suppression_post',
+            'depot_devoir',
+            'consultation_devoir_remis',
+            'notation_devoir',
+            'creation_forum',
+            'ajout_message_forum',
+            'consultation_forum',
             'modification_profil',
-            // Ajoutez d'autres actions spécifiques
         ]
     },
     cible_type: { // Type de la cible (ex: 'UE', 'Post', 'User')
