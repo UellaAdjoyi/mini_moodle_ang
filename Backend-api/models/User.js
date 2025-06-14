@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
 const enrolledCourseSchema = new mongoose.Schema({
-    ue_id: { // Fera référence à l'ID d'une UE
-        type: mongoose.Schema.Types.ObjectId,
+    ue_code: { // Fera référence à l'ID d'une UE
+        type: String,
         ref: 'UE', // Nom du modèle UE qu'on va créer
         required: true
     },
@@ -11,10 +11,14 @@ const enrolledCourseSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    imageUe: { // image UE
+        type: String,
+        required: false
+    },
     dernierAcces: {
         type: Date
     }
-}, { _id: false }); // Pas besoin d'un _id séparé pour ce sous-document si ue_id est unique dans le tableau
+}); // Pas besoin d'un _id séparé pour ce sous-document si ue_id est unique dans le tableau
 
 const userSchema = new mongoose.Schema({
     nom: {

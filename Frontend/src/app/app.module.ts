@@ -25,6 +25,8 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {MatButtonModule} from "@angular/material/button";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import { ProfilComponent } from './profil/profil.component';
+import { PostComponent } from './prof/post/post.component';
+import { PageUeComponent } from './prof/page-ue/page-ue.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +44,9 @@ import { ProfilComponent } from './profil/profil.component';
     CreatePostComponent,
     ForumComponent,
     ConfirmDialogComponent,
-    ProfilComponent
+    ProfilComponent,
+    PostComponent,
+    PageUeComponent
   ],
   imports: [
     BrowserModule,

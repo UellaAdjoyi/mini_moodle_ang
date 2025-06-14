@@ -161,95 +161,7 @@ const deleteUe = async (req, res) => {
 };
 
 
-// @desc    Inscrire l'utilisateur authentifié à une UE
-// @route   POST /api/ues/:id/enroll
-// @access  Private (pour les 'etu')
-const enrollUe = async (req, res) => {
-    try {
-        if (req.user.role !== 'etu') { // Seuls les étudiants peuvent s'inscrire via cette route
-            return res.status(403).json({ message: "Seuls les étudiants peuvent s'inscrire aux UEs."});
-        }
 
-        const ue = await UE.findById(req.params.id);
-        const user = await User.findById(req.user._id); // Utilisateur authentifié
-
-        if (!ue || !user) {
-            return res.status(404).json({ message: "UE ou utilisateur non trouvé." });
-        }
-
-        // Vérifier si l'utilisateur est déjà inscrit dans l'UE (liste des participants de l'UE)
-        const isAlreadyParticipant = ue.participants.some(p => p.user_id.toString() === user._id.toString());
-        if (isAlreadyParticipant) {
-            return res.status(400).json({ message: "Vous êtes déjà inscrit à cette UE." });
-        }
-        
-        // Vérifier si l'UE est déjà dans la liste `cours` de l'utilisateur (double sécurité)
-        const isUeInUserCourses = user.cours.some(c => c.ue_id.toString() === ue._id.toString());
-        if (isUeInUserCourses) {
-             return res.status(400).json({ message: "Cette UE est déjà dans votre liste de cours." });
-        }
-
-        // Ajouter l'étudiant aux participants de l'UE
-        ue.participants.push({
-            user_id: user._id,
-            nom: user.nom,
-            prenom: user.prenom,
-            email: user.email
-        });
-
-        user.cours.push({
-            ue_id: ue._id,
-            nom: ue.nom
-        });
-
-        await ue.save();
-        await user.save();
-
-        res.status(200).json({ message: "Inscription réussie à l’UE.", ue });
-
-    } catch (error) {
-        console.error("Erreur lors de l'inscription à l'UE:", error);
-        res.status(500).json({ message: "Erreur serveur lors de l'inscription à l'UE." });
-    }
-};
-    
-// @desc    Désinscrire l'utilisateur authentifié d'une UE
-// @route   POST /api/ues/:id/unenroll
-// @access  Private (pour les 'etu')
-const unenrollUe = async (req, res) => {
-     try {
-        if (req.user.role !== 'etu') {
-            return res.status(403).json({ message: "Seuls les étudiants peuvent se désinscrire des UEs."});
-        }
-
-        const ue = await UE.findById(req.params.id);
-        const user = await User.findById(req.user._id);
-
-        if (!ue || !user) {
-            return res.status(404).json({ message: "UE ou utilisateur non trouvé." });
-        }
-
-        // Vérifier si l'utilisateur est bien participant
-        const isParticipant = ue.participants.some(p => p.user_id.toString() === user._id.toString());
-        if (!isParticipant) {
-            return res.status(400).json({ message: "Vous n'êtes pas inscrit à cette UE." });
-        }
-
-        // Retirer l'étudiant des participants de l'UE
-        ue.participants = ue.participants.filter(p => p.user_id.toString() !== user._id.toString());
-        // Retirer l'UE de la liste `cours` de l'étudiant
-        user.cours = user.cours.filter(c => c.ue_id.toString() !== ue._id.toString());
-
-        await ue.save();
-        await user.save();
-            
-        res.status(200).json({ message: "Désinscription de l'UE réussie." });
-
-    } catch (error) {
-        console.error("Erreur lors de la désinscription de l'UE:", error);
-        res.status(500).json({ message: "Erreur serveur lors de la désinscription de l'UE." });
-    }
-};
 
 // TODO: Ajouter des fonctions pour gérer les enseignants d'une UE (ajouter/retirer un prof)
 // TODO: Ajouter des fonctions pour gérer les participants d'une UE (utile pour un admin/prof pour inscrire manuellement)
@@ -260,7 +172,5 @@ module.exports = {
   getUeById,       
   createUe,        
   updateUe,        
-  deleteUe,        
-  enrollUe,        
-  unenrollUe,      
+  deleteUe,              
 };

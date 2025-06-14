@@ -9,6 +9,8 @@
       <a class="nav-item nav-link" routerLink="/activites">Activités récentes</a>
       <a class="nav-item nav-link" routerLink="/login" *ngIf="!userRole">Connexion</a>
       <a class="nav-item nav-link" routerLink="/catalogue" *ngIf="userRole?.includes('ROLE_ADMIN')">Catalogue</a>
+      <a class="nav-item nav-link" routerLink="/catalogue" *ngIf="userRole?.includes('ROLE_ETUDIANT')">Mes cours</a>
+      <a class="nav-item nav-link" routerLink="/catalogue" *ngIf="userRole?.includes('ROLE_PROF')">Mes cours</a>
     </div>
 
     <!-- Partie droite : avatar + dropdown -->
