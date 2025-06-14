@@ -1,14 +1,12 @@
 const generateToken = require('../utils/generateToken');
-const User = require('../models/User'); 
-const { createLogEntry } = require('../utils/logger');
+const User = require('../models/User');
+const { createLogEntry } = require('../utils/logger'); 
+const sendEmail = require('../utils/sendEmail');         
+const generatePassword = require('../utils/generatePassword');
 
 // @desc    Enregistrer un nouvel utilisateur
 // @route   POST /api/auth/register
 // @access  Public
-const sendEmail = require('../utils/sendEmail');
-const generatePassword = require('../utils/generatePassword');
-const User = require('../models/User');
-
 const registerUser = async (req, res) => {
   const { nom, prenom, email, role, serviceProf, bureauProf } = req.body;
   const photoFile = req.file;
