@@ -3,7 +3,8 @@ const router = express.Router();
 const { // Fonctions du contrôleur d'authentification
     registerUser,
     loginUser,
-    getMe, getAllUsers, updateUser, deleteUser, updateProfile, getUserPhoto, assignUeToUser
+    getMe, getAllUsers, updateUser, deleteUser, updateProfile, getUserPhoto, assignUeToUser, removeUeFromUser,
+    getUserCourses
 } = require('../controllers/authController');
 const { protect,admin} = require('../middlewares/authMiddleware');
 const upload= require('../middlewares/upload');
@@ -36,18 +37,8 @@ router.get('/profile', authenticateUser, (req, res) => {
     });
 });
 
-router.get('/users', getAllUsers);
-router.delete('/deleteUser/:id', deleteUser);
-router.put('/profile', protect, upload.single('photo'), updateProfile);
-router.get('/profile', authenticateUser, (req, res) => {
-    const user = req.user;
-    res.json({
-        nom: user.nom,
-        prenom: user.prenom,
-        dtnaiss: user.dtnaiss,
-        photoUrl: user.photoUrl,
-        roles: user.roles
-    });
-});
+router.delete('/users/:userId/cours/:ueId', removeUeFromUser);
+router.get('/:id/cours', getUserCourses);
+
 
 module.exports = router;

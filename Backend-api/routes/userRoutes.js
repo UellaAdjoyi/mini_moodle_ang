@@ -5,6 +5,6 @@ const {
    
 } = require('../controllers/userController');
 
-router.get('/:id/cours', getUserCourses);
-
+router.get('/:userId/cours', getUserCourses);
+router.post('/remove-ue', removeUserCourse);
 module.exports = router;

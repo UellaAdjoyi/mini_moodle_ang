@@ -229,9 +229,14 @@ const assignUeToUser = async (req, res) => {
     const ue = await Ue.findById(ueId);
     if (!ue) return res.status(404).json({ message: 'UE non trouvée' });
 
-    const alreadyAssigned = user.cours.some(c => c.ue_id.toString() === ueId);
+    const alreadyAssigned = user.cours.some(c => c.ue_code?.toString() === ueId);
     if (!alreadyAssigned) {
-      user.cours.push({ nom: ue.nom, ue_id: ue._id });
+      user.cours.push({
+        ue_code: ue._id.toHexString(),
+        nom: ue.nom,
+        imageUe: ue.image || null,
+        dernierAcces: new Date()
+      });
       await user.save();
     }
 
@@ -239,6 +244,56 @@ const assignUeToUser = async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Erreur serveur", error: err.message });
+  }
+};
+
+const removeUeFromUser = async (req, res) => {
+  try {
+    const { userId, ueId } = req.params;
+
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: "Utilisateur non trouvé" });
+
+    user.cours = user.cours.filter(c => c._id.toString() !== ueId);
+    await user.save();
+
+    res.status(200).json({ message: "UE retirée avec succès", cours: user.cours });
+  } catch (error) {
+    console.error("Erreur lors du retrait de l’UE :", error);
+    res.status(500).json({ message: "Erreur serveur", error });
+  }
+};
+
+const getUserCourses = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const user = await User.findById(id);
+    if (!user) return res.status(404).json({ message: 'Utilisateur non trouvé' });
+
+    res.status(200).json(user.cours);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Erreur serveur', error: err.message });
+  }
+};
+
+removeUserCourse = async (req, res) => {
+  const { userId, ueId } = req.body;
+  try {
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: 'Utilisateur non trouvé' });
+
+    // Suppression de l'UE
+    user.cours = user.cours.filter(ue => ue._id.toString() !== ueId);
+    console.log('UE ID à retirer:', ueId);
+    console.log('Liste avant:', user.cours.map(c => c._id.toString()));
+
+    await user.save();
+
+    res.json({ message: 'UE retirée avec succès' });
+  } catch (error) {
+    res.status(500).json({ message: 'Erreur serveur', error: error.message });
   }
 };
 
@@ -252,4 +307,7 @@ module.exports = {
   updateProfile,
   getUserPhoto,
   assignUeToUser,
+  removeUeFromUser,
+  getUserCourses,
+  removeUserCourse,
 };
