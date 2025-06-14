@@ -1,5 +1,3 @@
-const User = require('../models/user');
-
 //fonction pour recupérérer les uee suivi ou enseigné par un utilisateur 
 const getUserCourses = async (req, res) => {
   const { id } = req.params;

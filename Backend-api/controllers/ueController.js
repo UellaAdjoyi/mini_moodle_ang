@@ -1,6 +1,19 @@
 const UE = require('../models/Ue'); // Importer le modèle UE
-const User = require('../models/User'); // Importer le modèle User pour l'inscription/désinscription
+const User = require('../models/user'); 
 const { createLogEntry } = require('../utils/logger'); 
+const multer = require('multer');
+const path = require('path');
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => cb(null, 'uploads/ues'),
+    filename: (req, file, cb) => {
+        const ext = path.extname(file.originalname);
+        const name = file.fieldname + '-' + Date.now() + ext;
+        cb(null, name);
+    }
+});
+const upload = multer({ storage });
+
 
 const getAllUes = async (req, res) => {
     try {
@@ -119,6 +132,13 @@ const updateUe = async (req, res) => {
             image = req.file.filename; // nouveau fichier uploadé
             // supprimer l'ancienne image du serveur
         }
+        const oldDetails = {
+            nom: ue.nom,
+            code: ue.code,
+            description: ue.description,
+            image: ue.image
+        };
+
 
 
         ue.nom = nom || ue.nom;
@@ -153,12 +173,12 @@ const deleteUe = async (req, res) => {
             return res.status(404).json({ message: 'UE non trouvée.' });
         }
 
-        // Vérification des droits (plus stricte pour la suppression)
-        // Par exemple, seul un admin peut supprimer, ou le premier enseignant listé.
-        const isCreatorOrAdmin = (ue.enseignants.length > 0 && ue.enseignants[0].user_id.toString() === req.user._id.toString()) || req.user.role === 'admin';
-        if (!isCreatorOrAdmin) {
-            return res.status(403).json({ message: 'Accès non autorisé pour supprimer cette UE.' });
-        }
+        // // Vérification des droits (plus stricte pour la suppression)
+        // // Par exemple, seul un admin peut supprimer, ou le premier enseignant listé.
+        // const isCreatorOrAdmin = (ue.enseignants.length > 0 && ue.enseignants[0].user_id.toString() === req.user._id.toString()) || req.user.role === 'admin';
+        // if (!isCreatorOrAdmin) {
+        //     return res.status(403).json({ message: 'Accès non autorisé pour supprimer cette UE.' });
+        // }
 
         // Avant de supprimer l'UE, il faudrait gérer la désinscription des utilisateurs
         // et la suppression/archivage des posts, forums, etc., liés à cette UE.
@@ -166,10 +186,10 @@ const deleteUe = async (req, res) => {
         // Pour l'instant, on supprime juste l'UE.
 
         // Retirer l'UE des listes `cours` de tous les utilisateurs (enseignants et participants)
-        await User.updateMany(
-            { 'cours.ue_id': ue._id },
-            { $pull: { cours: { ue_id: ue._id } } }
-        );
+        // await User.updateMany(
+        //     { 'cours.ue_id': ue._id },
+        //     { $pull: { cours: { ue_id: ue._id } } }
+        // ) ;
 
         await ue.deleteOne(); // ou ue.remove() pour anciennes versions Mongoose
         

@@ -1,6 +1,5 @@
 const Post = require('../models/Post');
 const UE = require('../models/Ue');
-const User = require('../models/User'); // Si besoin pour valider l'auteur ou les remises
 
 // @desc    Créer un nouveau post dans une UE
 // @route   POST /api/ues/:ueId/posts

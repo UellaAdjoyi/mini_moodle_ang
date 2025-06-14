@@ -1,6 +1,5 @@
 const Forum = require('../models/Forum');
 const UE = require('../models/Ue');
-const User = require('../models/User'); // Pour les auteurs de messages
 
 // @desc    Créer ou récupérer le forum d'une UE. Si un seul forum par UE est souhaité.
 //          Alternative: juste créer, et avoir une route GET séparée.

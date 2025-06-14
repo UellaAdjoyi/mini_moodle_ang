@@ -37,6 +37,7 @@ app.use('/api/logs', logRoutes); // Routes pour les logs
 
 // Connexion à la base de données
 //connectDB(); 
+app.use('/api/user', userRoutes);
 
 // Route de test
 app.get('/', (req, res) => {

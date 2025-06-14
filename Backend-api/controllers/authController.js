@@ -1,12 +1,10 @@
 const generateToken = require('../utils/generateToken');
-const User = require('../models/User');
-const { createLogEntry } = require('../utils/logger'); 
-const sendEmail = require('../utils/sendEmail');         
+const sendEmail = require('../utils/sendEmail');
 const generatePassword = require('../utils/generatePassword');
+const User = require('../models/user');
+const Ue = require('../models/Ue');
 
-// @desc    Enregistrer un nouvel utilisateur
-// @route   POST /api/auth/register
-// @access  Public
+
 const registerUser = async (req, res) => {
   const { nom, prenom, email, role, serviceProf, bureauProf } = req.body;
   const photoFile = req.file;
@@ -220,6 +218,29 @@ const updateProfile = async (req, res) => {
   }
 };
 
+const assignUeToUser = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { ueId } = req.body;
+
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: 'Utilisateur non trouvé' });
+
+    const ue = await Ue.findById(ueId);
+    if (!ue) return res.status(404).json({ message: 'UE non trouvée' });
+
+    const alreadyAssigned = user.cours.some(c => c.ue_id.toString() === ueId);
+    if (!alreadyAssigned) {
+      user.cours.push({ nom: ue.nom, ue_id: ue._id });
+      await user.save();
+    }
+
+    res.status(200).json({ message: 'UE assignée avec succès' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Erreur serveur", error: err.message });
+  }
+};
 
 module.exports = {
   registerUser,
@@ -230,4 +251,5 @@ module.exports = {
   deleteUser,
   updateProfile,
   getUserPhoto,
+  assignUeToUser,
 };
