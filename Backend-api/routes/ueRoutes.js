@@ -11,18 +11,22 @@ const {
 } = require('../controllers/ueController');
 
 const { protect } = require('../middlewares/authMiddleware');
+const upload = require("../middlewares/upload");
 
 // Routes pour /api/courses
 router.route('/')
-  .get(protect, getAllUes)  // GET /api/courses
-  .post(protect, createUe);  // POST /api/courses
+    .get(protect, getAllUes)
+    .post(protect, upload.single('image'), createUe);
 
 router.route('/:id')
-    .get(getUeById)
-    .put(updateUe)
-    .delete(deleteUe);
+    .put(protect, upload.single('image'), updateUe)
+    .delete(protect, deleteUe);
 
-router.route('/:id/enroll').post(enrollUe);
-router.route('/:id/unenroll').post(unenrollUe);
+router.route('/:id/enroll')
+    .post(protect, enrollUe);
+
+router.route('/:id/unenroll')
+    .post(protect, unenrollUe);
+
 
 module.exports = router;

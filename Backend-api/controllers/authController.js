@@ -1,70 +1,92 @@
 const generateToken = require('../utils/generateToken');
-const User = require('../models/User'); // <-- IMPORTER LE MODÈLE MONGOOSE
 
 
 // @desc    Enregistrer un nouvel utilisateur
 // @route   POST /api/auth/register
 // @access  Public
+const sendEmail = require('../utils/sendEmail');
+const generatePassword = require('../utils/generatePassword');
+const User = require('../models/user');
+
 const registerUser = async (req, res) => {
-  // Récupérer les champs selon votre nouveau modèle User
-  const { nom, prenom, email, password, role, photo, serviceProf, bureauProf } = req.body;
+  const { nom, prenom, email, role, serviceProf, bureauProf } = req.body;
+  const photoFile = req.file;
 
   try {
-    // Validation des champs requis
-    if (!nom || !prenom || !email || !password || !role) {
-      return res.status(400).json({ message: 'Veuillez fournir nom, prénom, email, mot de passe et rôle.' });
+    if (!nom || !prenom || !email || !role) {
+      return res.status(400).json({ message: 'Champs requis manquants.' });
     }
 
-    // Vérifier si l'utilisateur existe déjà par email
     const userExists = await User.findOne({ email });
     if (userExists) {
-      return res.status(400).json({ message: 'Un utilisateur avec cet email existe déjà.' });
+      return res.status(400).json({ message: 'Email déjà utilisé.' });
     }
 
-    // Créer l'utilisateur
-    // Le hachage du mot de passe est géré par le middleware 'pre-save' dans le modèle User.js
-    const user = await User.create({
+    const generatedPassword = generatePassword();
+
+    const newUser = new User({
       nom,
       prenom,
       email,
-      password, // Le modèle s'occupe du hachage
+      password: generatedPassword, // le mot de passe sera hashé dans le modèle
       role,
-      photo: photo || null, // Optionnel
-      serviceProf: role === 'prof' ? serviceProf : null, // Conditionnel au rôle
-      bureauProf: role === 'prof' ? bureauProf : null,   // Conditionnel au rôle
-      cours: [] // Initialiser avec un tableau de cours vide
+      photo: photoFile ? photoFile.buffer : null,
+      serviceProf: role === 'ROLE_PROF' ? serviceProf : null,
+      bureauProf: role === 'ROLE_PROF' ? bureauProf : null,
+      cours: []
     });
 
-    if (user) {
-      // Renvoyer les informations de l'utilisateur et le token
-      res.status(201).json({
-        _id: user._id, // MongoDB utilise _id
-        nom: user.nom,
-        prenom: user.prenom,
-        email: user.email,
-        role: user.role,
-        photo: user.photo,
-        // Ne pas renvoyer serviceProf et bureauProf ici à moins que nécessaire pour le client immédiatement
-        token: generateToken(user._id), // Utiliser user._id pour le token
-      });
-    } else {
-      // Ce cas est moins probable si User.create réussit sans erreur, mais pour la robustesse
-      res.status(400).json({ message: 'Données utilisateur invalides, enregistrement échoué.' });
-    }
+    await newUser.save();
+
+    await sendEmail(
+        email,
+        'Votre compte a été créé',
+        `Bonjour ${prenom},\n\nVoici votre mot de passe de connexion : ${generatedPassword}\n\nMerci de le modifier dès votre première connexion.`
+    );
+
+    res.status(201).json({ message: 'Utilisateur enregistré et email envoyé.' });
   } catch (error) {
-    console.error('Erreur lors de l_enregistrement:', error);
-    // Gérer les erreurs de validation Mongoose spécifiques
-    if (error.name === 'ValidationError') {
-        const messages = Object.values(error.errors).map(val => val.message);
-        return res.status(400).json({ message: messages.join(', ') });
-    }
-    // Gérer les erreurs de clé dupliquée (par exemple, si l'email est unique et qu'il y a une race condition)
-    if (error.code === 11000) {
-        return res.status(400).json({ message: 'L_email fourni est déjà utilisé.'});
-    }
-    res.status(500).json({ message: 'Erreur serveur lors de l_enregistrement de l_utilisateur.' });
+    console.error('Erreur dans registerUser:', error);
+    res.status(500).json({ message: 'Erreur serveur.' });
   }
 };
+
+const getUserPhoto = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).select('photo');
+    if (!user || !user.photo) {
+      return res.status(404).json({ message: 'Photo non trouvée' });
+    }
+
+    res.set('Content-Type', 'image/png'); // ou 'image/jpeg' si tu veux
+    res.send(user.photo);
+  } catch (error) {
+    console.error('Erreur photo utilisateur:', error);
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+};
+
+// @desc    Modifier un utilisateur
+// @route   PUT /api/auth/updateUser/:id
+// @access  Admin ou Authentifié
+const updateUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ message: "Utilisateur introuvable" });
+
+    const fields = ['nom', 'prenom', 'email', 'password', 'date_naissance', 'service_prof', 'bureau_prof', 'dernier_acces', 'role'];
+
+    fields.forEach(field => {
+      if (req.body[field]) user[field] = req.body[field];
+    });
+
+    await user.save();
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ message: "Erreur serveur", error: err });
+  }
+};
+
 
 // @desc    Authentifier un utilisateur et obtenir un token
 // @route   POST /api/auth/login
@@ -133,9 +155,78 @@ const getMe = async (req, res) => {
   }
 };
 
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find().select('-password');
+    res.json(users);
+  } catch (error) {
+    console.error('Erreur lors de la récupération des utilisateurs:', error);
+    res.status(500).json({ message: 'Erreur serveur.' });
+  }
+};
+
+const deleteUser = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deletedUser = await User.findByIdAndDelete(id);
+
+    if (!deletedUser) {
+      return res.status(404).json({ message: "Utilisateur non trouvé" });
+    }
+
+    res.status(200).json({ message: "Utilisateur supprimé avec succès", user: deletedUser });
+  } catch (error) {
+    console.error("Erreur lors de la suppression :", error);
+    res.status(500).json({ message: "Erreur serveur", error });
+  }
+};
+
+const updateProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    if (!user) return res.status(404).json({ message: "Utilisateur introuvable" });
+
+    const fields = ['nom', 'prenom', 'email', 'password', 'date_naissance', 'serviceProf', 'bureauProf'];
+
+    fields.forEach(field => {
+      if (req.body[field]) user[field] = req.body[field];
+    });
+
+    // Gérer l'upload photo si tu utilises multer (cf. plus bas)
+    if (req.file) {
+      // Si tu stockes la photo en Buffer (comme à l'inscription)
+      user.photo = req.file.buffer;
+    }
+
+    await user.save();
+
+    res.json({
+      message: "Profil mis à jour avec succès",
+      user: {
+        _id: user._id,
+        nom: user.nom,
+        prenom: user.prenom,
+        email: user.email,
+        photo: user.photo,
+        role: user.role,
+      }
+    });
+
+  } catch (error) {
+    console.error('Erreur updateProfile:', error);
+    res.status(500).json({ message: 'Erreur serveur lors de la mise à jour du profil.' });
+  }
+};
+
 
 module.exports = {
   registerUser,
   loginUser,
   getMe,
+  getAllUsers,
+  updateUser,
+  deleteUser,
+  updateProfile,
+  getUserPhoto,
 };

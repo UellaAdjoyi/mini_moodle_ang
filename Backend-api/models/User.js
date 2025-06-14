@@ -26,10 +26,11 @@ const userSchema = new mongoose.Schema({
         required: [true, "Le prénom est requis"]
     },
     role: {
-        type: String,
-        required: [true, "Le rôle est requis"],
-        enum: ['etu', 'prof', 'admin'] // Assurez-vous que ces valeurs correspondent à vos besoins
-    },
+        type: [String],
+        enum: ['ROLE_ETUDIANT', 'ROLE_PROF', 'ROLE_ADMIN'],
+        required: true
+    }
+,
     email: {
         type: String,
         required: [true, "L'email est requis"],
@@ -72,5 +73,5 @@ userSchema.methods.matchPassword = async function(enteredPassword) {
     return await bcrypt.compare(enteredPassword, this.password);
 };
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.models.User || mongoose.model('User', userSchema);
 module.exports = User;
