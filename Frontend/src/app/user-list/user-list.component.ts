@@ -3,6 +3,10 @@ import {Ue} from "../models/ue.model";
 import {UeService} from "../services/ue.service";
 import {User} from "../models/user.model";
 import {UserService} from "../services/user.service";
+import {MatDialog} from "@angular/material/dialog";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {ConfirmDialogComponent} from "../utils/confirm-dialog/confirm-dialog.component";
+
 
 @Component({
   selector: 'app-user-list',
@@ -10,12 +14,14 @@ import {UserService} from "../services/user.service";
   styleUrls: ['./user-list.component.css']
 })
 export class UserListComponent implements OnInit {
-  searchTerm:string='';
-  users:User[]=[];
-  selectedUser:User|null=null;
+  searchTerm: string = '';
+  users: User[] = [];
+  selectedUser: User | null = null;
 
   constructor(
-    private userService:UserService,
+    private userService: UserService,
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar,
   ) {
   }
 
@@ -41,29 +47,56 @@ export class UserListComponent implements OnInit {
 
   closeModal() {
     this.showModal = false;
+    this.selectedUser = null;
+    this.loadUsers(); // rafraîchir
   }
+
 
   onSaveUser($event: FormData) {
 
   }
+
+
   filteredUsers() {
-    const term = this.searchTerm.toLowerCase();
-    return this.users.filter(user =>
-      `${user.nom} ${user.prenom} ${user.email}`.toLowerCase().includes(term)
-    );
+    const result = this.users.filter(u => {
+      const match = u.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        u.prenom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        u.email.toLowerCase().includes(this.searchTerm.toLowerCase());
+      return match;
+    });
+
+    return result;
   }
+
 
   openEditModal(user: User) {
     this.selectedUser = user;
     this.showModal = true;
   }
 
-  deleteUser(id: number) {
-    if (confirm('Voulez-vous vraiment supprimer cet utilisateur ?')) {
-      this.userService.deleteUser(id).subscribe(() => {
-        this.users = this.users.filter(u => u.id !== id);
-      });
-    }
+
+  deleteUser(userId: string) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Supprimer cet utilisateur ?',
+        message: 'Cette action est irréversible.'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.userService.deleteUser(userId).subscribe({
+          next: () => {
+            this.snackBar.open('Utilisateur supprimé avec succès.', 'Fermer', { duration: 3000 });
+            this.loadUsers();
+          },
+          error: err => {
+            this.snackBar.open('Erreur lors de la suppression.', 'Fermer', { duration: 3000 });
+            console.error(err);
+          }
+        });
+      }
+    });
   }
 
 

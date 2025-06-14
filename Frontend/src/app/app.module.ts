@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import {HttpClientModule} from '@angular/common/http';
-
+import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -18,6 +18,15 @@ import { MesCoursComponent } from './mes-cours/mes-cours.component';
 import {NgOptimizedImage} from "@angular/common";
 import { CreatePostComponent } from './create-post/create-post.component';
 import { ForumComponent } from './forum/forum.component';
+import {AuthInterceptor} from "./interceptors/auth.interceptor";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ConfirmDialogComponent } from './utils/confirm-dialog/confirm-dialog.component';
+import {MatDialogModule} from "@angular/material/dialog";
+import {MatButtonModule} from "@angular/material/button";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
+import { ProfilComponent } from './profil/profil.component';
+import { PostComponent } from './prof/post/post.component';
+import { PageUeComponent } from './prof/page-ue/page-ue.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +42,11 @@ import { ForumComponent } from './forum/forum.component';
     UserModalComponent,
     MesCoursComponent,
     CreatePostComponent,
-    ForumComponent
+    ForumComponent,
+    ConfirmDialogComponent,
+    ProfilComponent,
+    PostComponent,
+    PageUeComponent
   ],
   imports: [
     BrowserModule,
@@ -42,9 +55,18 @@ import { ForumComponent } from './forum/forum.component';
     FormsModule,
     HttpClientModule,
     NgOptimizedImage,
+    BrowserAnimationsModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatSnackBarModule,
   ],
   providers: [
-    HttpClientModule
+    HttpClientModule,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })

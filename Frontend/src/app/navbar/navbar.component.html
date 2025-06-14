@@ -1,16 +1,46 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" routerLink="/">
       <img id="logo" src="assets/images/utbm.png" alt="UTBM Logo" width="75" height="50" />
     </a>
 
     <div class="navbar-nav">
       <a class="nav-item nav-link" routerLink="/mesCours" *ngIf="userRole === 'ROLE_PROF' || userRole === 'ROLE_ADMIN'">Mes cours</a>
-      <a class="nav-item nav-link" routerLink="">Activités récentes</a>
+      <a class="nav-item nav-link" routerLink="/activites">Activités récentes</a>
       <a class="nav-item nav-link" routerLink="/login" *ngIf="!userRole">Connexion</a>
-      <a class="nav-item nav-link" routerLink="/catalogue" *ngIf="userRole === 'ROLE_ADMIN'">Catalogue</a>
-      <a class="nav-item nav-link" routerLink="/profil" *ngIf="userRole">Profil</a>
-      <a class="nav-item nav-link" (click)="logout()" *ngIf="userRole">Déconnexion</a>
+      <a class="nav-item nav-link" routerLink="/catalogue" *ngIf="userRole?.includes('ROLE_ADMIN')">Catalogue</a>
+      <a class="nav-item nav-link" routerLink="/catalogue" *ngIf="userRole?.includes('ROLE_ETUDIANT')">Mes cours</a>
+      <a class="nav-item nav-link" routerLink="/catalogue" *ngIf="userRole?.includes('ROLE_PROF')">Mes cours</a>
     </div>
+
+    <!-- Partie droite : avatar + dropdown -->
+    <div class="d-flex align-items-center ms-auto" *ngIf="userRole">
+      <div class="dropdown">
+        <a href="#" id="userDropdown" class="d-flex align-items-center dropdown-toggle text-white text-decoration-none" role="button"
+           data-bs-toggle="dropdown" aria-expanded="false">
+
+          <ng-container *ngIf="user.photoUrl; else initials">
+            <img [src]="user.photoUrl" alt="Avatar" class="rounded-circle" style="width:35px; height:35px; object-fit:cover;">
+          </ng-container>
+
+          <ng-template #initials>
+            <span class="user-initials rounded-circle bg-secondary text-white d-flex justify-content-center align-items-center"
+                  style="width:35px; height:35px; font-weight:bold; font-size:1rem;"
+                  [title]="user.nom + ' ' + user.prenom">
+              {{ user.nom?.charAt(0)?.toUpperCase() }}{{ user.prenom?.charAt(0)?.toUpperCase() }}
+            </span>
+          </ng-template>
+
+        </a>
+
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+          <li><span class="dropdown-item-text fw-bold">{{ user.nom }} {{ user.prenom }}</span></li>
+          <li><a class="dropdown-item" routerLink="/profil">Mon profil</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" (click)="logout()">Déconnexion</a></li>
+        </ul>
+      </div>
+    </div>
+
   </div>
 </nav>

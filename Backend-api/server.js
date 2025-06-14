@@ -1,6 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
-const cors = require('cors');   
+const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 const connectDB = require('./config/db');
 const ueRoutes = require('./routes/ueRoutes');
@@ -9,15 +9,19 @@ const forumRoutes = require('./routes/forumRoutes');
 const logRoutes = require('./routes/logRoutes');
 
 
+const userRoutes = require('./routes/userRoutes');
+const {join} = require("node:path");
 
 dotenv.config();
 const app = express();
 
 connectDB(); // Connexion à la base de données MongoDB
 
+app.use('/uploads', express.static(join(__dirname, 'uploads')));
+
 
 // Middlewares
-app.use(cors()); // Activer CORS
+app.use(cors());
 app.use(express.json()); // Pour parser le JSON des requêtes entrantes
 app.use(express.urlencoded({ extended: false })); // Pour parser les données de formulaires
 

@@ -6,8 +6,6 @@ const {
     createUe,
     updateUe,
     deleteUe,
-    enrollUe,
-    unenrollUe,
 } = require('../controllers/ueController');
 
 const postRouterForUe = require('./postRoutes');
@@ -15,19 +13,19 @@ const postRouterForUe = require('./postRoutes');
 const { createForumForUe, getForumByUe } = require('../controllers/forumController');
 
 const { protect } = require('../middlewares/authMiddleware');
+const upload = require("../middlewares/upload");
 
 // Routes pour /api/courses
 router.route('/')
-  .get(protect, getAllUes)  // GET /api/courses
-  .post(protect, createUe);  // POST /api/courses
+    .get(protect, getAllUes)
+    .post(protect, upload.single('image'), createUe);
 
+router.get('/ueall', getAllUes)   
+    
 router.route('/:id')
-    .get(getUeById)
-    .put(updateUe)
-    .delete(deleteUe);
+    .put(protect, upload.single('image'), updateUe)
+    .delete(protect, deleteUe);
 
-router.route('/:id/enroll').post(enrollUe);
-router.route('/:id/unenroll').post(unenrollUe);
 
 router.use('/:ueId/posts', postRouterForUe);
 

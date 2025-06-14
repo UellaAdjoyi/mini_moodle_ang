@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
 const enrolledCourseSchema = new mongoose.Schema({
-    ue_id: { // Fera référence à l'ID d'une UE
-        type: mongoose.Schema.Types.ObjectId,
+    ue_code: { // Fera référence à l'ID d'une UE
+        type: String,
         ref: 'UE', // Nom du modèle UE qu'on va créer
         required: true
     },
@@ -11,10 +11,14 @@ const enrolledCourseSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    imageUe: { // image UE
+        type: String,
+        required: false
+    },
     dernierAcces: {
         type: Date
     }
-}, { _id: false }); // Pas besoin d'un _id séparé pour ce sous-document si ue_id est unique dans le tableau
+}); // Pas besoin d'un _id séparé pour ce sous-document si ue_id est unique dans le tableau
 
 const userSchema = new mongoose.Schema({
     nom: {
@@ -26,10 +30,11 @@ const userSchema = new mongoose.Schema({
         required: [true, "Le prénom est requis"]
     },
     role: {
-        type: String,
-        required: [true, "Le rôle est requis"],
-        enum: ['etu', 'prof', 'admin'] // Assurez-vous que ces valeurs correspondent à vos besoins
-    },
+        type: [String],
+        enum: ['ROLE_ETUDIANT', 'ROLE_PROF', 'ROLE_ADMIN'],
+        required: true
+    }
+,
     email: {
         type: String,
         required: [true, "L'email est requis"],
@@ -72,5 +77,5 @@ userSchema.methods.matchPassword = async function(enteredPassword) {
     return await bcrypt.compare(enteredPassword, this.password);
 };
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.models.User || mongoose.model('User', userSchema);
 module.exports = User;

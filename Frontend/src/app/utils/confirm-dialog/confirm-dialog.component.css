@@ -1,0 +1,9 @@
+.dialog-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.warning-icon {
+  font-size: 28px;
+}

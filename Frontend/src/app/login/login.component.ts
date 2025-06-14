@@ -33,9 +33,9 @@ export class LoginComponent implements OnInit {
       next: (user) => {
         console.log('Utilisateur connecté:', user);
 
-        if (user.role === 'etudiant') {
+        if (user.role.includes ('ROLE_ETUDIANT')) {
           this.router.navigate(['/mesCours']);
-        } else if (user.role === 'prof') {
+        } else if (user.role.includes ('ROLE_PROF')) {
           this.router.navigate(['/profs/alertes']);
         } else if (user.role.includes('ROLE_ADMIN')) {
           this.router.navigate(['/catalogue']);
