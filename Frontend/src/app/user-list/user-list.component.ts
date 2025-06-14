@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, NgIterable, OnInit} from '@angular/core';
 import {Ue} from "../models/ue.model";
 import {UeService} from "../services/ue.service";
 import {User} from "../models/user.model";
@@ -16,17 +16,24 @@ import {ConfirmDialogComponent} from "../utils/confirm-dialog/confirm-dialog.com
 export class UserListComponent implements OnInit {
   searchTerm: string = '';
   users: User[] = [];
+  ues: Ue[] = [];
   selectedUser: User | null = null;
+  selectedUesByUser: { [key: string]: string } = {};
+  selectedRolesByUser: { [key: string]: string } = {};
+  showModal = false;
+
 
   constructor(
     private userService: UserService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
+    private ueService: UeService,
   ) {
   }
 
   ngOnInit(): void {
-    this.loadUsers()
+    this.loadUsers();
+    this.loadUes()
   }
 
   loadUsers() {
@@ -38,8 +45,15 @@ export class UserListComponent implements OnInit {
     });
   }
 
-
-  showModal = false;
+  loadUes() {
+    this.ueService.getAllUes().subscribe({
+      next: (data) => {
+        console.log('UEs reçues:', data);
+        this.ues = data;
+      },
+      error: (err) => console.error('Erreur lors du chargement des UEs', err)
+    });
+  }
 
   openAddModal() {
     this.showModal = true;
@@ -48,12 +62,12 @@ export class UserListComponent implements OnInit {
   closeModal() {
     this.showModal = false;
     this.selectedUser = null;
-    this.loadUsers(); // rafraîchir
+    this.loadUsers();
+    this.loadUes()
   }
 
-
-  onSaveUser($event: FormData) {
-
+  onSaveUser(event: any) {
+    console.log('Utilisateur enregistré :', event);
   }
 
 
@@ -97,6 +111,58 @@ export class UserListComponent implements OnInit {
         });
       }
     });
+  }
+
+  assignUeToUser(event: { userId: string; ueId: string; role: string }) {
+    const { userId, ueId, role } = event;
+
+    this.userService.assignUeToUser(userId, ueId, role).subscribe(() => {
+      this.loadUsers();
+      this.showAssignModal = false;
+    });
+  }
+
+
+  // assignUeToUser(userId: string) {
+  //   const ueId = this.selectedUesByUser[userId];
+  //   const role = this.selectedRolesByUser[userId];
+  //
+  //   if (!ueId || !role) {
+  //     this.snackBar.open('Veuillez sélectionner une UE et un rôle.', 'Fermer', { duration: 3000 });
+  //     return;
+  //   }
+  //
+  //   this.userService.assignUe(userId, ueId, role).subscribe({
+  //     next: () => {
+  //       this.snackBar.open('UE assignée avec succès.', 'Fermer', { duration: 3000 });
+  //       this.loadUsers();
+  //     },
+  //     error: (err: any) => {
+  //       this.snackBar.open('Erreur lors de l\'assignation.', 'Fermer', { duration: 3000 });
+  //       console.error(err);
+  //     }
+  //   });
+  // }
+
+  protected readonly Ue = Ue;
+
+  removeUeFromUser(userId: string, ueId: string) {
+    this.userService.removeUeFromUser(userId, ueId).subscribe({
+      next: () => {
+        this.snackBar.open('Utilisateur retiré de l’UE', 'Fermer', { duration: 3000 });
+        this.loadUsers();
+      },
+      error: (err) => {
+        this.snackBar.open('Erreur lors du retrait', 'Fermer', { duration: 3000 });
+        console.error(err);
+      }
+    });
+  }
+  showAssignModal = false;
+
+  openAssignModal(user: any) {
+    this.selectedUser = user;
+    this.showAssignModal = true;
   }
 
 

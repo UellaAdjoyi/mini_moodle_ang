@@ -1,42 +1,49 @@
 <div class="container mt-5">
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <button class="btn btn-success" (click)="openAddModal()">Créer un utilisateur</button>
-    <h4 class="mb-0">Gestion des utilisateurs</h4>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <button class="btn btn-success" (click)="openAddModal()">
+      Créer un utilisateur
+    </button>
+    <h4 class="fw-semibold text-primary">Gestion des utilisateurs</h4>
+
   </div>
 
-  <input type="text"
-         [(ngModel)]="searchTerm"
-         class="form-control mb-4"
-         placeholder="Rechercher un utilisateur...">
+  <div class="input-group mb-4 shadow-sm rounded">
+    <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+    <input type="text"
+           [(ngModel)]="searchTerm"
+           class="form-control border-start-0"
+           placeholder="Rechercher par nom, email...">
+  </div>
 
-  <div class="card shadow-sm">
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item d-flex justify-content-between align-items-center"
-          *ngFor="let user of filteredUsers()">
+  <div *ngIf="filteredUsers().length === 0" class="text-muted text-center my-5">
+    Aucun utilisateur trouvé.
+  </div>
 
-        <div class="d-flex align-items-center">
-          <img [src]="user.photo || 'assets/avatar.png'"
-               alt="Photo de {{ user.nom }}"
-               class="rounded-circle me-3"
-               width="40" height="40"
-               style="object-fit: cover;">
+  <div *ngFor="let user of filteredUsers()" class="card mb-3 shadow-sm border-0">
+    <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
 
-          <div>
-            <strong>{{ user.nom }} {{ user.prenom }}</strong><br>
-            <small class="text-muted">{{ user.email }}</small>
-          </div>
-        </div>
-
+      <!-- Info utilisateur -->
+      <div class="d-flex align-items-center gap-3">
+        <img [src]="user.photo || 'assets/avatar.png'"
+             class="rounded-circle border"
+             width="50" height="50"
+             style="object-fit: cover;">
         <div>
-          <button class="btn btn-sm btn-outline-primary me-2" (click)="openEditModal(user)">
-            Modifier
-          </button>
-          <button class="btn btn-sm btn-outline-danger" (click)="deleteUser(user._id)">
-            Supprimer
-          </button>
+          <h6 class="mb-0">{{ user.nom }} {{ user.prenom }}</h6>
+          <small class="text-muted">{{ user.email }}</small>
         </div>
-      </li>
-    </ul>
+      </div>
+
+      <!-- Actions -->
+      <div class="dropdown">
+        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton-{{ user._id }}" data-bs-toggle="dropdown" aria-expanded="false"></button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><a class="dropdown-item" (click)="openEditModal(user)"><i class="bi bi-pencil-square me-2"></i> Modifier</a></li>
+          <li><a class="dropdown-item text-danger" (click)="deleteUser(user._id)"><i class="bi bi-trash me-2"></i> Supprimer</a></li>
+          <li><a class="dropdown-item" (click)="openAssignModal(user)">Assigner Ue</a></li>
+        </ul>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -48,3 +55,11 @@
   (close)="closeModal()"
   (save)="onSaveUser($event)">
 </app-user-modal>
+<app-assign-ue-modal
+  *ngIf="showAssignModal"
+  [user]="selectedUser"
+  [ues]="ues"
+  (close)="showAssignModal = false"
+  (assign)="assignUeToUser($event)"
+  (remove)="removeUeFromUser($event.userId, $event.ueId)">
+</app-assign-ue-modal>

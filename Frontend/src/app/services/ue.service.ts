@@ -38,8 +38,13 @@ export class UeService {
     return this.http.get<Ue[]>(`${this.apiUrl}/ues/enseignees/${userId}`);
   }
 
-  deleteUe(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  deleteUe(code: string): Observable<void> {
+    const token = localStorage.getItem('token');
+    const headers = token ? new HttpHeaders().set('Authorization', `Bearer ${token}`) : undefined;
+    return this.http.delete<void>(`${this.apiUrl}/${code}`);
+  }
+  removeUeFromUser(userId: string, ueId: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/auth/remove-ue`, { userId, ueId });
   }
 
 }

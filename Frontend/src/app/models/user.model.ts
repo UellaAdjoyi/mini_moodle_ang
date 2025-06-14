@@ -1,3 +1,5 @@
+import {Ue} from "./ue.model";
+
 export class User {
   nom: any;
   prenom: any;
@@ -10,4 +12,6 @@ export class User {
   dernier_acces: any;
   role: any;
   _id: any;
+
+  cours?: Ue[];
 }

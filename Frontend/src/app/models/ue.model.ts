@@ -6,4 +6,5 @@ export class Ue {
   image: any;
   _id:any;
   description: any;
+  participants:any;
 }

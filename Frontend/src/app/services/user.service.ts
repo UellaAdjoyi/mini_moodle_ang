@@ -49,4 +49,30 @@ export class UserService {
     return this.http.put(`${this.apiUrl}/profile`, formData);
   }
 
+  assignUe(userId: string, ueId: string, role: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/assign-ue/${userId}`, {
+      ueId,
+      role
+    });
+  }
+
+  getUserCourses(userId: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/${userId}/cours`);
+  }
+
+  removeUserCourse(userId: string, ueId: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/remove-ue`, { userId, ueId });
+  }
+
+  removeUeFromUser(userId: string, ueId: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/users/${userId}/cours/${ueId}`);
+  }
+
+
+  assignUeToUser(userId: string, ueId: string, role: string) {
+    return this.http.post(`${this.apiUrl}/assign-ue/${userId}`, {
+      ueId,
+      role
+    });
+  }
 }

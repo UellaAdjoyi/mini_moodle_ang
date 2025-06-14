@@ -20,7 +20,7 @@ export class UeListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loadUes();
+   this.loadUes();
   }
 
   loadUes() {
@@ -76,12 +76,25 @@ export class UeListComponent implements OnInit {
     this.showModal = false;
   }
 
-  deleteUe(id: number) {
+  deleteUe(id: string) {
     if (confirm('Voulez-vous vraiment supprimer cette UE ?')) {
       this.ueService.deleteUe(id).subscribe(() => {
-        this.ues = this.ues.filter(u => u.code!== id);
+        this.ues = this.ues.filter(u => u._id !== id);
       });
     }
+  }
+
+  removeUserFromUe(userId: string, ueId: string) {
+    this.ueService.removeUeFromUser(userId, ueId).subscribe({
+      next: () => {
+        alert('Utilisateur retiré de l’UE');
+        this.loadUes();
+      },
+      error: (err) => {
+        console.error(err);
+        alert('Erreur lors du retrait');
+      }
+    });
   }
 
 

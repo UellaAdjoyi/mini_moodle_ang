@@ -1,19 +1,46 @@
 <h2>Liste des UEs</h2>
-<button class="btn btn-success mt-3" (click)="openAddModal()">Créer</button>
+<button class="btn btn-success mt-3" (click)="openAddModal()">Créer une Ue</button>
 
 <input type="text" [(ngModel)]="searchTerm" class="form-control mt-3 mb-3" placeholder="Rechercher une ue...">
 
 <div class="list-group mb-5">
-  <div *ngFor="let ue of filteredUes()" class="list-group-item d-flex justify-content-between">
-    <div>
-      <img *ngIf="ue.image" [src]="ue.imageUrl || ue.image" alt="Image UE" class="ue-thumb" />
-      <h5>{{ ue.nom}}</h5>
-      <p>{{ ue.description }}</p>
-    </div>
-    <button class="btn btn-sm btn-outline-primary" (click)="openEditModal(ue)">Modifier</button>
-    <button class="btn btn-sm btn-danger" (click)="deleteUe(ue.code)">Supprimer</button>
+  <div *ngFor="let ue of filteredUes()" class="list-group-item d-flex justify-content-between align-items-start flex-column">
+    <div class="d-flex w-100 justify-content-between">
+      <div class="d-flex align-items-start">
+        <img *ngIf="ue.image" [src]="ue.imageUrl || ue.image" alt="Image UE" class="ue-thumb me-3" style="width: 60px; height: 60px; object-fit: cover;">
+        <div>
+          <h5 class="mb-1">{{ ue.nom }}</h5>
+          <p class="mb-0">{{ ue.description }}</p>
+        </div>
+      </div>
 
+      <div class="dropdown">
+        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
+                id="dropdownMenuUe-{{ ue._id }}" data-bs-toggle="dropdown" aria-expanded="false">
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end" [attr.aria-labelledby]="'dropdownMenuUe-' + ue._id">
+          <li><a class="dropdown-item" (click)="openEditModal(ue)">Modifier</a></li>
+          <li><a class="dropdown-item text-danger" (click)="deleteUe(ue._id)">Supprimer</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div *ngIf="ue.participants?.length > 0" class="mt-3 w-100">
+      <strong>Participants :</strong>
+      <ul class="list-inline">
+        <li *ngFor="let user of ue.participants" class="list-inline-item me-2">
+          {{ user.prenom }} {{ user.nom }}
+          <button class="btn btn-sm btn-outline-danger ms-1" (click)="removeUserFromUe(user._id, ue.code)">x</button>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
 
-<app-ue-modal *ngIf="showModal" [show]="showModal" [editUe]="selectedUe" (close)="closeModal()" (save)="onSaveUe($event)"></app-ue-modal>
+<app-ue-modal *ngIf="showModal"
+              [show]="showModal"
+              [editUe]="selectedUe"
+              (close)="closeModal()"
+              (save)="onSaveUe($event)">
+</app-ue-modal>
+

@@ -27,6 +27,8 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
 import { ProfilComponent } from './profil/profil.component';
 import { PostComponent } from './prof/post/post.component';
 import { PageUeComponent } from './prof/page-ue/page-ue.component';
+import { UserCoursComponent } from './user-cours/user-cours.component';
+import { AssignUeModalComponent } from './assign-ue-modal/assign-ue-modal.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +48,9 @@ import { PageUeComponent } from './prof/page-ue/page-ue.component';
     ConfirmDialogComponent,
     ProfilComponent,
     PostComponent,
-    PageUeComponent
+    PageUeComponent,
+    UserCoursComponent,
+    AssignUeModalComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,7 @@
+<h2>UEs assignées</h2>
+<ul>
+  <li *ngFor="let ue of cours">
+    {{ ue.nom }}
+    <button (click)="removeCourse(ue.ue_code)">Retirer</button>
+  </li>
+</ul>

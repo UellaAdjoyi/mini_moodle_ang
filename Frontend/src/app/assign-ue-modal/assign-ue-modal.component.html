@@ -1,0 +1,50 @@
+<div class="modal-backdrop fade show"></div>
+<div class="modal d-block" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">
+          Assigner une UE / un rôle à {{ user?.nom }} {{ user?.prenom }}
+        </h5>
+        <button type="button" class="btn-close" aria-label="Fermer" (click)="onClose()"></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="mb-3">
+          <label class="form-label">UE :</label>
+          <select class="form-select" [(ngModel)]="selectedUe">
+            <option value="">-- Sélectionner une UE --</option>
+            <option *ngFor="let ue of ues" [value]="ue._id">{{ ue.nom }}</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Rôle :</label>
+          <select class="form-select" [(ngModel)]="selectedRole">
+            <option value="participant">Participant</option>
+            <option value="enseignant">Enseignant</option>
+          </select>
+        </div>
+
+        <div *ngIf="user?.cours?.length" class="mt-4">
+          <strong>UEs assignées :</strong>
+          <div class="mt-2 d-flex flex-wrap gap-2">
+            <span *ngFor="let ue of user.cours" class="badge bg-primary rounded-pill">
+              {{ ue.nom }}
+              <button class="btn-close btn-close-white btn-sm ms-2" aria-label="Supprimer"
+                      (click)="removeUeFromUser(ue._id)">
+              </button>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="onClose()">Annuler</button>
+        <button class="btn btn-primary" [disabled]="!selectedUe || !selectedRole" (click)="onAssign()">Assigner</button>
+      </div>
+
+    </div>
+  </div>
+</div>
