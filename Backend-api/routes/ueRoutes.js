@@ -8,6 +8,10 @@ const {
     deleteUe,
 } = require('../controllers/ueController');
 
+const postRouterForUe = require('./postRoutes');
+
+const { createForumForUe, getForumByUe } = require('../controllers/forumController');
+
 const { protect } = require('../middlewares/authMiddleware');
 const upload = require("../middlewares/upload");
 
@@ -21,6 +25,13 @@ router.get('/ueall', getAllUes)
 router.route('/:id')
     .put(protect, upload.single('image'), updateUe)
     .delete(protect, deleteUe);
+
+
+router.use('/:ueId/posts', postRouterForUe);
+
+router.route('/:ueId/forum')
+    .post(protect, createForumForUe)  // Créer le forum pour l'UE
+    .get(protect, getForumByUe);     // Récupérer le forum de l'UE
 
 
 module.exports = router;

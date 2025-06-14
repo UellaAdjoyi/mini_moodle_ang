@@ -36,4 +36,18 @@ router.get('/profile', authenticateUser, (req, res) => {
     });
 });
 
+router.get('/users', getAllUsers);
+router.delete('/deleteUser/:id', deleteUser);
+router.put('/profile', protect, upload.single('photo'), updateProfile);
+router.get('/profile', authenticateUser, (req, res) => {
+    const user = req.user;
+    res.json({
+        nom: user.nom,
+        prenom: user.prenom,
+        dtnaiss: user.dtnaiss,
+        photoUrl: user.photoUrl,
+        roles: user.roles
+    });
+});
+
 module.exports = router;

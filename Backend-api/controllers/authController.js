@@ -102,6 +102,8 @@ const loginUser = async (req, res) => {
 
     // Vérifier si l'utilisateur existe ET si le mot de passe correspond (méthode matchPassword du modèle)
     if (user && (await user.matchPassword(password))) {
+      // Créer un log de connexion APRÈS succès
+            await createLogEntry(user._id, 'connexion'); // Aucune cible spécifique pour le login simple
       res.json({
         _id: user._id,
         nom: user.nom,
