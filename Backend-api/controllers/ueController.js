@@ -1,23 +1,10 @@
 const UE = require('../models/Ue');
-const multer = require('multer');
+const fs = require('fs');
 const path = require('path');
-
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => cb(null, 'uploads/ues'),
-    filename: (req, file, cb) => {
-        const ext = path.extname(file.originalname);
-        const name = file.fieldname + '-' + Date.now() + ext;
-        cb(null, name);
-    }
-});
-const upload = multer({ storage });
-
 
 const getAllUes = async (req, res) => {
     try {
-        const ues = await UE.find({})
-            // Optionnel: populer des informations de base sur les enseignants si nécessaire pour la liste
-            // .populate('enseignants.user_id', 'nom prenom');
+        const ues = await UE.find({});
         res.status(200).json(ues);
     } catch (error) {
         console.error('Erreur getAllUes:', error);
@@ -25,15 +12,11 @@ const getAllUes = async (req, res) => {
     }
 };
 
-// @desc    Récupérer une UE par son ID
-// @route   GET /api/ues/:id
-// @access  Private (ou Public)
 const getUeById = async (req, res) => {
     try {
         const ue = await UE.findById(req.params.id)
-            .populate('enseignants.user_id', 'nom prenom email photo') // Populer les infos des enseignants
-            .populate('participants.user_id', 'nom prenom email photo'); // Populer les infos des participants
-            
+            .populate('enseignants.user_id', 'nom prenom email photo')
+            .populate('participants.user_id', 'nom prenom email photo');
         if (ue) {
             res.status(200).json(ue);
         } else {
@@ -48,15 +31,13 @@ const getUeById = async (req, res) => {
     }
 };
 
-// @desc    Créer une nouvelle UE
-// @route   POST /api/ues
-// @access  Private (ex: 'prof' ou 'admin')
 const createUe = async (req, res) => {
     const { nom, code, description } = req.body;
     let image = null;
 
     if (req.file) {
-        image = req.file.filename; // ou req.file.path selon ce que tu veux stocker
+        console.log('Image reçue :', req.file);
+        image = req.file.filename;
     }
 
     try {
@@ -73,21 +54,19 @@ const createUe = async (req, res) => {
             nom,
             code,
             description,
-            image, // image venant du fichier uploadé
+            image,
             enseignants: [],
             participants: []
         });
 
         const createdUe = await newUe.save();
-
         res.status(201).json(createdUe);
 
     } catch (error) {
         console.error('Erreur createUe:', error);
-        // ... (ton code d'erreur ici)
+        res.status(500).json({ message: 'Erreur serveur lors de la création de l\'UE.' });
     }
 };
-
 
 const updateUe = async (req, res) => {
     try {
@@ -98,8 +77,17 @@ const updateUe = async (req, res) => {
         let image = ue.image;
 
         if (req.file) {
-            image = req.file.filename; // nouveau fichier uploadé
-            // supprimer l'ancienne image du serveur
+            if (ue.image) {
+                const oldImagePath = path.join(__dirname, '../uploads/ues/', ue.image);
+                fs.access(oldImagePath, fs.constants.F_OK, (err) => {
+                    if (!err) {
+                        fs.unlink(oldImagePath, err => {
+                            if (err) console.error('Erreur suppression ancienne image :', err);
+                        });
+                    }
+                });
+            }
+            image = req.file.filename;
         }
 
 
@@ -111,26 +99,28 @@ const updateUe = async (req, res) => {
         const updatedUe = await ue.save();
         res.status(200).json(updatedUe);
     } catch (error) {
-        // gestion erreurs comme avant
+        console.error('Erreur updateUe:', error);
+        res.status(500).json({ message: 'Erreur serveur lors de la mise à jour de l\'UE.' });
     }
 };
 
-
-// @desc    Supprimer une UE
-// @route   DELETE /api/ues/:id
-// @access  Private (ex: 'admin' ou prof créateur/principal)
 const deleteUe = async (req, res) => {
     try {
         const ue = await UE.findById(req.params.id);
-
         if (!ue) {
             return res.status(404).json({ message: 'UE non trouvée.' });
         }
 
-        await ue.deleteOne(); // ou ue.remove() pour anciennes versions Mongoose
-        
-        res.status(200).json({ message: 'UE supprimée avec succès.' });
+        // Supprimer image associée si elle existe
+        if (ue.image) {
+            const imagePath = path.join(__dirname, '../uploads/ues/', ue.image);
+            fs.unlink(imagePath, (err) => {
+                if (err) console.error('Erreur suppression image lors du delete :', err);
+            });
+        }
 
+        await ue.deleteOne();
+        res.status(200).json({ message: 'UE supprimée avec succès.' });
     } catch (error) {
         console.error('Erreur deleteUe:', error);
         if (error.kind === 'ObjectId') {
@@ -140,17 +130,10 @@ const deleteUe = async (req, res) => {
     }
 };
 
-
-
-
-// TODO: Ajouter des fonctions pour gérer les enseignants d'une UE (ajouter/retirer un prof)
-// TODO: Ajouter des fonctions pour gérer les participants d'une UE (utile pour un admin/prof pour inscrire manuellement)
-
-
 module.exports = {
-  getAllUes,      
-  getUeById,       
-  createUe,        
-  updateUe,        
-  deleteUe,              
+    getAllUes,
+    getUeById,
+    createUe,
+    updateUe,
+    deleteUe,
 };

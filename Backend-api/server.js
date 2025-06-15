@@ -7,23 +7,22 @@ const ueRoutes = require('./routes/ueRoutes');
 const directPostRoutes = require('./routes/directPostRoutes');
 const forumRoutes = require('./routes/forumRoutes'); 
 const logRoutes = require('./routes/logRoutes');
+const app = express();
 
 
 const userRoutes = require('./routes/userRoutes');
-const {join} = require("node:path");
+const {  join} = require("node:path");
 
 dotenv.config();
-const app = express();
 
 connectDB(); // Connexion à la base de données MongoDB
-
-app.use('/uploads', express.static(join(__dirname, 'uploads')));
 
 
 // Middlewares
 app.use(cors());
 app.use(express.json()); // Pour parser le JSON des requêtes entrantes
 app.use(express.urlencoded({ extended: false })); // Pour parser les données de formulaires
+app.use('/uploads', express.static(join(__dirname, 'uploads')));
 
 // Routes
 app.use('/api/ues', ueRoutes); // Routes pour les Unités d'Enseignement (UEs)
@@ -32,11 +31,6 @@ app.use('/api/posts', directPostRoutes); // Routes pour les posts directs
 app.use('/api/forums', forumRoutes); // Routes pour les forums
 app.use('/api/logs', logRoutes); // Routes pour les logs
 
-
-// Charger les variables d'environnement
-
-// Connexion à la base de données
-//connectDB(); 
 app.use('/api/user', userRoutes);
 
 // Route de test

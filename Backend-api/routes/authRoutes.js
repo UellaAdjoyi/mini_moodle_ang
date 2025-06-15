@@ -1,11 +1,21 @@
 const express = require('express');
 const router = express.Router();
 const { // Fonctions du contrôleur d'authentification
-    registerUser,
     loginUser,
-    getMe, getAllUsers, updateUser, deleteUser, updateProfile, getUserPhoto, assignUeToUser, removeUeFromUser,
-    getUserCourses
+    getMe,
 } = require('../controllers/authController');
+
+const { // Fonctions du contrôleur d'authentification
+    registerUser,
+     getAllUsers,
+    updateUser,
+    deleteUser,
+    updateProfile,
+    getUserPhoto,
+    assignUeToUser,
+    removeUeFromUser,
+    getUserCourses
+} = require('../controllers/userController');
 const { protect,admin} = require('../middlewares/authMiddleware');
 const upload= require('../middlewares/upload');
 const authenticateUser = require("../middlewares/authenticateUser");
