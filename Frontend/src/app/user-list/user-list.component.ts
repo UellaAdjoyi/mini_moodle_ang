@@ -18,9 +18,9 @@ export class UserListComponent implements OnInit {
   users: User[] = [];
   ues: Ue[] = [];
   selectedUser: User | null = null;
-  selectedUesByUser: { [key: string]: string } = {};
-  selectedRolesByUser: { [key: string]: string } = {};
   showModal = false;
+  protected readonly Ue = Ue;
+  showAssignModal = false;
 
 
   constructor(
@@ -123,28 +123,6 @@ export class UserListComponent implements OnInit {
   }
 
 
-  // assignUeToUser(userId: string) {
-  //   const ueId = this.selectedUesByUser[userId];
-  //   const role = this.selectedRolesByUser[userId];
-  //
-  //   if (!ueId || !role) {
-  //     this.snackBar.open('Veuillez sélectionner une UE et un rôle.', 'Fermer', { duration: 3000 });
-  //     return;
-  //   }
-  //
-  //   this.userService.assignUe(userId, ueId, role).subscribe({
-  //     next: () => {
-  //       this.snackBar.open('UE assignée avec succès.', 'Fermer', { duration: 3000 });
-  //       this.loadUsers();
-  //     },
-  //     error: (err: any) => {
-  //       this.snackBar.open('Erreur lors de l\'assignation.', 'Fermer', { duration: 3000 });
-  //       console.error(err);
-  //     }
-  //   });
-  // }
-
-  protected readonly Ue = Ue;
 
   removeUeFromUser(userId: string, ueId: string) {
     this.userService.removeUeFromUser(userId, ueId).subscribe({
@@ -158,7 +136,7 @@ export class UserListComponent implements OnInit {
       }
     });
   }
-  showAssignModal = false;
+
 
   openAssignModal(user: any) {
     this.selectedUser = user;

@@ -29,6 +29,7 @@ import { PostComponent } from './prof/post/post.component';
 import { PageUeComponent } from './prof/page-ue/page-ue.component';
 import { UserCoursComponent } from './user-cours/user-cours.component';
 import { AssignUeModalComponent } from './assign-ue-modal/assign-ue-modal.component';
+import { UeDetailsComponent } from './ue-details/ue-details.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { AssignUeModalComponent } from './assign-ue-modal/assign-ue-modal.compon
     PostComponent,
     PageUeComponent,
     UserCoursComponent,
-    AssignUeModalComponent
+    AssignUeModalComponent,
+    UeDetailsComponent
   ],
   imports: [
     BrowserModule,

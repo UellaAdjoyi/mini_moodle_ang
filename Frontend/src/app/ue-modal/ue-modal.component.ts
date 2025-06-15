@@ -44,6 +44,8 @@ export class UeModalComponent implements OnInit {
     if (this.selectedFile) {
       formData.append('image', this.selectedFile, this.selectedFile.name);
     }
+    console.log('FormData contenu :');
+
 
     this.save.emit(formData);
     this.close.emit();

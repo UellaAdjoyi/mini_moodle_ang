@@ -4,6 +4,7 @@ import {Observable} from "rxjs";
 import {User} from "../models/user.model";
 import {Router} from "@angular/router";
 import {AuthService} from "./auth.service";
+import {Ue} from "../models/ue.model";
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,7 @@ import {AuthService} from "./auth.service";
 export class UserService {
 
   private apiUrl = 'http://localhost:3000/api/auth';
+  private apiUrlUser = 'http://localhost:3000/api/user';
 
   constructor(
     private http: HttpClient,
@@ -36,13 +38,13 @@ export class UserService {
     return this.http.delete(`${this.apiUrl}/deleteUser/${id}`);
   }
 
+  // getProfile(): Observable<User> {
+  //   return this.http.get<User>(`${this.apiUrl}/profile`);
+  // }
   getProfile(): Observable<User> {
-    return this.http.get<User>(`${this.apiUrl}/profile`, {
-      headers: {
-        Authorization: `Bearer ${this.authService.getToken()}`
-      }
-    });
+    return this.http.get<User>(`${this.apiUrl}/profile`);
   }
+
 
 
   updateProfile(formData: FormData): Observable<any> {
@@ -75,4 +77,9 @@ export class UserService {
       role
     });
   }
+
+  getUesByUser(userId: string): Observable<Ue[]> {
+    return this.http.get<Ue[]>(`${this.apiUrlUser}/${userId}/cours`);
+  }
+
 }

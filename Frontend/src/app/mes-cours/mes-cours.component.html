@@ -1,2 +1,32 @@
-<app-ue-card *ngFor="let ue of ues" [ue]="ue" [role]="role" (openDetails)="handleOpenDetails($event)"></app-ue-card>
-<button class="btn btn-success mt-3" routerLink="/createPost">Créer un nouveau post</button>
+<div class="container my-4">
+
+  <!-- Chargement -->
+  <div *ngIf="loading" class="d-flex justify-content-center align-items-center" style="min-height: 200px;">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Chargement...</span>
+    </div>
+    <span class="ms-2">Chargement en cours...</span>
+  </div>
+
+  <!-- Erreur -->
+  <div *ngIf="error" class="alert alert-danger text-center">
+    {{ error }}
+  </div>
+
+  <!-- Aucun cours -->
+  <div *ngIf="!loading && !error && ues.length === 0" class="text-center mt-4">
+    <p class="text-muted">Aucun cours trouvé.</p>
+  </div>
+
+  <!-- Liste des cours -->
+  <div *ngIf="!loading && !error && ues.length > 0" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    <div class="col" *ngFor="let ue of ues">
+      <app-ue-card
+        [ue]="ue"
+        [role]="role"
+        (openDetails)="handleOpenDetails($event)">
+      </app-ue-card>
+    </div>
+  </div>
+
+</div>

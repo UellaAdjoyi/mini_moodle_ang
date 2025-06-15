@@ -1,11 +1,10 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {User} from "../models/user.model";
-import {Ue} from "../models/ue.model";
 import {UserService} from "../services/user.service";
 import {MatDialog} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {ConfirmDialogComponent} from "../utils/confirm-dialog/confirm-dialog.component";
 import {UeService} from "../services/ue.service";
+import {ConfirmDialogComponent} from "../utils/confirm-dialog/confirm-dialog.component";
 
 
 
@@ -22,15 +21,15 @@ export class AssignUeModalComponent implements OnInit {
   @Output() assign = new EventEmitter<{ userId: string, ueId: string, role: string }>();
   @Output() remove = new EventEmitter<{ userId: string; ueId: string }>();
 
-  users: User[] = [];
+  confirmingUeId: string | null = null;
   selectedUe: string = '';
   selectedRole: string = 'participant';
+  availableRoles: string[] = [];
+
 
   constructor(
-    private userService: UserService,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar,
-    private ueService: UeService,
+    private snackBar: MatSnackBar
   ) {
   }
 
@@ -48,15 +47,37 @@ export class AssignUeModalComponent implements OnInit {
     }
   }
 
-
+  ngOnChanges() {
+    // Dès que la modal s'ouvre et que le user est défini
+    if (this.user) {
+      if (this.user.role.includes('ROLE_ETUDIANT')) {
+        this.availableRoles = ['participant'];  // étudiant ne peut être que participant
+        this.selectedRole = 'participant'; // forcer sélection par défaut
+      } else if (this.user.role.includes('ROLE_PROF')) {
+        this.availableRoles = ['enseignant'];  // prof ne peut être que enseignant
+        this.selectedRole = 'enseignant';
+      } else {
+        // Cas général ou autres rôles
+        this.availableRoles = ['participant', 'enseignant'];
+      }
+    }
+  }
 
   removeUeFromUser(ueId: string) {
-    if (this.user) {
-      this.remove.emit({userId: this.user._id, ueId});
-    }
+    this.confirmingUeId = ueId;
   }
 
   onClose() {
     this.close.emit();
   }
+
+  confirmRemove(ueId: string) {
+    this.remove.emit({ userId: this.user._id, ueId });
+    this.confirmingUeId = null;
+  }
+
+  cancelConfirm() {
+    this.confirmingUeId = null;
+  }
+
 }

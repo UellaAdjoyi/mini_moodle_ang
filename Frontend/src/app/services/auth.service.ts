@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Observable, tap} from "rxjs";
+import {BehaviorSubject, Observable, tap} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +10,8 @@ export class AuthService {
   private currentUser: any;
 
   constructor(private http: HttpClient) {}
+  private tokenSubject = new BehaviorSubject<string | null>(localStorage.getItem('token'));
+
 
   login(email: string, password: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/login`, { email, password }).pipe(
@@ -25,7 +27,10 @@ export class AuthService {
 
   saveToken(token: string) {
     localStorage.setItem('token', token);
+    this.tokenSubject.next(token);
+    console.log('Token sauvegardé:', token);
   }
+
 
   setCurrentUser(user: any) {
     this.currentUser = user;
@@ -55,7 +60,7 @@ export class AuthService {
   }
 
   getToken(): string | null {
-    return localStorage.getItem('token');
+    return this.tokenSubject.value;
   }
 
 

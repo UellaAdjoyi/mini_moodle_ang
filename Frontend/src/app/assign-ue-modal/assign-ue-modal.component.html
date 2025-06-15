@@ -22,27 +22,52 @@
         <div class="mb-3">
           <label class="form-label">Rôle :</label>
           <select class="form-select" [(ngModel)]="selectedRole">
-            <option value="participant">Participant</option>
-            <option value="enseignant">Enseignant</option>
+            <option *ngFor="let role of availableRoles" [value]="role">
+              {{ role | titlecase }}
+            </option>
           </select>
+
         </div>
 
         <div *ngIf="user?.cours?.length" class="mt-4">
           <strong>UEs assignées :</strong>
           <div class="mt-2 d-flex flex-wrap gap-2">
-            <span *ngFor="let ue of user.cours" class="badge bg-primary rounded-pill">
-              {{ ue.nom }}
-              <button class="btn-close btn-close-white btn-sm ms-2" aria-label="Supprimer"
-                      (click)="removeUeFromUser(ue._id)">
-              </button>
-            </span>
+          <span *ngFor="let ue of user.cours" class="badge bg-primary rounded-pill position-relative px-3">
+      {{ ue.nom }}
+      <ng-container *ngIf="confirmingUeId === ue.ue_code; else closeButton">
+        <span class="ms-2">
+          Confirmer ?
+          <button class="btn btn-sm btn-light ms-1" (click)="confirmRemove(ue.ue_code)">Oui</button>
+          <button class="btn btn-sm btn-outline-light ms-1" (click)="cancelConfirm()">Non</button>
+        </span>
+      </ng-container>
+      <ng-template #closeButton>
+        <button class="btn-close btn-close-white btn-sm ms-2"
+                (click)="removeUeFromUser(ue.ue_code)">
+        </button>
+      </ng-template>
+    </span>
           </div>
         </div>
-      </div>
+
 
       <div class="modal-footer">
         <button class="btn btn-secondary" (click)="onClose()">Annuler</button>
         <button class="btn btn-primary" [disabled]="!selectedUe || !selectedRole" (click)="onAssign()">Assigner</button>
+      </div>
+
+      <div *ngFor="let ue of user.ues">
+        <span>{{ ue.nom }}</span>
+
+        <ng-container *ngIf="confirmingUeId === ue.ue_code; else confirmBtn">
+          <span>Confirmer ?</span>
+          <button (click)="confirmRemove(ue.ue_code)">Oui</button>
+          <button (click)="cancelConfirm()">Non</button>
+        </ng-container>
+
+        <ng-template #confirmBtn>
+          <button (click)="confirmingUeId = ue.ue_code">Retirer</button>
+        </ng-template>
       </div>
 
     </div>

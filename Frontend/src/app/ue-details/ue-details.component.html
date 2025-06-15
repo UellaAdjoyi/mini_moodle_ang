@@ -1,0 +1,43 @@
+<div *ngIf="ue">
+  <div class="modal-backdrop fade show"></div>
+  <div class="modal d-block" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="ueDetailsTitle">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title" id="ueDetailsTitle">Détails de l'UE : {{ ue.nom }}</h5>
+          <button type="button" class="btn-close" aria-label="Fermer" (click)="close.emit()"></button>
+        </div>
+
+        <div class="modal-body">
+          <p><strong>Description :</strong> {{ ue.description }}</p>
+
+          <h3>Participants</h3>
+          <ul *ngIf="ue.participants && ue.participants.length > 0; else noParticipants" class="list-group">
+            <li *ngFor="let p of ue.participants" class="list-group-item">
+              {{ p.prenom }} {{ p.nom }}
+            </li>
+          </ul>
+          <ng-template #noParticipants>
+            <p>Aucun participant.</p>
+          </ng-template>
+
+          <h3>Enseignants</h3>
+          <ul *ngIf="ue.enseignants && ue.enseignants.length > 0; else noEnseignants" class="list-group">
+            <li *ngFor="let e of ue.enseignants" class="list-group-item">
+              {{ e.prenom }} {{ e.nom }}
+            </li>
+          </ul>
+          <ng-template #noEnseignants>
+            <p>Aucun enseignant.</p>
+          </ng-template>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-secondary" (click)="close.emit()">Fermer</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

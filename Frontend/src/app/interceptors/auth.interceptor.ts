@@ -6,15 +6,18 @@ import {
   HttpInterceptor
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import {AuthService} from "../services/auth.service";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // Récupère le token du localStorage
-    const token = localStorage.getItem('token');
+  constructor(
+    private authService: AuthService,
+  ) {
+  }
 
-    // S'il y a un token, ajoute dans les en-têtes
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    const token = this.authService.getToken();
     if (token) {
       const authReq = req.clone({
         setHeaders: {
@@ -23,8 +26,5 @@ export class AuthInterceptor implements HttpInterceptor {
       });
       return next.handle(authReq);
     }
-
-    // Sinon, envoie la requête telle quelle
     return next.handle(req);
-  }
-}
+  }}

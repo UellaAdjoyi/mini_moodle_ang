@@ -1,3 +1,5 @@
+import {User} from "./user.model";
+
 export class Ue {
   nom: any;
   code: any;
@@ -6,5 +8,7 @@ export class Ue {
   image: any;
   _id:any;
   description: any;
-  participants:any;
+  participants?:User[];
+  enseignants?:User[];
+
 }

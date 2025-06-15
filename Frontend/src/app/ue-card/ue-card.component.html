@@ -1,14 +1,21 @@
-<div class="card h-100 shadow-sm">
+<div class="card h-100 shadow-sm" (click)="onOpenDetails()" style="cursor: pointer;">
   <div class="course-image">
-    <img [src]="ue.imageUrl || 'assets/images/ue.png'" (error)="ue.imageUrl = 'assets/images/ue.png'" class="card-img-top" alt="Image de l'UE">
+    <img [src]="ue.imageUrl || 'assets/images/ue.png'"
+         (error)="ue.imageUrl = 'assets/images/ue.png'"
+         class="card-img-top"
+         alt="Image de l'UE">
   </div>
   <div class="card-body">
-    <a [routerLink]="['/post-etu', ue.code, ue.nom]">
+    <a [routerLink]="['/post-etu', ue.code, ue.nom]" (click)="$event.stopPropagation()">
       <h5 class="card-title">{{ ue.nom }}</h5>
     </a>
     <p class="card-text">{{ ue.description }}</p>
-    <p class="text-muted" *ngIf="role === 'etudiant'">
+    <p *ngIf="role === 'ROLE_ETUDIANT'" class="text-muted">
       Dernier accès : {{ ue.dernier_acc_etu }}
     </p>
+    <p *ngIf="role === 'ROLE_PROF'" class="text-muted">
+      Nombre d'étudiants : {{ ue.participants?.length }}
+    </p>
+
   </div>
 </div>
