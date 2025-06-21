@@ -1,0 +1,41 @@
+<div *ngFor="let ue of mesCours" class="mb-4 border p-3 rounded">
+  <h4>{{ ue.nom }} ({{ ue.code }})</h4>
+  <p>{{ ue.description }}</p>
+
+  <canvas id="chart-{{ ue._id }}" height="100"></canvas>
+
+  <button class="btn btn-outline-primary mt-2" (click)="downloadPDF(ue)">
+    Télécharger la liste des participants
+  </button>
+</div>
+
+<div class="row mb-4">
+  <div class="col-md-3">
+    <div class="card bg-light text-center p-3">
+      <h5> Participants</h5>
+      <h2>{{ stats.totalParticipants }}</h2>
+    </div>
+    <div class="card bg-light text-center p-3">
+      <h5> Enseignants</h5>
+      <h2>{{ stats.totalEnseignants }}</h2>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card bg-light text-center p-3">
+      <h5> Cours</h5>
+      <h2>{{ mesCours.length }}</h2>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card bg-light text-center p-3">
+      <h5>Devoirs</h5>
+      <h2>{{ stats.totalAssignments }}</h2>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card bg-light text-center p-3">
+      <h5> Posts</h5>
+      <h2>{{ stats.totalPosts }}</h2>
+    </div>
+  </div>
+</div>

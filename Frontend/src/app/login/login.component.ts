@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
         if (user.role.includes ('ROLE_ETUDIANT')) {
           this.router.navigate(['/mesCours']);
         } else if (user.role.includes ('ROLE_PROF')) {
-          this.router.navigate(['/profs/alertes']);
+          this.router.navigate(['/mesCours']);
         } else if (user.role.includes('ROLE_ADMIN')) {
           this.router.navigate(['/catalogue']);
         } else {

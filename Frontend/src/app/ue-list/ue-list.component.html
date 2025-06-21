@@ -1,5 +1,8 @@
-<h2>Liste des UEs</h2>
-<button class="btn btn-success mt-3" (click)="openAddModal()">Créer une Ue</button>
+<div class="container mt-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <button class="btn btn-success mt-3" (click)="openAddModal()">Créer une Ue</button>
+    <h4 class="fw-semibold text-primary">Gestion des Ues</h4>
+  </div>
 
 <input type="text" [(ngModel)]="searchTerm" class="form-control mt-3 mb-3" placeholder="Rechercher une ue...">
 
@@ -44,6 +47,7 @@
               (close)="closeModal()"
               (save)="onSaveUe($event)">
 </app-ue-modal>
+
 
 <app-ue-details *ngIf="showDetailsModal"
                 [ue]="selectedUe"

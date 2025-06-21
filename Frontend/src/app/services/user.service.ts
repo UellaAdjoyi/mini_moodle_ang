@@ -13,6 +13,8 @@ export class UserService {
 
   private apiUrl = 'http://localhost:3000/api/auth';
   private apiUrlUser = 'http://localhost:3000/api/user';
+  private apiUrlAdmin = 'http://localhost:3000/api/admin';
+
 
   constructor(
     private http: HttpClient,
@@ -38,9 +40,7 @@ export class UserService {
     return this.http.delete(`${this.apiUrl}/deleteUser/${id}`);
   }
 
-  // getProfile(): Observable<User> {
-  //   return this.http.get<User>(`${this.apiUrl}/profile`);
-  // }
+
   getProfile(): Observable<User> {
     return this.http.get<User>(`${this.apiUrl}/profile`);
   }
@@ -80,6 +80,10 @@ export class UserService {
 
   getUesByUser(userId: string): Observable<Ue[]> {
     return this.http.get<Ue[]>(`${this.apiUrlUser}/${userId}/cours`);
+  }
+
+  getStats() {
+    return this.http.get<any>(`${this.apiUrlAdmin}/stats`);
   }
 
 }

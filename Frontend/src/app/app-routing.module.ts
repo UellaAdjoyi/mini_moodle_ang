@@ -10,6 +10,8 @@ import {ProfilComponent} from "./profil/profil.component";
 import {PostComponent} from "./prof/post/post.component";
 import {PageUeComponent} from "./prof/page-ue/page-ue.component";
 import {UeDetailsComponent} from "./ue-details/ue-details.component";
+import {AdminDashboardComponent} from "./admin-dashboard/admin-dashboard.component";
+import {ProfDashboardComponent} from "./prof-dashboard/prof-dashboard.component";
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -21,7 +23,10 @@ const routes: Routes = [
   {path:'profil',component: ProfilComponent},
   {path:'post-etu/:code/:nom',component: PostComponent},
   {path:'page-ue',component:PageUeComponent},
-  {path:'ue/:id',component:UeDetailsComponent}
+  {path:'ue/:id',component:UeDetailsComponent},
+  {path:'dashboard',component:AdminDashboardComponent},
+  {path:'participants',component:ProfDashboardComponent},
+
 ];
 
 @NgModule({

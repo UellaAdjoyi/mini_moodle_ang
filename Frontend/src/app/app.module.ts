@@ -30,6 +30,8 @@ import { PageUeComponent } from './prof/page-ue/page-ue.component';
 import { UserCoursComponent } from './user-cours/user-cours.component';
 import { AssignUeModalComponent } from './assign-ue-modal/assign-ue-modal.component';
 import { UeDetailsComponent } from './ue-details/ue-details.component';
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { ProfDashboardComponent } from './prof-dashboard/prof-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +54,9 @@ import { UeDetailsComponent } from './ue-details/ue-details.component';
     PageUeComponent,
     UserCoursComponent,
     AssignUeModalComponent,
-    UeDetailsComponent
+    UeDetailsComponent,
+    AdminDashboardComponent,
+    ProfDashboardComponent
   ],
   imports: [
     BrowserModule,

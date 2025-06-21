@@ -47,4 +47,12 @@ export class UeService {
     return this.http.post(`${this.apiUrl}/auth/remove-ue`, { userId, ueId });
   }
 
+  getMesCours(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/participants`);
+  }
+
+  getStats() {
+    return this.http.get<any>(`${this.apiUrl}/statistiques`);
+  }
+
 }
