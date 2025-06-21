@@ -130,6 +130,8 @@ const deleteUe = async (req, res) => {
     }
 };
 
+
+
 module.exports = {
     getAllUes,
     getUeById,

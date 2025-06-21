@@ -43,3 +43,4 @@ const PORT = process.env.PORT || 5000; // on utilise le port du .env ou 5000 par
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+

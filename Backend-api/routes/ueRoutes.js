@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const {
    getAllUes,
-    getUeById,
     createUe,
     updateUe,
     deleteUe,
@@ -14,6 +13,8 @@ const { createForumForUe, getForumByUe } = require('../controllers/forumControll
 
 const { protect } = require('../middlewares/authMiddleware');
 const upload = require("../middlewares/upload");
+const authenticateUser = require("../middlewares/authenticateUser");
+const {getProfDashboardStats, getCoursesByEnseignant} = require("../controllers/profDashbordController");
 
 // Routes pour /api/courses
 router.route('/')
@@ -28,6 +29,10 @@ router.route('/:id')
 
 
 router.use('/:ueId/posts', postRouterForUe);
+
+router.get('/participants',authenticateUser, getCoursesByEnseignant);
+router.get('/statistiques',authenticateUser,getProfDashboardStats);
+
 
 router.route('/:ueId/forum')
     .post(protect, createForumForUe)  // Créer le forum pour l'UE
