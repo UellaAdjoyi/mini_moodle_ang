@@ -10,7 +10,8 @@
   <div *ngFor="let ue of filteredUes()" class="list-group-item d-flex justify-content-between align-items-start flex-column">
     <div class="d-flex w-100 justify-content-between">
       <div class="d-flex align-items-start">
-        <img *ngIf="ue.image" [src]="getImageUrl(ue.image)" alt="UE image"   class="ue-image img-fluid rounded"/>
+        <img [src]="ue.image ? getImageUrl(ue.image) : 'assets/images/ue.png'"
+             alt="UE image" class="ue-image img-fluid rounded"/>
         <div>
           <h5 class="mb-1">{{ ue.nom }}</h5>
           <p class="mb-0">{{ ue.description }}</p>

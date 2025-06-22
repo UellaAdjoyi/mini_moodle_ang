@@ -143,5 +143,15 @@ export class UserListComponent implements OnInit {
     this.showAssignModal = true;
   }
 
+  apiUrl = 'http://localhost:3000';
+
+  getUserPhoto(user: User): string {
+    if (user.photo) {
+      return `${this.apiUrl}${user.photo}`;
+    } else {
+      return 'assets/avatar.png';
+    }
+  }
+
 
 }

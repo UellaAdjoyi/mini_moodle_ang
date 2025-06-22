@@ -14,11 +14,16 @@ export class UeCardComponent implements OnInit {
   }
 
   @Input() ue!: Ue;
-  @Input() role!: string; // étudiant ou professeur
+  @Input() role!: string;
   @Output() openDetails = new EventEmitter<Ue>();
 
   onOpenDetails() {
     this.openDetails.emit(this.ue);
+  }
+
+  onImageError(event: Event) {
+    const img = event.target as HTMLImageElement;
+    img.src = 'assets/images/ue.png'; // image par défaut
   }
 
 }

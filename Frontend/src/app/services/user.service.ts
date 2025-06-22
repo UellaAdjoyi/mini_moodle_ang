@@ -12,6 +12,7 @@ import {Ue} from "../models/ue.model";
 export class UserService {
 
   private apiUrl = 'http://localhost:3000/api/auth';
+  private apiUrlImg = 'http://localhost:3000';
   private apiUrlUser = 'http://localhost:3000/api/user';
   private apiUrlAdmin = 'http://localhost:3000/api/admin';
 
@@ -24,6 +25,8 @@ export class UserService {
   getAllUsers(): Observable<User[]> {
     return this.http.get<User[]>(`${this.apiUrl}/users`);
   }
+
+
 
   createUser(userData: FormData): Observable<any> {
    return this.http.post(`${this.apiUrl}/register`, userData);
@@ -51,12 +54,12 @@ export class UserService {
     return this.http.put(`${this.apiUrl}/profile`, formData);
   }
 
-  assignUe(userId: string, ueId: string, role: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/assign-ue/${userId}`, {
-      ueId,
-      role
-    });
-  }
+  // assignUe(userId: string, ueId: string, role: string): Observable<any> {
+  //   return this.http.post(`${this.apiUrl}/assign-ue/${userId}`, {
+  //     ueId,
+  //     role
+  //   });
+  // }
 
   getUserCourses(userId: string): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/${userId}/cours`);

@@ -1,9 +1,7 @@
 <div class="card h-100 shadow-sm" (click)="onOpenDetails()" style="cursor: pointer;">
   <div class="course-image">
-    <img [src]="ue.imageUrl || 'assets/images/ue.png'"
-         (error)="ue.imageUrl = 'assets/images/ue.png'"
-         class="card-img-top"
-         alt="Image de l'UE">
+    <img [src]="ue.imageUrl || 'assets/images/ue.png'" class="card-img-top" alt="Image de l'UE" (error)="onImageError($event)" />
+
   </div>
   <div class="card-body">
     <a [routerLink]="['/post-etu', ue.code, ue.nom]" (click)="$event.stopPropagation()">

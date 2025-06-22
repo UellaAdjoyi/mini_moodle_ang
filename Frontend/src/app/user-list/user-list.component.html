@@ -24,10 +24,8 @@
 
       <!-- Info utilisateur -->
       <div class="d-flex align-items-center gap-3">
-        <img [src]="user.photo || 'assets/avatar.png'"
-             class="rounded-circle border"
-             width="60" height="60"
-             style="object-fit: cover;" alt="">
+        <img [src]="getUserPhoto(user)" class="rounded-circle border" width="60" height="60" style="object-fit: cover;" alt="Photo utilisateur">
+
         <div>
           <h6 class="mb-0">{{ user.nom }} {{ user.prenom }}</h6>
           <small class="text-muted">{{ user.email }}</small>

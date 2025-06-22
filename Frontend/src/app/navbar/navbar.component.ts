@@ -24,17 +24,20 @@ export class NavbarComponent implements OnInit {
 
   loadUser() {
     const currentUser = this.authService.getCurrentUser();
+
     this.userRole = currentUser?.role || null;
     this.user.nom = currentUser?.nom || '';
     this.user.prenom = currentUser?.prenom || '';
 
-    if (currentUser?.photoBase64) {
-      this.user.photoUrl = `data:image/png;base64,${currentUser.photoBase64}`;
+    if (currentUser?.photo?.startsWith('data:image')) {
+      this.user.photoUrl = currentUser.photo;
+    } else if (currentUser?.photo?.startsWith('/uploads')) {
+      this.user.photoUrl = `http://localhost:3000${currentUser.photo}`;
     } else {
-      this.user.photoUrl = currentUser?.photoUrl || '';
+      // Pas de photo
+      this.user.photoUrl = '';
     }
 
-    console.log('Role:', this.userRole);
     console.log('User:', this.user);
   }
 
