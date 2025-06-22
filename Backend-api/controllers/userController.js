@@ -5,7 +5,6 @@ const Ue = require("../models/Ue");
 
 const registerUser = async (req, res) => {
   const { nom, prenom, email, role, serviceProf, bureauProf } = req.body;
-  const photoFile = req.file;
 
   try {
     if (!nom || !prenom || !email || !role) {
@@ -18,14 +17,15 @@ const registerUser = async (req, res) => {
     }
 
     const generatedPassword = generatePassword();
+    const photo = req.file ? `/uploads/users/${req.file.filename}` : null;
 
     const newUser = new User({
       nom,
       prenom,
       email,
-      password: generatedPassword, // le mot de passe sera hashé dans le modèle
+      password: generatedPassword,
       role,
-      photo: photoFile ? photoFile.buffer : null,
+      photo,
       serviceProf: role === 'ROLE_PROF' ? serviceProf : null,
       bureauProf: role === 'ROLE_PROF' ? bureauProf : null,
       cours: []
@@ -39,12 +39,71 @@ const registerUser = async (req, res) => {
         `Bonjour ${prenom},\n\nVoici votre mot de passe de connexion : ${generatedPassword}\n\nMerci de le modifier dès votre première connexion.`
     );
 
-    res.status(201).json({ message: 'Utilisateur enregistré et email envoyé.' });
+    res.status(201).json({ message: 'Utilisateur enregistré et email envoyé.', user: newUser });
   } catch (error) {
     console.error('Erreur dans registerUser:', error);
     res.status(500).json({ message: 'Erreur serveur.' });
   }
 };
+
+const updateUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ message: "Utilisateur introuvable" });
+
+    const fields = ['nom', 'prenom', 'email', 'password', 'date_naissance', 'service_prof', 'bureau_prof', 'dernier_acces', 'role'];
+
+    fields.forEach(field => {
+      if (req.body[field]) user[field] = req.body[field];
+    });
+
+    if (req.file) {
+      user.photo = `/uploads/users/${req.file.filename}`;
+    }
+
+
+    await user.save();
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ message: "Erreur serveur", error: err });
+  }
+};
+
+const updateProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    if (!user) return res.status(404).json({ message: "Utilisateur introuvable" });
+
+    const fields = ['nom', 'prenom', 'email', 'password', 'date_naissance', 'serviceProf', 'bureauProf'];
+
+    fields.forEach(field => {
+      if (req.body[field]) user[field] = req.body[field];
+    });
+
+    if (req.file) {
+      user.photo = `/uploads/users/${req.file.filename}`;
+    }
+
+    await user.save();
+
+    res.json({
+      message: "Profil mis à jour avec succès",
+      user: {
+        _id: user._id,
+        nom: user.nom,
+        prenom: user.prenom,
+        email: user.email,
+        photo: user.photo,
+        role: user.role,
+      }
+    });
+
+  } catch (error) {
+    console.error('Erreur updateProfile:', error);
+    res.status(500).json({ message: 'Erreur serveur lors de la mise à jour du profil.' });
+  }
+};
+
 
 const getUserPhoto = async (req, res) => {
   try {
@@ -61,43 +120,20 @@ const getUserPhoto = async (req, res) => {
   }
 };
 
-const updateUser = async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id);
-    if (!user) return res.status(404).json({ message: "Utilisateur introuvable" });
-
-    const fields = ['nom', 'prenom', 'email', 'password', 'date_naissance', 'service_prof', 'bureau_prof', 'dernier_acces', 'role'];
-
-    fields.forEach(field => {
-      if (req.body[field]) user[field] = req.body[field];
-    });
-
-    await user.save();
-    res.json(user);
-  } catch (err) {
-    res.status(500).json({ message: "Erreur serveur", error: err });
-  }
-};
-
 const getAllUsers = async (req, res) => {
   try {
     const users = await User.find().lean();
 
-    // Convertir chaque buffer en base64
-    const usersWithPhotos = users.map(user => {
-      if (user.photo && user.photo.buffer) {
-        const base64Image = Buffer.from(user.photo.buffer).toString('base64');
-        user.photo = `data:image/jpeg;base64,${base64Image}`;
-      } else if (user.photo) {
-        // Cas si photo est directement un buffer (sans .buffer)
-        user.photo = `data:image/jpeg;base64,${Buffer.from(user.photo).toString('base64')}`;
+    const usersWithPhotoPaths = users.map(user => {
+      if (user.photo && typeof user.photo === 'string') {
+        user.photo = user.photo;
       } else {
         user.photo = null;
       }
       return user;
     });
 
-    res.json(usersWithPhotos);
+    res.json(usersWithPhotoPaths);
   } catch (error) {
     console.error("Erreur lors de la récupération des utilisateurs :", error);
     res.status(500).json({ message: "Erreur serveur." });
@@ -118,43 +154,6 @@ const deleteUser = async (req, res) => {
   } catch (error) {
     console.error("Erreur lors de la suppression :", error);
     res.status(500).json({ message: "Erreur serveur", error });
-  }
-};
-
-const updateProfile = async (req, res) => {
-  try {
-    const user = await User.findById(req.user._id);
-    if (!user) return res.status(404).json({ message: "Utilisateur introuvable" });
-
-    const fields = ['nom', 'prenom', 'email', 'password', 'date_naissance', 'serviceProf', 'bureauProf'];
-
-    fields.forEach(field => {
-      if (req.body[field]) user[field] = req.body[field];
-    });
-
-    // Gérer l'upload photo si tu utilises multer (cf. plus bas)
-    if (req.file) {
-      // Si tu stockes la photo en Buffer (comme à l'inscription)
-      user.photo = req.file.buffer;
-    }
-
-    await user.save();
-
-    res.json({
-      message: "Profil mis à jour avec succès",
-      user: {
-        _id: user._id,
-        nom: user.nom,
-        prenom: user.prenom,
-        email: user.email,
-        photo: user.photo,
-        role: user.role,
-      }
-    });
-
-  } catch (error) {
-    console.error('Erreur updateProfile:', error);
-    res.status(500).json({ message: 'Erreur serveur lors de la mise à jour du profil.' });
   }
 };
 
@@ -250,6 +249,7 @@ const removeUeFromUser = async (req, res) => {
     res.status(500).json({ message: "Erreur serveur", error: error.message });
   }
 };
+
 //fonction pour recupérérer les uee suivi ou enseigné par un utilisateur
 // const getUserCourses = async (req, res) => {
 //   const { id } = req.params;
@@ -279,15 +279,16 @@ const removeUeFromUser = async (req, res) => {
 //   }
 // };
 
+
 const getUserCourses = async (req, res) => {
   try {
     const userId = req.params.userId;
 
-    // Récupère l'utilisateur pour connaître son rôle
+
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ message: 'Utilisateur non trouvé' });
 
-    const role = user.role[0]; // Exemple : "ROLE_ETUDIANT" ou "ROLE_PROF"
+    const role = user.role[0]; // "ROLE_ETUDIANT" ou "ROLE_PROF"
 
     let filter = {};
     if (role === 'ROLE_ETUDIANT') {
@@ -299,7 +300,19 @@ const getUserCourses = async (req, res) => {
     }
 
     const ues = await Ue.find(filter);
-    res.json(ues);
+
+    //  pour accéder aux images
+    const baseUrl = `${req.protocol}://${req.get('host')}`;
+    const imagesPath = '/uploads/ues/';
+
+    //  champ imageUrl pour chaque UE
+    const uesWithImageUrl = ues.map(ue => {
+      const ueObj = ue.toObject();
+      ueObj.imageUrl = ue.image ? baseUrl + imagesPath + ue.image : null;
+      return ueObj;
+    });
+
+    res.json(uesWithImageUrl);
 
   } catch (err) {
     console.error(err);

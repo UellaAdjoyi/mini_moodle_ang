@@ -23,6 +23,8 @@ app.use(cors());
 app.use(express.json()); // Pour parser le JSON des requêtes entrantes
 app.use(express.urlencoded({ extended: false })); // Pour parser les données de formulaires
 app.use('/uploads', express.static(join(__dirname, 'uploads')));
+app.use('/uploads', express.static('uploads'));
+
 
 // Routes
 app.use('/api/ues', ueRoutes); // Routes pour les Unités d'Enseignement (UEs)

@@ -19,11 +19,12 @@ const { // Fonctions du contrôleur d'authentification
 const { protect,admin} = require('../middlewares/authMiddleware');
 const upload= require('../middlewares/upload');
 const authenticateUser = require("../middlewares/authenticateUser");
+const {uploadSingle} = require("../middlewares/uploadUsers");
 
 
 // Route pour l'enregistrement
-router.post('/register', upload.single('photo'), registerUser);
-router.put('/updateUser/:id', upload.single('photo'), updateUser);
+router.post('/register',uploadSingle , registerUser);
+router.put('/updateUser/:id', uploadSingle, updateUser);
 router.get('/photo/:id', getUserPhoto);
 
 // Route pour la connexion
@@ -35,7 +36,7 @@ router.post('/assign-ue/:userId', assignUeToUser);
 
 router.get('/users', getAllUsers);
 router.delete('/deleteUser/:id', deleteUser);
-router.put('/profile', protect, upload.single('photo'), updateProfile);
+router.put('/profile', protect, uploadSingle, updateProfile);
 router.get('/profile', authenticateUser, (req, res) => {
     const user = req.user;
     res.json({
