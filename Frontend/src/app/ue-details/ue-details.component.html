@@ -1,7 +1,7 @@
 <div *ngIf="ue">
   <div class="modal-backdrop fade show"></div>
   <div class="modal d-block" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="ueDetailsTitle">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document"> <!-- Ajout de modal-dialog-scrollable -->
       <div class="modal-content">
 
         <div class="modal-header">
@@ -10,27 +10,45 @@
         </div>
 
         <div class="modal-body">
+          <p><strong>Code :</strong> {{ ue.code }}</p> <!-- Ajout du code pour info -->
           <p><strong>Description :</strong> {{ ue.description }}</p>
 
+          <hr> <!-- Séparateur visuel -->
+
           <h3>Participants</h3>
-          <ul *ngIf="ue.participants && ue.participants.length > 0; else noParticipants" class="list-group">
+          <ul *ngIf="ue.participants && ue.participants.length > 0; else noParticipants" class="list-group mb-3">
             <li *ngFor="let p of ue.participants" class="list-group-item">
-              {{ p.prenom }} {{ p.nom }}
+              <!-- Afficher photo si disponible -->
+              <img [src]="p.photo || 'assets/avatar.png'" alt="Avatar" class="avatar-xs mr-2">
+              {{ p.prenom }} {{ p.nom }} ({{ p.email }})
             </li>
           </ul>
           <ng-template #noParticipants>
             <p>Aucun participant.</p>
           </ng-template>
 
+          <hr> <!-- Séparateur visuel -->
+
           <h3>Enseignants</h3>
-          <ul *ngIf="ue.enseignants && ue.enseignants.length > 0; else noEnseignants" class="list-group">
+          <ul *ngIf="ue.enseignants && ue.enseignants.length > 0; else noEnseignants" class="list-group mb-3">
             <li *ngFor="let e of ue.enseignants" class="list-group-item">
-              {{ e.prenom }} {{ e.nom }}
+              <img [src]="e.photo || 'assets/avatar.png'" alt="Avatar" class="avatar-xs mr-2">
+              {{ e.prenom }} {{ e.nom }} ({{ e.email }})
             </li>
           </ul>
           <ng-template #noEnseignants>
             <p>Aucun enseignant.</p>
           </ng-template>
+
+          <hr> <!-- Séparateur visuel -->
+
+          <!-- Intégration du Forum de Discussion ici -->
+          <div class="mt-4"> <!-- Ajout d'un peu d'espace -->
+            <h3>Forum de Discussion</h3>
+            <app-forum-display [ueId]="ue._id"></app-forum-display>
+          </div>
+          <!-- Fin de l'intégration du Forum -->
+
         </div>
 
         <div class="modal-footer">

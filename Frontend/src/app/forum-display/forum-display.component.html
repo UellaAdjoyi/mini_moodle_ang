@@ -1,0 +1,48 @@
+<div class="forum-container">
+  <div *ngIf="isLoading" class="loading-spinner">Chargement du forum...</div>
+  
+  <div *ngIf="error && !forum" class="error-message">
+    <p>{{ error }}</p>
+    <!-- Bouton pour créer le forum si l'utilisateur est prof et que le forum n'existe pas -->
+    <button *ngIf="currentUser?.role === 'prof' && !forum && ueId" (click)="createForum()" class="btn btn-primary">
+      Créer le Forum pour cette UE
+    </button>
+  </div>
+
+  <div *ngIf="forum && !isLoading">
+    <h2>{{ forum.titre }}</h2>
+    <p *ngIf="forum.description" class="forum-description">{{ forum.description }}</p>
+
+    <div class="message-list">
+      <div *ngIf="forum.messages.length === 0" class="no-messages">
+        Aucun message dans ce forum pour le moment. Soyez le premier à poster !
+      </div>
+      <div *ngFor="let message of forum.messages" class="message-item">
+        <div class="message-header">
+          <img [src]="getAuteurAvatar(message)" alt="Avatar" class="avatar-sm">
+          <strong>{{ getAuteurNom(message) }}</strong>
+          <span class="message-date">{{ message.date_heure | date:'dd/MM/yyyy HH:mm' }}</span>
+        </div>
+        <div class="message-content" [innerHTML]="message.contenu"></div>
+        <!-- Ici, on pourrait ajouter un bouton "Répondre" -->
+      </div>
+    </div>
+
+    <div class="new-message-form" *ngIf="currentUser">
+      <h3>Poster un nouveau message</h3>
+      <form [formGroup]="newMessageForm" (ngSubmit)="onPostNewMessage()">
+        <div class="form-group">
+          <textarea formControlName="contenu" class="form-control" rows="4" placeholder="Votre message..."></textarea>
+          <div *ngIf="newMessageForm.controls['contenu'].invalid && newMessageForm.controls['contenu'].touched" class="text-danger">
+            Le contenu du message est requis.
+          </div>
+        </div>
+        <button type="submit" class="btn btn-success mt-2" [disabled]="newMessageForm.invalid">Envoyer</button>
+      </form>
+      <div *ngIf="error" class="text-danger mt-2">{{error}}</div>
+    </div>
+     <div *ngIf="!currentUser" class="alert alert-warning">
+      Vous devez être connecté pour poster un message.
+    </div>
+  </div>
+</div>
