@@ -32,6 +32,7 @@ import { AssignUeModalComponent } from './assign-ue-modal/assign-ue-modal.compon
 import { UeDetailsComponent } from './ue-details/ue-details.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { ProfDashboardComponent } from './prof-dashboard/prof-dashboard.component';
+import { ForumDisplayComponent } from './forum-display/forum-display.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { ProfDashboardComponent } from './prof-dashboard/prof-dashboard.componen
     AssignUeModalComponent,
     UeDetailsComponent,
     AdminDashboardComponent,
-    ProfDashboardComponent
+    ProfDashboardComponent,
+    ForumDisplayComponent
   ],
   imports: [
     BrowserModule,

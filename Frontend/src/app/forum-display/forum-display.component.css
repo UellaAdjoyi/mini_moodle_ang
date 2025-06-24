@@ -1,0 +1,19 @@
+.forum-container { padding: 20px; }
+.forum-description { margin-bottom: 20px; font-style: italic; }
+.message-list { margin-bottom: 30px; }
+.message-item {
+  border: 1px solid #eee;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+.message-header { display: flex; align-items: center; margin-bottom: 10px; }
+.message-header strong { margin-right: 10px; }
+.message-date { margin-left: auto; font-size: 0.9em; color: #777; }
+.avatar-sm { width: 30px; height: 30px; border-radius: 50%; margin-right: 10px; }
+.message-content { white-space: pre-wrap; /* Pour respecter les sauts de ligne */ }
+.no-messages { text-align: center; padding: 20px; color: #777; }
+.new-message-form { margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; }
+.loading-spinner, .error-message { text-align: center; padding: 20px; }
+.error-message { color: red; }
