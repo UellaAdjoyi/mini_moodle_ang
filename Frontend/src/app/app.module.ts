@@ -33,6 +33,7 @@ import { UeDetailsComponent } from './ue-details/ue-details.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { ProfDashboardComponent } from './prof-dashboard/prof-dashboard.component';
 import { ForumDisplayComponent } from './forum-display/forum-display.component';
+import { UePageComponent } from './ue-page/ue-page.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { ForumDisplayComponent } from './forum-display/forum-display.component';
     UeDetailsComponent,
     AdminDashboardComponent,
     ProfDashboardComponent,
-    ForumDisplayComponent
+    ForumDisplayComponent,
+    UePageComponent
   ],
   imports: [
     BrowserModule,

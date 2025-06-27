@@ -12,6 +12,7 @@ import {PageUeComponent} from "./prof/page-ue/page-ue.component";
 import {UeDetailsComponent} from "./ue-details/ue-details.component";
 import {AdminDashboardComponent} from "./admin-dashboard/admin-dashboard.component";
 import {ProfDashboardComponent} from "./prof-dashboard/prof-dashboard.component";
+import {UePageComponent} from "./ue-page/ue-page.component";
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -26,6 +27,7 @@ const routes: Routes = [
   {path:'ue/:id',component:UeDetailsComponent},
   {path:'dashboard',component:AdminDashboardComponent},
   {path:'participants',component:ProfDashboardComponent},
+  {path:'ues',component:UePageComponent}
 
 ];
 

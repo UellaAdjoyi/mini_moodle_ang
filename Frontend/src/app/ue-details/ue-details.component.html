@@ -18,8 +18,7 @@
           <h3>Participants</h3>
           <ul *ngIf="ue.participants && ue.participants.length > 0; else noParticipants" class="list-group mb-3">
             <li *ngFor="let p of ue.participants" class="list-group-item">
-              <!-- Afficher photo si disponible -->
-              <img [src]="p.photo || 'assets/avatar.png'" alt="Avatar" class="avatar-xs mr-2">
+<!--              <img [src]="p.photo || 'assets/avatar.png'" alt="Avatar" class="avatar-xs mr-2">-->
               {{ p.prenom }} {{ p.nom }} ({{ p.email }})
             </li>
           </ul>
@@ -32,7 +31,7 @@
           <h3>Enseignants</h3>
           <ul *ngIf="ue.enseignants && ue.enseignants.length > 0; else noEnseignants" class="list-group mb-3">
             <li *ngFor="let e of ue.enseignants" class="list-group-item">
-              <img [src]="e.photo || 'assets/avatar.png'" alt="Avatar" class="avatar-xs mr-2">
+<!--              <img [src]="e.photo || 'assets/avatar.png'" alt="Avatar" class="avatar-xs mr-2">-->
               {{ e.prenom }} {{ e.nom }} ({{ e.email }})
             </li>
           </ul>
