@@ -9,7 +9,7 @@ const logSchema = new mongoose.Schema({
     action: {
         type: String,
         required: true,
-        enum: [ // Liste plus exhaustive pour les actions possibles
+        enum: [
             'connexion', 'deconnexion',
             'creation_ue',         
             'consultation_ue',
