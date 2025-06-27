@@ -149,7 +149,7 @@ export class UserListComponent implements OnInit {
     if (user.photo) {
       return `${this.apiUrl}${user.photo}`;
     } else {
-      return 'assets/avatar.png';
+      return 'assets/images/avatar.png';
     }
   }
 
