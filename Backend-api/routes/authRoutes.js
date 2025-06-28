@@ -14,7 +14,7 @@ const { // Fonctions du contrôleur d'authentification
     getUserPhoto,
     assignUeToUser,
     removeUeFromUser,
-    getUserCourses
+    getUserCourses, resetPassword
 } = require('../controllers/userController');
 const { protect,admin} = require('../middlewares/authMiddleware');
 const upload= require('../middlewares/upload');
@@ -47,6 +47,7 @@ router.get('/profile', authenticateUser, (req, res) => {
         roles: user.roles
     });
 });
+router.post('/reset-password', resetPassword);
 
 router.delete('/users/:userId/cours/:ueId', removeUeFromUser);
 router.get('/:id/cours', getUserCourses);
