@@ -11,6 +11,7 @@ import { PostService } from '../services/post.service';
 export class CreatePostComponent implements OnInit {
   @Output() close = new EventEmitter<void>();
   code: string | null = '';
+  nomUe : string |null ='';
   currentForm: 'message' | 'fichier' = 'message';
   messageForm: FormGroup;
   fileForm: FormGroup;
@@ -40,6 +41,7 @@ export class CreatePostComponent implements OnInit {
 
   ngOnInit(): void {
     this.code = this.lien.snapshot.paramMap.get('codeUe');
+    this.nomUe = this.lien.snapshot.paramMap.get('nomUe');
   }
 
   toggleForm(form: 'message' | 'fichier') {
@@ -77,7 +79,8 @@ export class CreatePostComponent implements OnInit {
     },
     error: err => console.error('Erreur création du message', err)
   });
-}
+  this.valide();
+};
 
 
   submitFileForm() {
@@ -98,6 +101,7 @@ export class CreatePostComponent implements OnInit {
     },
     error: err => console.error('Erreur création du fichier', err)
   });
+  this.valide();
   }
 
   cancel() {
@@ -105,6 +109,9 @@ export class CreatePostComponent implements OnInit {
   }
 
   valide() {
-    this.router.navigate(['/']);
+    this.code = this.lien.snapshot.paramMap.get('codeUe');
+    this.nomUe = this.lien.snapshot.paramMap.get('nomUe');
+    this.router.navigate(['/post-prof', this.code, this.nomUe]);
+
   }
 }

@@ -18,8 +18,7 @@ router.route('/')
     .post(protect, createPostInUe)
     // .post(protect, createPost)
     .get(protect, getPostsByUe);
-
-router.post('/createPost', createPost);    
+   
 
 // Les routes pour manipuler un post spécifique par son ID pourraient être sur un routeur séparé au niveau racine /api/posts
 // Ou, si on veut les garder imbriquées (ce qui rend les permissions plus complexes à gérer globalement mais logique pour le contexte) :

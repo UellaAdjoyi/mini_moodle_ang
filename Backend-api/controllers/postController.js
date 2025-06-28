@@ -158,38 +158,33 @@ const createFilePost = async (req, res) => {
   }
 };
 
+const getAllPosts = async (req, res) => {
+  try {
+    const posts = await Post.find({});
+    res.status(200).json(posts);
+  } catch (error) {
+    console.error('Erreur getAllPosts:', error);
+    res.status(500).json({ message: "Erreur serveur lors de la récupération des posts." });
+  }
+};
+
 
 
 // @desc    Récupérer tous les posts d'une UE
 // @route   GET /api/ues/:ueId/posts
 // @access  Private (participant ou enseignant de l'UE, ou admin)
 const getPostsByUe = async (req, res) => {
-    const { ueId } = req.params;
-    try {
-        const ue = await UE.findById(ueId);
-        if (!ue) {
-            return res.status(404).json({ message: "UE non trouvée." });
-        }
-
-        // Vérification des droits : l'utilisateur est-il membre (participant ou enseignant) de l'UE ou admin ?
-        const isParticipant = ue.participants.some(p => p.user_id.toString() === req.user._id.toString());
-        const isTeacher = ue.enseignants.some(e => e.user_id.toString() === req.user._id.toString());
-        
-        if (!isParticipant && !isTeacher && req.user.role !== 'admin') {
-            return res.status(403).json({ message: "Accès non autorisé pour voir les posts de cette UE."});
-        }
-
-        const posts = await Post.find({ ue_id: ueId })
-            .sort({ date_heure_publication: -1 }) // Trier par date de publication, les plus récents en premier
-            .populate('auteur.user_id', 'nom prenom photo'); // Populer l'auteur du post
-
-        res.status(200).json(posts);
-
-    } catch (error) {
-        console.error('Erreur getPostsByUe:', error);
-        res.status(500).json({ message: "Erreur serveur lors de la récupération des posts." });
-    }
+  const { codeUe } = req.params;
+  try {
+    const posts = await Post.find({ codeUe: codeUe })
+      .sort({ date_heure_publication: -1 });
+    res.status(200).json(posts);
+  } catch (error) {
+    console.error('Erreur getPostsByUe:', error);
+    res.status(500).json({ message: "Erreur serveur lors de la récupération des posts." });
+  }
 };
+
 
 // @desc    Récupérer un post spécifique par son ID
 // @route   GET /api/posts/:postId  (Note: route non imbriquée sous /ues pour plus de flexibilité, ou /api/ues/:ueId/posts/:postId)
@@ -343,4 +338,5 @@ module.exports = {
     deletePost,
     createPost,
     createFilePost,
+    getAllPosts
 };

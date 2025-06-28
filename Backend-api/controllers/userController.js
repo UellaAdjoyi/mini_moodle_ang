@@ -300,7 +300,7 @@ const resetPassword = async (req, res) => {
 
     const newPassword = generatePassword();
 
-    user.password = newPassword; // Pas hashé
+    user.password = newPassword;
     await user.save();
 
     await sendEmail(

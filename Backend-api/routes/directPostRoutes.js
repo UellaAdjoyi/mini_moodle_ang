@@ -3,10 +3,12 @@ const router = express.Router();
 
 const {
     getPostById,
+    getPostsByUe,
     updatePost,
     deletePost,
     createPost,
     createFilePost,
+    getAllPosts,
 } = require('../controllers/postController'); // Même contrôleur
 const { protect } = require('../middlewares/authMiddleware');
 
@@ -19,10 +21,12 @@ const multer = require('multer');
 const upload = multer();
 router.post('/createPost', upload.none(), createPost);
 const {uploadSingle} = require("../middlewares/uploadPost");
-// router.post('/createFilePost', upload.single('fichiers_attaches'), createPost);
+
 router.post('/createFilePost', uploadSingle, createFilePost);
 
+router.get('/showPosts/:codeUe', getPostsByUe);
 
+router.get('/postAll', getAllPosts);
 
 
 // Ici, on pourrait aussi ajouter des routes pour la gestion des devoirs remis, par exemple :
