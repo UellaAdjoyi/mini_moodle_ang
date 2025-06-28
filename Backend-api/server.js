@@ -31,7 +31,7 @@ app.use('/uploads', express.static('uploads'));
 // Routes
 app.use('/api/ues', ueRoutes); // Routes pour les Unités d'Enseignement (UEs)
 app.use('/api/auth', authRoutes); // Authentification des utilisateurs
-app.use('/api/posts', directPostRoutes); // Routes pour les posts directs
+app.use('/api/posts', directPostRoutes);
 app.use('/api/forums', forumRoutes); // Routes pour les forums
 app.use('/api/logs', logRoutes); // Routes pour les logs
 app.use('/api/admin', adminRoutes);

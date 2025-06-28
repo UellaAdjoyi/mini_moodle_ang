@@ -108,8 +108,6 @@ const createPost = async (req, res) => {
   }
 };
 
-
-
 const createFilePost = async (req, res) => {
   const { codeUE, titre, type_post, libelle, date_limit } = req.body;
   let fichiers_attaches = null;
