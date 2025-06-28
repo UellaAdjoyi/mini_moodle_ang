@@ -12,17 +12,26 @@ const {
 } = require('../controllers/postController'); // Même contrôleur
 const { protect } = require('../middlewares/authMiddleware');
 
-
+// route pour créer un post (message)
 const multer = require('multer');
 const upload = multer();
 router.post('/createPost', upload.none(), createPost);
-const {uploadSingle} = require("../middlewares/uploadPost");
 
+// route pour créer un post (fichier)
+const {uploadSingle} = require("../middlewares/uploadPost");
 router.post('/createFilePost', uploadSingle, createFilePost);
 
+// afficher les posts en fonctions des ue
 router.get('/showPosts/:codeUe', getPostsByUe);
 
+// afficher tous les posts
 router.get('/postAll',getAllPosts ) 
+
+// supprimer un post
+router.delete('/deletePost/:id', deletePost);
+
+// modifier un post
+router.put('/profile', uploadSingle, updatePost);
 
 router.route('/:postId')
     .get(protect, getPostById)

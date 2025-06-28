@@ -231,98 +231,52 @@ const getPostById = async (req, res) => {
 };
 
 
-// @desc    Mettre à jour un post
-// @route   PUT /api/posts/:postId
-// @access  Private (auteur du post ou admin/enseignant de l'UE)
+// Mettre à jour un post
 const updatePost = async (req, res) => {
-    const { postId } = req.params;
-    const { titre, libelle, commentaires_post, date_limite, fichiers_attaches, type_post } = req.body;
+  try {
+    const post = await Post.findById(req.params.id);
+    if (!post) return res.status(404).json({ message: "Post introuvable" });
 
-    try {
-        const post = await Post.findById(postId);
-        if (!post) {
-            return res.status(404).json({ message: "Post non trouvé." });
-        }
+    const fields = ['titre', 'libelle'];
 
-        // Vérification des droits : l'utilisateur est-il l'auteur du post OU un enseignant de l'UE OU un admin ?
-        const ue = await UE.findById(post.ue_id); // ue_id est un ObjectId ici, pas un document
-        if (!ue) {
-            return res.status(404).json({ message: "UE parente du post non trouvée." });
-        }
-        const isTeacherOfUe = ue.enseignants.some(e => e.user_id.toString() === req.user._id.toString());
-        const isAuthor = post.auteur.user_id.toString() === req.user._id.toString();
+    fields.forEach(field => {
+      if (req.body[field]) post[field] = req.body[field];
+    });
 
-        if (!isAuthor && !isTeacherOfUe && req.user.role !== 'admin') {
-            return res.status(403).json({ message: "Accès non autorisé pour modifier ce post." });
-        }
-
-        // On ne permet pas de changer le type_post, l'auteur, ou l'UE parente facilement ici.
-        // Ces opérations seraient plus complexes.
-        post.titre = titre || post.titre;
-        post.libelle = libelle || post.libelle;
-        post.commentaires_post = commentaires_post !== undefined ? commentaires_post : post.commentaires_post;
-        if (post.type_post === 'devoir') {
-            post.date_limite = date_limite || post.date_limite;
-        }
-        if (fichiers_attaches !== undefined) { // Permet de vider la liste si un tableau vide est envoyé
-            post.fichiers_attaches = fichiers_attaches;
-        }
-        // Mise à jour de la date de modification via les timestamps de Mongoose
-
-        const updatedPost = await post.save();
-        res.status(200).json(updatedPost);
-
-    } catch (error) {
-        console.error('Erreur updatePost:', error);
-        if (error.kind === 'ObjectId') {
-            return res.status(404).json({ message: 'Post non trouvé (ID mal formé).' });
-        }
-        if (error.name === 'ValidationError') {
-            const messages = Object.values(error.errors).map(val => val.message);
-            return res.status(400).json({ message: messages.join(', ') });
-        }
-        res.status(500).json({ message: "Erreur serveur lors de la mise à jour du post." });
+    if (req.file) {
+        fichiers_attaches = {
+            path: req.file.path,
+            nom_original: req.file.originalname,
+            type_mime: req.file.mimetype,
+            taille: req.file.size
+        };
     }
+
+    await post.save();
+    res.json(post);
+  } catch (err) {
+    res.status(500).json({ message: "Erreur serveur", error: err });
+  }
 };
 
-// @desc    Supprimer un post
-// @route   DELETE /api/posts/:postId
-// @access  Private (auteur du post ou admin/enseignant de l'UE)
+//   Supprimer un post
+
 const deletePost = async (req, res) => {
-    const { postId } = req.params;
-    try {
-        const post = await Post.findById(postId);
-        if (!post) {
-            return res.status(404).json({ message: "Post non trouvé." });
-        }
+  const { id } = req.params;
 
-        // Vérification des droits similaire à updatePost
-        const ue = await UE.findById(post.ue_id);
-        if (!ue) {
-            return res.status(404).json({ message: "UE parente du post non trouvée." });
-        }
-        const isTeacherOfUe = ue.enseignants.some(e => e.user_id.toString() === req.user._id.toString());
-        const isAuthor = post.auteur.user_id.toString() === req.user._id.toString();
+  try {
+    const deletedPost = await Post.findByIdAndDelete(id);
 
-        if (!isAuthor && !isTeacherOfUe && req.user.role !== 'admin') {
-            return res.status(403).json({ message: "Accès non autorisé pour supprimer ce post." });
-        }
-
-        // TODO: Gérer la suppression des fichiers attachés du stockage si nécessaire.
-        // TODO: Gérer la suppression des devoirs remis liés si nécessaire.
-
-        await post.deleteOne();
-        res.status(200).json({ message: "Post supprimé avec succès." });
-
-    } catch (error) {
-        console.error('Erreur deletePost:', error);
-        if (error.kind === 'ObjectId') {
-            return res.status(404).json({ message: 'Post non trouvé (ID mal formé).' });
-        }
-        res.status(500).json({ message: "Erreur serveur lors de la suppression du post." });
+    if (!deletedPost) {
+      return res.status(404).json({ message: "Post non trouvé" });
     }
-};
 
+    res.status(200).json({ message: "Post supprimé avec succès", post: deletedPost });
+  } catch (error) {
+    console.error("Erreur lors de la suppression :", error);
+    res.status(500).json({ message: "Erreur serveur", error });
+  }
+};
 
 // Fonctions pour la gestion des devoirs remis (à venir)
 // POST /api/posts/:postId/submit (pour un étudiant)
