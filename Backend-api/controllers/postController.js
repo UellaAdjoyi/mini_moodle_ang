@@ -60,6 +60,106 @@ const createPostInUe = async (req, res) => {
     }
 };
 
+const createPost = async (req, res) => {
+  const { codeUE, titre, type_post, libelle, date_limit } = req.body;
+  let fichiers_attaches = null;
+
+  if (req.file) {
+    fichiers_attaches = {
+      path: req.file.path,
+      nom_original: req.file.originalname,
+      type_mime: req.file.mimetype,
+      taille: req.file.size
+    };
+  }
+
+  try {
+    if (!codeUE || !titre || !libelle) {
+      return res.status(400).json({ message: 'Veuillez fournir un titre, un code et un libellé.' });
+    }
+
+    const date_heure_publication = new Date();
+
+    const postData = {
+      titre,
+      libelle,
+      codeUE,
+      type_post,
+      date_heure_publication
+    };
+
+    if (type_post === 'fichier') {
+      postData.fichiers_attaches = [fichiers_attaches];
+    }
+
+    if (type_post === 'devoir') {
+      postData.devoirs_remis = [];
+      postData.date_limite = date_limit;
+    }
+
+    const newPost = new Post(postData);
+    const createdPost = await newPost.save();
+
+    res.status(201).json(createdPost);
+
+  } catch (error) {
+    console.error('Erreur createPost:', error);
+    res.status(500).json({ message: 'Erreur serveur lors de la création du post.' });
+  }
+};
+
+
+
+const createFilePost = async (req, res) => {
+  const { codeUE, titre, type_post, libelle, date_limit } = req.body;
+  let fichiers_attaches = null;
+  console.log('BODY RECU :', req.body);
+  if (req.file) {
+    fichiers_attaches = {
+      path: req.file.path,
+      nom_original: req.file.originalname,
+      type_mime: req.file.mimetype,
+      taille: req.file.size
+    };
+  }
+
+  try {
+    if (!codeUE || !titre || !libelle) {
+      return res.status(400).json({ message: 'Veuillez fournir un titre, un code et un libellé.' });
+    }
+
+    const date_heure_publication = new Date();
+
+    const postData = {
+      titre,
+      libelle,
+      codeUE,
+      type_post,
+      date_heure_publication
+    };
+
+    if (type_post === 'fichier') {
+      postData.fichiers_attaches = [fichiers_attaches];
+    }
+
+    if (type_post === 'devoir') {
+      postData.devoirs_remis = [];
+      postData.date_limite = date_limit;
+    }
+
+    const newPost = new Post(postData);
+    const createdPost = await newPost.save();
+
+    res.status(201).json(createdPost);
+
+  } catch (error) {
+    console.error('Erreur createPost:', error);
+    res.status(500).json({ message: 'Erreur serveur lors de la création du post.' });
+  }
+};
+
+
+
 // @desc    Récupérer tous les posts d'une UE
 // @route   GET /api/ues/:ueId/posts
 // @access  Private (participant ou enseignant de l'UE, ou admin)
@@ -241,4 +341,6 @@ module.exports = {
     getPostById,
     updatePost,
     deletePost,
+    createPost,
+    createFilePost,
 };

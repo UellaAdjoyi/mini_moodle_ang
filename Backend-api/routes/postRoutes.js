@@ -5,6 +5,7 @@ const router = express.Router({ mergeParams: true });
 
 const {
     createPostInUe,
+    createPost,
     getPostsByUe,
     getPostById,     // Sera sur un autre routeur ou une route distincte
     updatePost,      // Sera sur un autre routeur ou une route distincte
@@ -15,7 +16,10 @@ const { protect } = require('../middlewares/authMiddleware');
 // Ces routes seront montées via le routeur des UEs sur /api/ues/:ueId/posts
 router.route('/')
     .post(protect, createPostInUe)
+    // .post(protect, createPost)
     .get(protect, getPostsByUe);
+
+router.post('/createPost', createPost);    
 
 // Les routes pour manipuler un post spécifique par son ID pourraient être sur un routeur séparé au niveau racine /api/posts
 // Ou, si on veut les garder imbriquées (ce qui rend les permissions plus complexes à gérer globalement mais logique pour le contexte) :
