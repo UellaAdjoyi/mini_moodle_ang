@@ -60,6 +60,7 @@ const createPostInUe = async (req, res) => {
     }
 };
 
+//créer un post (message)
 const createPost = async (req, res) => {
   const { codeUE, titre, type_post, libelle, date_limit } = req.body;
   let fichiers_attaches = null;
@@ -109,11 +110,10 @@ const createPost = async (req, res) => {
 };
 
 
-
+// create posts (fichier)
 const createFilePost = async (req, res) => {
   const { codeUE, titre, type_post, libelle, date_limit } = req.body;
   let fichiers_attaches = null;
-  console.log('BODY RECU :', req.body);
   if (req.file) {
     fichiers_attaches = {
       path: req.file.path,
@@ -158,6 +158,7 @@ const createFilePost = async (req, res) => {
   }
 };
 
+//recupere tous les posts
 const getAllPosts = async (req, res) => {
   try {
     const posts = await Post.find({});
@@ -169,16 +170,14 @@ const getAllPosts = async (req, res) => {
 };
 
 
-
-// @desc    Récupérer tous les posts d'une UE
-// @route   GET /api/ues/:ueId/posts
-// @access  Private (participant ou enseignant de l'UE, ou admin)
+//   Récupérer tous les posts d'une UE
 const getPostsByUe = async (req, res) => {
   const { codeUe } = req.params;
   try {
-    const posts = await Post.find({ codeUe: codeUe })
+    const posts = await Post.find({ codeUE: codeUe })
       .sort({ date_heure_publication: -1 });
     res.status(200).json(posts);
+    console.log(posts)
   } catch (error) {
     console.error('Erreur getPostsByUe:', error);
     res.status(500).json({ message: "Erreur serveur lors de la récupération des posts." });

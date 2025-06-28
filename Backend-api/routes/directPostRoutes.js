@@ -12,10 +12,6 @@ const {
 } = require('../controllers/postController'); // Même contrôleur
 const { protect } = require('../middlewares/authMiddleware');
 
-router.route('/:postId')
-    .get(protect, getPostById)
-    .put(protect, updatePost)
-    .delete(protect, deletePost);
 
 const multer = require('multer');
 const upload = multer();
@@ -26,7 +22,12 @@ router.post('/createFilePost', uploadSingle, createFilePost);
 
 router.get('/showPosts/:codeUe', getPostsByUe);
 
-router.get('/postAll', getAllPosts);
+router.get('/postAll',getAllPosts ) 
+
+router.route('/:postId')
+    .get(protect, getPostById)
+    .put(protect, updatePost)
+    .delete(protect, deletePost);
 
 
 // Ici, on pourrait aussi ajouter des routes pour la gestion des devoirs remis, par exemple :
