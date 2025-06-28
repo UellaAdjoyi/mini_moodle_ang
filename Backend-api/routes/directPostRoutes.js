@@ -34,9 +34,9 @@ router.delete('/deletePost/:id', deletePost);
 router.put('/profile', uploadSingle, updatePost);
 
 router.route('/:postId')
-    .get(protect, getPostById)
-    .put(protect, updatePost)
-    .delete(protect, deletePost);
+    .get( getPostById)
+    .put(upload.single('fichier'), updatePost)
+    .delete( deletePost);
 
 
 // Ici, on pourrait aussi ajouter des routes pour la gestion des devoirs remis, par exemple :

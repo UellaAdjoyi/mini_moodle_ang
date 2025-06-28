@@ -55,5 +55,13 @@ export class PostListComponent implements OnInit,OnChanges {
       }
     );
   }
+  onPostDeleted(postId: string) {
+    console.log('Post supprimé', postId);
+    // this.loadPosts(this.codeUe);
+  }
 
+  onPostUpdated(updatedPost: Post) {
+    console.log('Post modifié', updatedPost);
+    // this.loadPosts(this.codeUe);
+  }
 }

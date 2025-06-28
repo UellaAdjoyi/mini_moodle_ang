@@ -25,9 +25,21 @@ export class PostService {
     return this.http.get<Post[]>(`${this.apiUrl}/showPosts/${codeUe}`);
   }
 
-  private apiUrlLog = 'http://localhost:3000/api/logs';
+  // Modifier un post
+  updatePost(postId: string, data: FormData): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${postId}`, data);
+  }
+
+// Supprimer un post
+  deletePost(postId: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${postId}`);
+  }
+  
+private apiUrlLog = 'http://localhost:3000/api/logs';
 //creer log
     createLog(data: FormData): Observable<any> {
       return this.http.post(`${this.apiUrlLog}/createLog`, data);
     }
 }
+
+

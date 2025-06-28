@@ -1,7 +1,7 @@
 import { Devoir } from "./devoir";
 export class Post {
-    id_post: any;
-    type : any;
+    _id: any;
+    type_post : any;
     titre: any;
     libelle: any;
     date_heure: any;
@@ -11,6 +11,6 @@ export class Post {
     fichier?: string[];
     devoirs?: Devoir[];
 
-    
+
     // cours?: Ue[];
 }

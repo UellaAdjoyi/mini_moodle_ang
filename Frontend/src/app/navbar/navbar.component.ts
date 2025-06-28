@@ -45,26 +45,23 @@ export class NavbarComponent implements OnInit {
 
   loadUser() {
     const currentUser = this.authService.getCurrentUser();
-    console.log('currentUser:', currentUser);
+    // console.log('currentUser:', currentUser);
 
     this.userRole = currentUser?.role || null;
     this.user.nom = currentUser?.nom || '';
     this.user.prenom = currentUser?.prenom || '';
 
-    console.log('currentUser.photo:', currentUser?.photo);
+    //
 
     if (currentUser?.photo?.startsWith('data:image')) {
-      console.log('Photo is base64');
+      //
       this.user.photoUrl = currentUser.photo;
     } else if (currentUser?.photo?.startsWith('/uploads')) {
-      console.log('Photo is an uploads path');
       this.user.photoUrl = `http://localhost:3000${currentUser.photo}`;
     } else {
-      console.log('No photo found');
       this.user.photoUrl = '';
     }
 
-    console.log('User in loadUser:', this.user);
   }
 
 
