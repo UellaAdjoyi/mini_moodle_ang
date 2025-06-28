@@ -1,19 +1,20 @@
-import { Component, OnInit } from '@angular/core'; // Ou juste Component si OnInit n'est pas utilisé
+import { Component, OnInit } from '@angular/core';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css'] // ou .scss
+  styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit { // ou juste export class HomeComponent {
+export class HomeComponent implements OnInit {
 
-  // Propriété pour suivre l'état de "Tout déplier"
-  public allExpanded: boolean = false; // 'public' est optionnel ici car c'est le défaut
+  public allExpanded: boolean = false;
 
-  constructor() { }
+  constructor(
+    private router: Router,
+  ) { }
 
   ngOnInit(): void {
-    // Code d'initialisation si nécessaire
   }
 
   public toggleSubList(event: Event): void {
@@ -23,7 +24,7 @@ export class HomeComponent implements OnInit { // ou juste export class HomeComp
     const iconContainer = link.querySelector('.toggle-icon') as HTMLElement;
     const isExpanded = link.getAttribute('aria-expanded') === 'true';
 
-    if (subList) { // Vérifier si subList existe
+    if (subList) {
         if (isExpanded) {
             subList.classList.add('d-none');
             link.setAttribute('aria-expanded', 'false');
@@ -49,7 +50,7 @@ export class HomeComponent implements OnInit { // ou juste export class HomeComp
         const link = item.querySelector('a') as HTMLElement;
         const subList = item.querySelector('.sub-list') as HTMLElement;
         const iconContainer = link.querySelector('.toggle-icon') as HTMLElement;
-        
+
         if (link && subList) { // Vérifier si link et subList existent
             const isCurrentlyExpanded = link.getAttribute('aria-expanded') === 'true';
 
@@ -78,5 +79,9 @@ export class HomeComponent implements OnInit { // ou juste export class HomeComp
             button.innerHTML = '<i class="fas fa-chevron-down me-1"></i>Tout déplier';
         }
     }
+  }
+
+  goToCourses() {
+  this.router.navigate(['/ues']);
   }
 }

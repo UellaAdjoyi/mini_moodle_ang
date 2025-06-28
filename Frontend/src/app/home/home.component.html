@@ -1,70 +1,53 @@
-<div class="container">
-  <!-- texte et image  -->
-  <div class="row mt-5 mb-5">
-    <div class="col-lg-12 bg-white m-auto rounded-top">
-      <h3>Bonjour !</h3>
+<div class="home-container container py-5">
 
-      <div class="bg-success text-light text-center">
-        <h2>Bienvenue à tous pour la rentrée de primptemps</h2>
-        <p>L'équipe Moodle se tient à votre disposition pour faciliter votre travail sur la plateforme. Nous vous souhaitons un excellent semestre riche en apprentissages.</p>
-      </div>
-      <div class="row mt-5">
-        <div class="col-md-4">
-          <a href="#" target="_blank">
-            <img src="" alt="utbm-campus" width="300">
-          </a>
-        </div>
-        <div class="col-md-4">
-          <a href="#" target="_blank">
-            <img src="" alt="utbm-campus" width="300">
-          </a>
-        </div>
-        <div class="col-md-4">
-          <a href="#" target="_blank">
-            <img src="" alt="utbm-campus" width="300">
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Barre de recherche -->
-  <div class="input-group mx-auto w-50 mt-5 mb-5">
-    <input type="text" class="form-control" placeholder="Rechercher des cours">
-    <button class="btn btn-primary" type="button">
-      🔍
+  <section class="welcome-section text-center mb-5">
+    <h1 class="display-4 fw-bold mb-3">Bienvenue sur Moodle UTBM</h1>
+    <p class="lead text-secondary">
+      Découvrez vos cours, suivez vos activités, et commencez ce semestre avec enthousiasme !
+    </p>
+    <button class="btn btn-success btn-lg mt-3" (click)="goToCourses()">
+      Explorer les cours
     </button>
-  </div>
+  </section>
 
-  <!-- Titre -->
-  <h4>Catégories de cours</h4>
+  <section class="features-section row text-center gy-4">
+    <div class="col-md-4">
+      <div class="feature-box p-4 shadow rounded">
+        <div class="feature-icon mb-3 text-success">
+          <img [src]=" 'assets/images/cours.png'" class="card-img-top" alt="Image de l'UE" />
+        </div>
+        <h5 class="fw-bold">Cours variés</h5>
+        <p>Accédez à tous vos cours organisés par catégorie.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="feature-box p-4 shadow rounded">
+        <div class="feature-icon mb-3 text-success">
+          <img [src]=" 'assets/images/campus.png'" class="card-img-top" alt="Image de l'UE" />
+        </div>
+        <h5 class="fw-bold">Campus ouvert à tous</h5>
+        <p>Découvrez votre université</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="feature-box p-4 shadow rounded">
+        <div class="feature-icon mb-3 text-success">
+          <img [src]=" 'assets/images/com.png'" class="card-img-top" alt="Image de l'UE" />
+        </div>
+        <h5 class="fw-bold">Communauté</h5>
+        <p>Échangez avec vos enseignants et vos camarades dans les forums.</p>
+      </div>
+    </div>
+  </section>
 
-  <div class="ms-auto w-25 ">
-    <a href="#" class="mb-3 d-block " onclick="expandAll(event)">Tout déplier</a>
-  </div>
+  <section class="image-section text-center my-5">
+    <img
+      src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1000&q=80"
+      alt="Campus UTBM"
+      class="img-fluid rounded shadow"
+      style="max-height: 350px;"
+    />
+    <p class="text-muted mt-3">Powered By Tecnhnology.</p>
+  </section>
 
-  <!-- Liste de catégories -->
-  <div id="categories" class="mb-5" >
-    <div class="mb-2">
-      <a href="#" onclick="toggleSubList(event)">▶ Administration (4)</a>
-      <ul class="list-unstyled sub-list d-none">
-        <li> <a href="#"> responsable branches</a></li>
-        <li> <a href="#"> Responsable filière</a></li>
-      </ul>
-    </div>
-    <div class="mb-2">
-      <a href="#" onclick="toggleSubList(event)">▶ Cellule d'appui à l'innovation pédagogique (15)</a>
-      <ul class="list-unstyled sub-list d-none">
-        <li><a href="#"> Module 1</a></li>
-        <li><a href="#"> Module 2</a></li>
-      </ul>
-    </div>
-    <div class="mb-2">
-      <a href="#" onclick="toggleSubList(event)">▶ Organisation de vos études / Continuité Pédagogique (3)</a>
-      <ul class="list-unstyled sub-list d-none">
-        <li><a href="#"> Crunch Time</a></li>
-        <li><a href="#"> Semestre 1</a></li>
-      </ul>
-    </div>
-    <!-- Ajouter d'autres catégories ici -->
-  </div>
 </div>

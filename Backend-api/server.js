@@ -12,6 +12,7 @@ const app = express();
 
 const userRoutes = require('./routes/userRoutes');
 const {  join} = require("node:path");
+const adminRoutes = require('./routes/adminDash');
 
 dotenv.config();
 
@@ -32,6 +33,7 @@ app.use('/api/auth', authRoutes); // Authentification des utilisateurs
 app.use('/api/posts', directPostRoutes); // Routes pour les posts directs
 app.use('/api/forums', forumRoutes); // Routes pour les forums
 app.use('/api/logs', logRoutes); // Routes pour les logs
+app.use('/api/admin', adminRoutes);
 
 app.use('/api/user', userRoutes);
 

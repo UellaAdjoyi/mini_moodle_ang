@@ -7,7 +7,6 @@ const auteurSchema = new mongoose.Schema({
     email: String
 }, { _id: false });
 
-// Structure pour les fichiers plus détaillée
 const fichierSchema = new mongoose.Schema({
     path: { type: String, required: true }, // Chemin de stockage ou URL
     nom_original: { type: String, required: true },

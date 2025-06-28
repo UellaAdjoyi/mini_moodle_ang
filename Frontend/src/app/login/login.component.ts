@@ -44,9 +44,14 @@ export class LoginComponent implements OnInit {
         }
       },
       error: err => {
-        this.errorMessage = 'Identifiants incorrects ou erreur serveur.';
+        if (err.error?.message) {
+          this.errorMessage = err.error.message;
+        } else {
+          this.errorMessage = 'Identifiants incorrects ou erreur serveur.';
+        }
         console.error(err);
       }
+
     });
   }
 

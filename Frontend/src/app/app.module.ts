@@ -36,6 +36,7 @@ import { ForumDisplayComponent } from './forum-display/forum-display.component';
 import { ListPostEtuComponent } from './etudiant/list-post-etu/list-post-etu.component';
 import { PostListComponent } from './prof/post-list/post-list.component';
 import { ShowPostComponent } from './prof/show-post/show-post.component';
+import { UePageComponent } from './ue-page/ue-page.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { ShowPostComponent } from './prof/show-post/show-post.component';
     ForumDisplayComponent,
     ListPostEtuComponent,
     PostListComponent,
-    ShowPostComponent
+    ShowPostComponent,
+    UePageComponent
   ],
   imports: [
     BrowserModule,

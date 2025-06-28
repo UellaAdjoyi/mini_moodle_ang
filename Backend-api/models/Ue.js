@@ -6,9 +6,9 @@ const participantSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
-    nom: String, // Denormalisé pour affichage rapide
-    prenom: String, // Denormalisé
-    email: String // Denormalisé
+    nom: String,
+    prenom: String,
+    email: String
 }, { _id: false });
 
 const ueSchema = new mongoose.Schema({

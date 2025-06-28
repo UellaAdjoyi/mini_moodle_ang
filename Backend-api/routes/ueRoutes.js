@@ -18,7 +18,7 @@ const {getProfDashboardStats, getCoursesByEnseignant} = require("../controllers/
 
 // Routes pour /api/courses
 router.route('/')
-    .get(protect, getAllUes)
+    .get( getAllUes)
     .post(protect, upload.single('image'), createUe);
 
 router.get('/ueall', getAllUes)   

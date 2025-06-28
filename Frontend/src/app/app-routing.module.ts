@@ -16,13 +16,12 @@ import {AdminDashboardComponent} from "./admin-dashboard/admin-dashboard.compone
 import {ProfDashboardComponent} from "./prof-dashboard/prof-dashboard.component";
 import { ShowPostComponent } from './prof/show-post/show-post.component';
 
-
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   {path: 'catalogue', component: CatalogueComponent},
   {path:'mesCours',component:MesCoursComponent},
-  // {path:'createPost',component: CreatePostComponent},
+  {path:'createPost/:codeUe',component: CreatePostComponent},
   {path: 'forum',component: ForumComponent},
   {path:'profil',component: ProfilComponent},
   {path:'post-etu/:code/:nom',component: ListPostEtuComponent},
@@ -40,7 +39,6 @@ const routes: Routes = [
   {path:'ue/:id',component:UeDetailsComponent},
   {path:'dashboard',component:AdminDashboardComponent},
   {path:'participants',component:ProfDashboardComponent},
-  {path:'createPost/:codeUe',component:CreatePostComponent}
 
 ];
 

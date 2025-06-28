@@ -4,7 +4,9 @@
       <img src="assets/images/utbm.png" alt="utbm-logos" class="mx-auto d-block mb-3" width="300" height="184"/>
 
       <h2 class="text-center mb-4">Connexion</h2>
-
+      <div *ngIf="errorMessage" style="color: red; margin-top: 10px;">
+        {{ errorMessage }}
+      </div>
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <!-- Email -->
         <div class="input-group mb-3">

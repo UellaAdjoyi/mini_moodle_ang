@@ -5,8 +5,8 @@
     </a>
 
     <div class="navbar-nav">
-<!--      <a class="nav-item nav-link" routerLink="/mesCours" *ngIf="userRole === 'ROLE_PROF' || userRole === 'ROLE_ADMIN'">Mes cours</a>-->
-      <a class="nav-item nav-link" routerLink="/activites">Activités récentes</a>
+<!--      <a class="nav-item nav-link" routerLink="/activites">Activités récentes</a>-->
+      <a class="nav-item nav-link" routerLink="/" *ngIf="!userRole">Accueil</a>
       <a class="nav-item nav-link" routerLink="/login" *ngIf="!userRole">Connexion</a>
       <a class="nav-item nav-link" routerLink="/catalogue" *ngIf="userRole?.includes('ROLE_ADMIN')">Catalogue</a>
       <a class="nav-item nav-link" routerLink="/dashboard" *ngIf="userRole?.includes('ROLE_ADMIN')">Tableau de bord</a>
@@ -21,7 +21,7 @@
         <a href="#" id="userDropdown" class="d-flex align-items-center dropdown-toggle text-white text-decoration-none" role="button"
            data-bs-toggle="dropdown" aria-expanded="false">
 
-          <ng-container *ngIf="user.photoUrl; else initials">
+          <ng-container *ngIf="user.photoUrl && user.photoUrl !== ''; else initials">
             <img [src]="user.photoUrl" alt="Avatar" class="rounded-circle" style="width:35px; height:35px; object-fit:cover;">
           </ng-container>
 

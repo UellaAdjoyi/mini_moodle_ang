@@ -20,7 +20,6 @@ export class ProfilComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Initialise le formulaire vide
     this.profilForm = this.fb.group({
       nom: [''],
       prenom: [''],
@@ -28,7 +27,7 @@ export class ProfilComponent implements OnInit {
       password: ['']
     });
 
-    // Récupère les données du profil
+    // données du profil
     this.userService.getProfile().subscribe(user => {
       this.profilForm.patchValue({
         nom: user.nom,
