@@ -21,7 +21,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   {path: 'catalogue', component: CatalogueComponent},
   {path:'mesCours',component:MesCoursComponent},
-  {path:'createPost/:codeUe',component: CreatePostComponent},
+  {path:'createPost/:codeUe/:nomUe',component: CreatePostComponent},
   {path: 'forum',component: ForumComponent},
   {path:'profil',component: ProfilComponent},
   {path:'post-etu/:code/:nom',component: ListPostEtuComponent},
