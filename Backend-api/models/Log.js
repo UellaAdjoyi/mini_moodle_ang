@@ -34,14 +34,12 @@ const logSchema = new mongoose.Schema({
         type: String
     },
     cible_id: { // ID de la cible (ex: _id de l'UE, _id du Post)
-        type: mongoose.Schema.Types.ObjectId
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Post',
         // refPath: 'cible_type' // Permet une référence dynamique si cible_type correspond à un nom de modèle
     },
     cible_details: { // Pour stocker des détails supplémentaires sur la cible, comme le nom de l'UE
         type: String
-    },
-    details_action: { // Pour des informations supplémentaires sur l'action elle-même
-        type: mongoose.Schema.Types.Mixed // Peut stocker n'importe quel JSON
     },
     date_heure: {
         type: Date,

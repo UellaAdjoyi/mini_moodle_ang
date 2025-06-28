@@ -7,6 +7,7 @@ import {BehaviorSubject, Observable, tap} from "rxjs";
 })
 export class AuthService {
   private apiUrl = 'http://localhost:3000/api/auth';
+  private apiUrlLog = 'http://localhost:3000/api/logs';
   private currentUser: any;
 
   constructor(private http: HttpClient) {}
@@ -22,6 +23,11 @@ export class AuthService {
       })
     );
   }
+
+  //creer log
+    createLog(data: FormData): Observable<any> {
+      return this.http.post(`${this.apiUrlLog}/createLog`, data);
+    }
 
 
 
@@ -51,8 +57,10 @@ export class AuthService {
       return null;
     }
   }
-
-
+  getCurrentUserId(): string | null {
+  const user = this.getCurrentUser();
+  return user ? user._id : null;
+}
 
   isLoggedIn(): boolean {
     return !!localStorage.getItem('token');

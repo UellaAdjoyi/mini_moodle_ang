@@ -24,4 +24,10 @@ export class PostService {
   getPostsByUe(codeUe: string): Observable<Post[]> {
     return this.http.get<Post[]>(`${this.apiUrl}/showPosts/${codeUe}`);
   }
+
+  private apiUrlLog = 'http://localhost:3000/api/logs';
+//creer log
+    createLog(data: FormData): Observable<any> {
+      return this.http.post(`${this.apiUrlLog}/createLog`, data);
+    }
 }
