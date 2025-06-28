@@ -1,20 +1,19 @@
-<!-- <p>post-list works!</p> -->
- <div class="container-center">
-    <div class="rectangle">
-        <h1>UE : {{ nomUe }} </h1>
+<div class="container-center">
+  <div class="rectangle">
+    <h1>UE : {{ nomUe }} </h1>
 
-         <div class="nav-links">
-            <a class="nav-item nav-link" routerLink="post-all" routerLinkActive="active">Post</a>
-            <a class="nav-item nav-link" routerLink="participants-ue" routerLinkActive="active">Participants</a>
-            <a class="nav-item nav-link" routerLink="forum-ue" routerLinkActive="active">Forum</a>
-        </div>
-        <router-outlet></router-outlet>
-        <div *ngIf="isOnPostAll" class="mt-4">
-            <button class="btn btn-primary"> <a class="nav-item nav-link" routerLink="/createPost/{{codeUe}}/{{ nomUe }} ">Créer un nouveau post</a></button>
-        </div>
-
-
-
+    <div class="nav-links">
+      <a class="nav-item nav-link" routerLink="post-all" routerLinkActive="active" (click)="setTab('post')">Post</a>
+      <a class="nav-item nav-link" routerLink="participants-ue" routerLinkActive="active" (click)="setTab('participant')">Participants</a>
+      <a class="nav-item nav-link" routerLink="forum-ue" routerLinkActive="active" (click)="setTab('forum')">Forum</a>
     </div>
- </div>
 
+    <router-outlet></router-outlet>
+
+    <div *ngIf="isOnPostAll" class="mt-4">
+      <button class="btn btn-primary">
+        <a class="nav-item nav-link" [routerLink]="['/createPost', codeUe, nomUe]">Créer un nouveau post</a>
+      </button>
+    </div>
+  </div>
+</div>

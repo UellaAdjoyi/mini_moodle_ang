@@ -20,4 +20,8 @@ export class PostService {
     createFilePost(data: FormData): Observable<any> {
       return this.http.post(`${this.apiUrl}/createFilePost`, data);
     }
+
+  getPostsByUe(codeUe: string): Observable<Post[]> {
+    return this.http.get<Post[]>(`${this.apiUrl}/showPosts/${codeUe}`);
+  }
 }
