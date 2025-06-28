@@ -20,17 +20,10 @@ export class PostListComponent implements OnInit,OnChanges {
      private route: ActivatedRoute,
               ) {}
 
-  ngOnInit() {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    this.isProf = currentUser.role && currentUser.role.includes('professeur');
+  ngOnInit(): void {
+    }
 
-    this.route.parent?.paramMap.subscribe(params => {
-      const code = params.get('code');
-      if (code) {
-        this.loadPosts(code);
-      }
-    });
-  }
+
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['codeUe'] && changes['codeUe'].currentValue) {

@@ -56,7 +56,6 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
     ForumComponent,
     ConfirmDialogComponent,
     ProfilComponent,
-    PostComponent,
     PageUeComponent,
     UserCoursComponent,
     AssignUeModalComponent,
@@ -64,11 +63,12 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
     AdminDashboardComponent,
     ProfDashboardComponent,
     ForumDisplayComponent,
-    ListPostEtuComponent,
     PostListComponent,
     ShowPostComponent,
     UePageComponent,
-    ForgotPasswordComponent
+    ForgotPasswordComponent,
+    ListPostEtuComponent,
+    PostComponent
   ],
   imports: [
     BrowserModule,

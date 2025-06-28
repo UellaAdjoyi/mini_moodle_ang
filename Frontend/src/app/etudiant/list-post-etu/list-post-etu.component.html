@@ -1,1 +1,14 @@
-<p>list-post-etu works!</p>
+<div *ngIf="isLoading">
+  Chargement des posts...
+</div>
+
+<div *ngIf="!isLoading && posts.length > 0">
+  <h2>Nombre de posts = {{ posts.length }}</h2>
+  <div *ngFor="let post of posts">
+  </div>
+  <app-post  ></app-post>
+</div>
+
+<div *ngIf="!isLoading && posts.length === 0">
+  Aucun post disponible.
+</div>
