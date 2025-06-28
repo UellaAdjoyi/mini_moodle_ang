@@ -54,12 +54,9 @@ export class UserService {
     return this.http.put(`${this.apiUrl}/profile`, formData);
   }
 
-  // assignUe(userId: string, ueId: string, role: string): Observable<any> {
-  //   return this.http.post(`${this.apiUrl}/assign-ue/${userId}`, {
-  //     ueId,
-  //     role
-  //   });
-  // }
+  resetPassword(email: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/reset-password`, { email });
+  }
 
   getUserCourses(userId: string): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/${userId}/cours`);
