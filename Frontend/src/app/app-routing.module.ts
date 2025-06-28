@@ -15,6 +15,7 @@ import {UeDetailsComponent} from "./ue-details/ue-details.component";
 import {AdminDashboardComponent} from "./admin-dashboard/admin-dashboard.component";
 import {ProfDashboardComponent} from "./prof-dashboard/prof-dashboard.component";
 import { ShowPostComponent } from './prof/show-post/show-post.component';
+import {ForgotPasswordComponent} from "./forgot-password/forgot-password.component";
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -24,6 +25,7 @@ const routes: Routes = [
   {path:'createPost/:codeUe/:nomUe',component: CreatePostComponent},
   {path: 'forum',component: ForumComponent},
   {path:'profil',component: ProfilComponent},
+  {path:'resetPassword',component: ForgotPasswordComponent},
   {path:'post-etu/:code/:nom',component: ListPostEtuComponent},
   {path:'post',component: PostComponent},
   {path:'post-prof/:code/:nom',component: ShowPostComponent,

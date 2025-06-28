@@ -2,43 +2,6 @@ const UE = require('../models/Ue');
 const Post = require('../models/Post');
 const Forum = require('../models/Forum');
 
-// exports.getProfDashboardStats = async (req, res) => {
-//     try {
-//         const profId = req.user.id;
-//
-//         //  Récupérer les UEs enseignées par ce professeur
-//         const ues = await UE.find({ "enseignants.user_id": profId });
-//
-//         const ueIds = ues.map(ue => ue._id);
-//
-//         //  Nombre total de participants (sans doublons)
-//         const totalParticipants = ues.reduce((sum, ue) => sum + ue.participants.length, 0);
-//
-//         //  Nombre de devoirs créés (dans Post avec type 'devoir')
-//         const nbDevoirs = await Post.countDocuments({
-//             ue_id: { $in: ueIds },
-//             type_post: 'devoir'
-//         });
-//
-//         //  Nombre total de posts (de tout type)
-//         const nbPosts = await Post.countDocuments({ ue_id: { $in: ueIds } });
-//
-//         //  Nombre total de messages dans les forums
-//         const forums = await Forum.find({ ue_id: { $in: ueIds } });
-//         const totalMessages = forums.reduce((acc, forum) => acc + forum.messages.length, 0);
-//
-//         res.json({
-//             totalParticipants,
-//             nbDevoirs,
-//             nbPosts,
-//             totalMessages
-//         });
-//
-//     } catch (error) {
-//         console.error('Erreur dashboard professeur :', error);
-//         res.status(500).json({ message: 'Erreur serveur' });
-//     }
-// };
 const getCoursesByEnseignant = async (req, res) => {
     try {
         const userId = req.user._id;
