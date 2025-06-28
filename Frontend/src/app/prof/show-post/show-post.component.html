@@ -8,12 +8,13 @@
       <a class="nav-item nav-link" routerLink="forum-ue" routerLinkActive="active" (click)="setTab('forum')">Forum</a>
     </div>
 
-    <router-outlet></router-outlet>
-
+    <!-- Bouton déplacé ici, en haut, affiché si isOnPostAll -->
     <div *ngIf="isOnPostAll" class="mt-4">
       <button class="btn btn-primary">
         <a class="nav-item nav-link" [routerLink]="['/createPost', codeUe, nomUe]">Créer un nouveau post</a>
       </button>
     </div>
+
+    <router-outlet></router-outlet>
   </div>
 </div>

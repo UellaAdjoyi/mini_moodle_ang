@@ -5,7 +5,8 @@
 <div *ngIf="!isLoading && posts.length > 0">
   <h2>Nombre de posts = {{ posts.length }}</h2>
   <div *ngFor="let post of posts">
-    <app-post [post]="post" [isProf]="isProf"></app-post>
+    <app-post [post]="post" [isProf]="isProf" (deleted)="onPostDeleted($event)"
+              (updated)="onPostUpdated($event)"  ></app-post>
   </div>
 </div>
 

@@ -24,4 +24,15 @@ export class PostService {
   getPostsByUe(codeUe: string): Observable<Post[]> {
     return this.http.get<Post[]>(`${this.apiUrl}/showPosts/${codeUe}`);
   }
+
+  // Modifier un post
+  updatePost(postId: string, data: FormData): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${postId}`, data);
+  }
+
+// Supprimer un post
+  deletePost(postId: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${postId}`);
+  }
+
 }
