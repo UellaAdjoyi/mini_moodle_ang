@@ -109,7 +109,6 @@ const createPost = async (req, res) => {
   }
 };
 
-
 // create posts (fichier)
 const createFilePost = async (req, res) => {
   const { codeUE, titre, type_post, libelle, date_limit } = req.body;
@@ -169,7 +168,6 @@ const getAllPosts = async (req, res) => {
   }
 };
 
-
 //   Récupérer tous les posts d'une UE
 const getPostsByUe = async (req, res) => {
   const { codeUe } = req.params;
@@ -184,6 +182,52 @@ const getPostsByUe = async (req, res) => {
   }
 };
 
+// Mettre à jour un post
+const updatePost = async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.postId);
+        if (!post) return res.status(404).json({ message: "Post introuvable" });
+
+        const fields = ['titre', 'libelle'];
+
+        fields.forEach(field => {
+            if (req.body[field]) post[field] = req.body[field];
+        });
+
+        if (req.file) {
+            post.fichiers_attaches = {
+                path: req.file.path,
+                nom_original: req.file.originalname,
+                type_mime: req.file.mimetype,
+                taille: req.file.size
+            };
+        }
+
+        await post.save();
+        res.json(post);
+    } catch (err) {
+        res.status(500).json({ message: "Erreur serveur", error: err });
+    }
+};
+
+//   Supprimer un post
+
+const deletePost = async (req, res) => {
+    const { postId } = req.params;  // <--- ici
+
+    try {
+        const deletedPost = await Post.findByIdAndDelete(postId);
+
+        if (!deletedPost) {
+            return res.status(404).json({ message: "Post non trouvé" });
+        }
+
+        res.status(200).json({ message: "Post supprimé avec succès", post: deletedPost });
+    } catch (error) {
+        console.error("Erreur lors de la suppression :", error);
+        res.status(500).json({ message: "Erreur serveur", error });
+    }
+};
 
 // @desc    Récupérer un post spécifique par son ID
 // @route   GET /api/posts/:postId  (Note: route non imbriquée sous /ues pour plus de flexibilité, ou /api/ues/:ueId/posts/:postId)
@@ -231,52 +275,7 @@ const getPostById = async (req, res) => {
 };
 
 
-// Mettre à jour un post
-const updatePost = async (req, res) => {
-  try {
-    const post = await Post.findById(req.params.id);
-    if (!post) return res.status(404).json({ message: "Post introuvable" });
 
-    const fields = ['titre', 'libelle'];
-
-    fields.forEach(field => {
-      if (req.body[field]) post[field] = req.body[field];
-    });
-
-    if (req.file) {
-        fichiers_attaches = {
-            path: req.file.path,
-            nom_original: req.file.originalname,
-            type_mime: req.file.mimetype,
-            taille: req.file.size
-        };
-    }
-
-    await post.save();
-    res.json(post);
-  } catch (err) {
-    res.status(500).json({ message: "Erreur serveur", error: err });
-  }
-};
-
-//   Supprimer un post
-
-const deletePost = async (req, res) => {
-  const { id } = req.params;
-
-  try {
-    const deletedPost = await Post.findByIdAndDelete(id);
-
-    if (!deletedPost) {
-      return res.status(404).json({ message: "Post non trouvé" });
-    }
-
-    res.status(200).json({ message: "Post supprimé avec succès", post: deletedPost });
-  } catch (error) {
-    console.error("Erreur lors de la suppression :", error);
-    res.status(500).json({ message: "Erreur serveur", error });
-  }
-};
 
 // Fonctions pour la gestion des devoirs remis (à venir)
 // POST /api/posts/:postId/submit (pour un étudiant)
