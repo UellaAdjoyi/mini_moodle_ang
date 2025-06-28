@@ -1,0 +1,64 @@
+.container-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.rectangle {
+    margin-top: 2%;
+    width: 1350px;
+    height: 600px; 
+    border-radius: 10px; 
+    background-color: #f4f4f9;
+    padding: 2%;
+    overflow: auto;
+}
+
+.btn-container {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+
+/* .form-container {
+    display: none;
+} */
+
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-container.active {
+    display: block;
+}
+
+.form-title {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.rectangle a {
+    text-decoration: none;
+    color: white;
+}
+
+.form-container button {
+   text-align: center;
+   font-size: 1.25rem; 
+
+}
+.button-container {
+    display: flex;
+    justify-content: center; 
+    margin-top: 20px; 
+    gap: 10px;
+}
+
+.radio-container {
+    margin-top: 20px;
+    margin-bottom: 12px;
+}
+
+.radio-container label {
+    margin-right: 20px;
+}

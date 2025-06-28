@@ -1,0 +1,47 @@
+.messages {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.message {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.message .icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+}
+
+.message .message-text {
+    font-size: 20px;
+}
+
+.fichier {
+    background-color: #e8f4ff; 
+    border-left: 4px solid #3498db; 
+}
+
+.texte {
+    background-color: #fff8e1; 
+    border-left: 4px solid #f39c12; 
+}
+
+.date-heure {
+    font-size: 0.75rem;
+    color: #888;
+    margin-top: 5px;
+    text-align: left;
+}
+
+.button-container {
+    display: flex;
+    /* justify-content: flex-start; Alignement des boutons à gauche */
+    gap: 10px;
+    margin-top: 10px; /* Espace entre le texte et les boutons */
+}

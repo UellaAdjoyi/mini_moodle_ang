@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormGroup,FormBuilder} from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router,ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-create-post',
@@ -8,20 +8,25 @@ import { Router } from '@angular/router';
   styleUrls: ['./create-post.component.css']
 })
 export class CreatePostComponent implements OnInit {
+  code: string | null = '';
   currentForm: 'message' | 'fichier' = 'message';
   messageForm: FormGroup;
   fileForm: FormGroup;
   today: string = new Date().toISOString().split('T')[0];
   selectedFile: File | null = null;
+   maintenant = new Date();
+   dateHeure = this.maintenant.toLocaleString();
 
   constructor(
+    private lien: ActivatedRoute,
     private fb: FormBuilder,
     private router: Router) {
     this.messageForm = this.fb.group({
       titre: [''],
       message: [''],
       addFile: [0],
-      date_limit: ['']
+      date_limit: [''],
+      date_heure: this.dateHeure
     });
 
     this.fileForm = this.fb.group({
@@ -30,7 +35,9 @@ export class CreatePostComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.code = this.lien.snapshot.paramMap.get('codeUe');
+  }
 
   toggleForm(form: 'message' | 'fichier') {
     this.currentForm = form;
@@ -44,10 +51,11 @@ export class CreatePostComponent implements OnInit {
   }
 
   submitMessageForm() {
+    this.code = this.lien.snapshot.paramMap.get('codeUe');
     const data = {
       ...this.messageForm.value,
-      idProf: 1,
-      codeUe: 'UE01' // idem
+      // idProf: 1,
+      codeUe: this.code 
     };
     console.log('Message envoyé', data);
   }

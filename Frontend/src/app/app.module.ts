@@ -33,6 +33,9 @@ import { UeDetailsComponent } from './ue-details/ue-details.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { ProfDashboardComponent } from './prof-dashboard/prof-dashboard.component';
 import { ForumDisplayComponent } from './forum-display/forum-display.component';
+import { ListPostEtuComponent } from './etudiant/list-post-etu/list-post-etu.component';
+import { PostListComponent } from './prof/post-list/post-list.component';
+import { ShowPostComponent } from './prof/show-post/show-post.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +61,10 @@ import { ForumDisplayComponent } from './forum-display/forum-display.component';
     UeDetailsComponent,
     AdminDashboardComponent,
     ProfDashboardComponent,
-    ForumDisplayComponent
+    ForumDisplayComponent,
+    ListPostEtuComponent,
+    PostListComponent,
+    ShowPostComponent
   ],
   imports: [
     BrowserModule,

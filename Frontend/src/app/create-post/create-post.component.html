@@ -1,4 +1,5 @@
-<div class="rectangle">
+<div class="container-center">
+  <div class="rectangle">
   <div class="container mt-4">
     <div class="btn-container">
       <button class="btn btn-primary" (click)="toggleForm('message')">Message Texte</button>
@@ -7,7 +8,7 @@
 
     <!-- Formulaire Message Texte -->
     <div *ngIf="currentForm === 'message'" class="form-container">
-      <div class="form-title">Créer un Message Texte</div>
+      <div class="form-title">Créer un Message Texte {{code}}</div>
       <form [formGroup]="messageForm" (ngSubmit)="submitMessageForm()">
         <div class="radio-container">
           <label>Autoriser les étudiants à ajouter une pièce jointe ?</label><br>
@@ -65,4 +66,6 @@
       </form>
     </div>
   </div>
+</div>
+
 </div>
