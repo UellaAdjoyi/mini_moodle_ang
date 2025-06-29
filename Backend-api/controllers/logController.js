@@ -2,7 +2,7 @@ const Log = require('../models/Log');
 
 // create log
 const createLog = async (req, res) => {
-  const { user_id, action, cible_type, cible_id} = req.body;
+  const { user_id, action, cible_type, cible_id, cible_details} = req.body;
 
 
   try {
@@ -13,7 +13,7 @@ console.log('BODY RECU :', req.body);
     const date_heure = new Date();
 
     const logData = {
-      user_id, action, cible_type, cible_id,
+      user_id, action, cible_type, cible_id, cible_details,
       date_heure
     };
 
