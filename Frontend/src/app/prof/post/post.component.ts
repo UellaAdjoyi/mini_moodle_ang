@@ -32,7 +32,6 @@ export class PostComponent implements OnInit,OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['post']) {
-      // console.log('app-post ngOnChanges, post changed:', this.post);
     }
   }
 

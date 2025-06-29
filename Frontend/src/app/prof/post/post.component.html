@@ -32,7 +32,7 @@
     </div>
   </div>
   <span class="post-commentaire">{{ post.libelle }}</span>
-  <div class="date-heure">{{ post.date_heure }}</div>
+  <div class="date-heure">{{ post.date_heure_publication }}</div>
   <span *ngIf="post.type_post.trim().toLowerCase() === 'devoir'" class="text-muted"><a>Afficher les rendus</a></span>
 </div>
 
@@ -64,7 +64,7 @@
   </div>
 
   <span class="post-commentaire">{{ post.libelle }}</span>
-  <div class="date-heure">{{ post.date_heure }}</div>
+  <div class="date-heure">{{ post.date_heure_publication }}</div>
 
   <span *ngIf="post.type_post.trim().toLowerCase() === 'devoir'" class="text-muted"><a>Afficher les rendus</a></span>
 </div>
