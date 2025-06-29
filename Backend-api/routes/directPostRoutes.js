@@ -9,6 +9,8 @@ const {
     createPost,
     createFilePost,
     getAllPosts,
+    addDevoir,
+    corriger
 } = require('../controllers/postController'); // Même contrôleur
 const { protect } = require('../middlewares/authMiddleware');
 
@@ -32,6 +34,14 @@ router.delete('/deletePost/:id', deletePost);
 
 // modifier un post
 router.put('/profile', uploadSingle, updatePost);
+
+//ajouter le devoir d'un etudiant
+const { uploadSingles } = require("../middlewares/uploadDevoir");
+router.put('/addDevoir/:postId', uploadSingles, addDevoir);
+
+// ajouter une note et un commentaire 
+router.put('/corriger/:postId/:devoirId', corriger);
+
 
 router.route('/:postId')
     .get( getPostById)

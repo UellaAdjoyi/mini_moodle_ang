@@ -30,6 +30,16 @@ export class PostService {
     return this.http.put(`${this.apiUrl}/${postId}`, data);
   }
 
+  // ajouter un devoir
+  addDevoir(postId: string, data: FormData): Observable<any> {
+    return this.http.put(`${this.apiUrl}/addDevoir/${postId}`, data);
+  }
+
+  // ajouter une note et un commentaire
+  corriger(postId: string, devoirId : string, data: FormData): Observable<any> {
+    return this.http.put(`${this.apiUrl}/corriger/${postId}/${devoirId}`, data);
+  }
+
 // Supprimer un post
   deletePost(postId: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${postId}`);

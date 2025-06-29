@@ -21,8 +21,7 @@ export class PostListComponent implements OnInit,OnChanges {
               ) {}
 
   ngOnInit() {
-    // this.codeUe = this.route.snapshot.paramMap.get('code');
-    // this.nomUe = this.route.snapshot.paramMap.get('nom');
+
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
     this.isProf = currentUser.role && currentUser.role.includes('professeur');
 
@@ -44,7 +43,7 @@ export class PostListComponent implements OnInit,OnChanges {
     this.isLoading = true;
     this.postService.getPostsByUe(codeUe).subscribe(
       data => {
-        console.log('Posts reçus:', data);
+        // console.log('Posts reçus:', data);
         this.posts = data;
         this.isLoading = false;
       },

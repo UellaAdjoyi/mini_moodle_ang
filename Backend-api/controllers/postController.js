@@ -175,7 +175,7 @@ const getPostsByUe = async (req, res) => {
     const posts = await Post.find({ codeUE: codeUe })
       .sort({ date_heure_publication: -1 });
     res.status(200).json(posts);
-    console.log(posts)
+    
   } catch (error) {
     console.error('Erreur getPostsByUe:', error);
     res.status(500).json({ message: "Erreur serveur lors de la récupération des posts." });
@@ -208,6 +208,69 @@ const updatePost = async (req, res) => {
     } catch (err) {
         res.status(500).json({ message: "Erreur serveur", error: err });
     }
+};
+
+//deposer un devoir
+const addDevoir = async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.postId);
+    if (!post) return res.status(404).json({ message: "Post introuvable" });
+
+    // Créer le devoir à ajouter
+    const nouveauDevoir = {
+      user_id: req.body.user_id,
+      email: req.body.email,
+      date_rendu: new Date(),
+      etat: 'rendu',
+      note: 0,
+      commentaire_prof: '',
+      fichiers: []
+    };
+    console.log('Nouveau devoir créé :', nouveauDevoir)
+
+    // Si un fichier a été uploadé
+    if (req.file) {
+      nouveauDevoir.fichiers = [{
+        path: req.file.path,
+        nom_original: req.file.originalname,
+        type_mime: req.file.mimetype,
+        taille: req.file.size
+      }];
+    }
+    // Ajouter le devoir dans le tableau
+    post.devoirs_remis.push(nouveauDevoir);
+    // Sauvegarder le post
+    await post.save();
+    res.json(post);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Erreur serveur", error: err });
+  }
+};
+
+// corriger un devoir note + commentaire
+
+const corriger = async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.postId);
+    if (!post) return res.status(404).json({ message: "Post introuvable" });
+
+    const devoir = post.devoirs_remis.id(req.params.devoirId);
+    if (!devoir) return res.status(404).json({ message: "Devoir introuvable" });
+
+    devoir.etat = 'corrigé';
+    devoir.note = req.body.note;
+    devoir.commentaire_prof = req.body.commentaire;
+
+    console.log('Correction appliquée:', devoir);
+    // Sauvegarder le post
+    await post.save();
+
+    res.json({ message: "Devoir corrigé avec succès", devoir });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Erreur serveur", error: err });
+  }
 };
 
 //   Supprimer un post
@@ -290,5 +353,7 @@ module.exports = {
     deletePost,
     createPost,
     createFilePost,
-    getAllPosts
+    getAllPosts,
+    addDevoir,
+    corriger,
 };

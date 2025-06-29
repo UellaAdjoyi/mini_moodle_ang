@@ -17,8 +17,6 @@ const fichierSchema = new mongoose.Schema({
 
 const devoirRemisSchema = new mongoose.Schema({
     user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    nom: String,
-    prenom: String,
     email: String,
     fichiers: [fichierSchema], // Un étudiant peut remettre plusieurs fichiers pour un devoir
     date_rendu: { type: Date, default: Date.now },

@@ -57,10 +57,16 @@ export class AuthService {
       return null;
     }
   }
+
   getCurrentUserId(): string | null {
-  const user = this.getCurrentUser();
-  return user ? user._id : null;
-}
+    const user = this.getCurrentUser();
+    return user ? user._id : null;
+  }
+
+  getCurrentUserEmail(): string | null {
+    const user = this.getCurrentUser();
+    return user ? user.email : null;
+  }
 
   isLoggedIn(): boolean {
     return !!localStorage.getItem('token');

@@ -1,0 +1,87 @@
+<!-- <div class="container table-container">
+  <h2 class="mb-4">Liste des éléments</h2>
+  <table class="table table-hover table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th>#</th>
+        <th>Nom</th>
+        <th>Email</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td>Jean Dupont</td>
+        <td>jean.dupontexample.com</td>
+        <td><button class="btn btn-primary btn-sm">Voir</button></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Marie Curie</td>
+        <td>marie.curieexample.com</td>
+        <td><button class="btn btn-primary btn-sm">Voir</button></td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Albert Einstein</td>
+        <td>albert.einsteinexample.com</td>
+        <td><button class="btn btn-primary btn-sm">Voir</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div> -->
+<div class="container my-4">
+  <h2>Devoirs remis</h2>
+  <table class="table table-hover table-bordered">
+  <thead class="table-dark">
+    <tr>
+      <th>#</th>
+      <th>Email</th>
+      <th>Devoirs</th>
+      <th>Date rendu</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let devoir of mesDevoirs; let i = index">
+      <td>{{ i + 1 }}</td>
+      <td>{{ devoir.email }}</td>
+      <td>
+        <ul>
+          <li *ngFor="let fichier of devoir.fichiers">
+            <a [href]="'http://localhost:3000/' + fichier.path" target="_blank">
+              {{ fichier.nom_original }}
+            </a>
+          </li>
+        </ul>
+      </td>
+      <td>{{ devoir.date_rendu }}</td>
+      <td>
+        <button class="btn btn-primary btn-sm" (click)="ouvrirCorrectionModal(devoir)">Corriger</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
+
+<!-- Modal Bootstrap -->
+<div *ngIf="devoirEnCours" class="modal-backdrop" style="position: fixed; top:0; left:0; width:100vw; height:100vh; background-color: rgba(0,0,0,0.5); display:flex; justify-content:center; align-items:center; z-index: 1050;">
+  <div class="modal-dialog" style="max-width: 500px; width: 100%;">
+    <div class="modal-content" style="background-color: white; padding: 20px; border-radius: 6px;">
+      <div class="modal-header">
+        <h5 class="modal-title">Corriger</h5>
+      </div>
+      <div class="modal-body">
+        <input [(ngModel)]="devoirEnCours.note" placeholder="Note" style="width: 100%; margin-bottom: 10px;" />
+        <textarea [(ngModel)]="devoirEnCours.commentaire_prof" placeholder="Commentaire" style="width: 100%; height: 100px;"></textarea>
+      </div>
+      <div class="modal-footer" style="text-align: right;">
+        <button (click)="saveEdit()" class="btn btn-primary">Sauvegarder</button>
+        <button (click)="devoirEnCours = null" class="btn btn-secondary">Annuler</button>
+
+      </div>
+    </div>
+  </div>
+</div>

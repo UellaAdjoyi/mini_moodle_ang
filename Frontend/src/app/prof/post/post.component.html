@@ -1,10 +1,16 @@
-<!-- Bloc pour fichier ou devoir -->
+<!-- Bloc pour fichier -->
 <div *ngIf="post && isFichierOrDevoir()" class="message fichier" style="border: 1px solid blue; padding: 10px; margin-bottom: 10px;" [id]="''+ post._id">
   <div class="d-flex align-items-center mb-3">
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-arrow-down-fill" viewBox="0 0 16 16">
       <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0"/>
     </svg>
-    <span class="message-text post-titreFile"><a>{{ post.titre }}</a></span>
+    <span class="message-text post-titreFile">
+      <!-- <a href="{{post.fichiers_attaches?.[0]?.path}}" target="_blank">{{post.titre}} </a> -->
+      
+      <a [href]="'http://localhost:3000/'+ post.fichiers_attaches?.[0]?.path" target="_blank">{{post.titre}} </a>
+
+      
+    </span>
 
     <div class="dropdown d-flex justify-content-center">
       <button
@@ -33,11 +39,10 @@
   </div>
   <span class="post-commentaire">{{ post.libelle }}</span>
   <div class="date-heure">{{ post.date_heure_publication }}</div>
-  <span *ngIf="post.type_post.trim().toLowerCase() === 'devoir'" class="text-muted"><a>Afficher les rendus</a></span>
 </div>
 
-<!-- Bloc pour message -->
-<div *ngIf="post && post.type_post?.trim().toLowerCase() === 'message'" class="message texte" style="border: 1px solid green; padding: 10px; margin-bottom: 10px;" [id]="'' + post._id">
+<!-- Bloc pour message  ou devoir -->
+<div *ngIf="post && isMessagerOrDevoir()" class="message texte" style="border: 1px solid green; padding: 10px; margin-bottom: 10px;" [id]="'' + post._id">
   <div class="d-flex align-items-center mb-3">
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-left-text-fill me-2" viewBox="0 0 16 16">
       <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414a1 1 0 0 0-.707.293L.854 15.146A.5.5 0 0 1 0 14.793zm3.5 1a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1zm0 2.5a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1zm0 2.5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1z"/>
@@ -66,7 +71,38 @@
   <span class="post-commentaire">{{ post.libelle }}</span>
   <div class="date-heure">{{ post.date_heure_publication }}</div>
 
-  <span *ngIf="post.type_post.trim().toLowerCase() === 'devoir'" class="text-muted"><a>Afficher les rendus</a></span>
+  <!-- <span *ngIf="post.type_post.trim().toLowerCase() === 'devoir'; userRole?.includes('ROLE_PROF')" class="text-muted"><a>Afficher les rendus</a></span> -->
+  <span *ngIf="post.type_post.trim().toLowerCase() === 'devoir' && userRole?.includes('ROLE_PROF')" class="text-muted">
+    <a class="text-primary" [routerLink]="['/showDevoir', post._id, post.codeUE]">Afficher les rendus</a>
+  </span>
+
+  <div *ngIf="post.type_post.trim().toLowerCase() === 'devoir' && userRole?.includes('ROLE_ETUDIANT') " class="text-muted">
+    <hr>
+    
+    <form *ngIf="!devoirDuUser" [formGroup]="devoirForm" (ngSubmit)="submitDevoirForm()" enctype="multipart/form-data" class="d-flex align-items-center gap-2">
+  
+      <label for="fileUpload" class="form-label d-flex align-items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+          class="bi bi-file-earmark-arrow-up-fill" viewBox="0 0 16 16">
+          <path
+            d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1M6.354 9.854a.5.5 0 0 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 8.707V12.5a.5.5 0 0 1-1 0V8.707z" />
+        </svg>
+        Choisir un fichier
+      </label>
+
+      <input type="file" id="fileUpload" (change)="onFileChange($event)" class="form-control" required>
+      <input type="hidden" formControlName="postId">
+
+      <button type="submit" class="btn btn-primary btn-sm"> Rendre </button>
+      
+      <div class="date-heure text-danger">Date limite de dépot : {{ post.date_limite }}</div>
+      
+    </form>
+    <div>{{post.fichiers_attaches?.[0]?.path}}</div>
+    <div *ngIf="devoirDuUser">
+      <span>Etat : {{ devoirDuUser.etat }}  -  Note : {{ devoirDuUser.note }}  </span>
+      <span>Commentaire : {{ devoirDuUser.commentaire }}</span>
+    </div>
 </div>
 
 

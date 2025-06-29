@@ -9,7 +9,7 @@ const createLog = async (req, res) => {
     if (!user_id || !action) {
       return res.status(400).json({ message: 'Veuillez fournir  user_id,  action et  cible_type.' });
     }
-console.log('BODY RECU :', req.body);
+
     const date_heure = new Date();
 
     const logData = {

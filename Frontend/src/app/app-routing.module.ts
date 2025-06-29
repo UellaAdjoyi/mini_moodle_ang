@@ -18,6 +18,7 @@ import { ShowPostComponent } from './prof/show-post/show-post.component';
 import {ForgotPasswordComponent} from "./forgot-password/forgot-password.component";
 import {LogListComponent} from "./log-list/log-list.component";
 import {EtudiantPostComponent} from "./etudiant/etudiant-post/etudiant-post.component";
+import { ShowDevoirComponent } from './prof/show-devoir/show-devoir.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -52,6 +53,7 @@ const routes: Routes = [
   {path:'dashboard',component:AdminDashboardComponent},
   {path:'participants',component:ProfDashboardComponent},
   {path:'logs',component:LogListComponent},
+  {path:'showDevoir/:idPost/:codeUe',component:ShowDevoirComponent},
 
 ];
 
