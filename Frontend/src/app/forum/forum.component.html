@@ -1,17 +1,32 @@
+<h2>Forums de l'UE {{ ueNom }}</h2>
+
+<div *ngIf="isProf" class="create-forum-form">
+  <h3>Créer un nouveau forum</h3>
+  <div class="form-group">
+    <input
+      type="text"
+      placeholder="Titre"
+      [(ngModel)]="newForumTitle"
+      class="input"
+    />
+  </div>
+  <div class="form-group">
+    <textarea
+      placeholder="Description"
+      [(ngModel)]="newForumDescription"
+      class="textarea"
+    ></textarea>
+  </div>
+  <button (click)="createForum()" class="btn">Créer</button>
+</div>
+
 <div *ngIf="loading">Chargement des forums...</div>
 <div *ngIf="errorMsg" class="error">{{ errorMsg }}</div>
 
-<h2>Forums de l'UE {{ ueNom }}</h2>
-<ul>
-  <li *ngFor="let forum of forums">
+<ul class="forum-list">
+  <li *ngFor="let forum of forums" class="forum-item" (click)="goToForum(forum._id)">
     <h3>{{ forum.titre }}</h3>
     <p>{{ forum.description }}</p>
   </li>
 </ul>
 
-<div *ngIf="isProf" class="create-forum-form">
-  <h3>Créer un nouveau forum</h3>
-  <input type="text" placeholder="Titre" [(ngModel)]="newForumTitle" />
-  <textarea placeholder="Description" [(ngModel)]="newForumDescription"></textarea>
-  <button (click)="createForum()">Créer</button>
-</div>

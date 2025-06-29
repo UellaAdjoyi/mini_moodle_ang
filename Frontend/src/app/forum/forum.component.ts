@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {ForumService} from "../services/forum.service";
 import {AuthService} from "../services/auth.service";
 
@@ -21,7 +21,8 @@ export class ForumComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private forumService: ForumService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router:Router
   ) { }
 
   // ngOnInit() {
@@ -89,5 +90,9 @@ export class ForumComponent implements OnInit {
         this.errorMsg = 'Erreur lors de la création du forum.';
       }
     });
+  }
+
+  goToForum(forumId: string) {
+    this.router.navigate(['../forum-ue', forumId], { relativeTo: this.route });
   }
 }

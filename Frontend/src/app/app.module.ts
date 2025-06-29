@@ -32,7 +32,6 @@ import { AssignUeModalComponent } from './assign-ue-modal/assign-ue-modal.compon
 import { UeDetailsComponent } from './ue-details/ue-details.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { ProfDashboardComponent } from './prof-dashboard/prof-dashboard.component';
-import { ForumDisplayComponent } from './forum-display/forum-display.component';
 import { ListPostEtuComponent } from './etudiant/list-post-etu/list-post-etu.component';
 import { PostListComponent } from './prof/post-list/post-list.component';
 import { ShowPostComponent } from './prof/show-post/show-post.component';
@@ -40,8 +39,10 @@ import { UePageComponent } from './ue-page/ue-page.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { LogListComponent } from './log-list/log-list.component';
 import { EtudiantPostComponent } from './etudiant/etudiant-post/etudiant-post.component';
+
 import { ShowDevoirComponent } from './prof/show-devoir/show-devoir.component';
 
+import { ForumDetailsComponent } from './forum-details/forum-details.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,6 @@ import { ShowDevoirComponent } from './prof/show-devoir/show-devoir.component';
     UeDetailsComponent,
     AdminDashboardComponent,
     ProfDashboardComponent,
-    ForumDisplayComponent,
     PostListComponent,
     ShowPostComponent,
     UePageComponent,
@@ -75,7 +75,10 @@ import { ShowDevoirComponent } from './prof/show-devoir/show-devoir.component';
     PostComponent,
     LogListComponent,
     EtudiantPostComponent,
-    ShowDevoirComponent
+    ShowDevoirComponent,
+
+    ForumDetailsComponent
+
   ],
   imports: [
     BrowserModule,
