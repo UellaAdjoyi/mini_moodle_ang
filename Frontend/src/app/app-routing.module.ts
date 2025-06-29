@@ -16,6 +16,7 @@ import {AdminDashboardComponent} from "./admin-dashboard/admin-dashboard.compone
 import {ProfDashboardComponent} from "./prof-dashboard/prof-dashboard.component";
 import { ShowPostComponent } from './prof/show-post/show-post.component';
 import {ForgotPasswordComponent} from "./forgot-password/forgot-password.component";
+import {LogListComponent} from "./log-list/log-list.component";
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -41,6 +42,7 @@ const routes: Routes = [
   {path:'ue/:id',component:UeDetailsComponent},
   {path:'dashboard',component:AdminDashboardComponent},
   {path:'participants',component:ProfDashboardComponent},
+  {path:'logs',component:LogListComponent},
 
 ];
 

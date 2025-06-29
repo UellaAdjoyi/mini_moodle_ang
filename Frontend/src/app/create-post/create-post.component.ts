@@ -3,6 +3,7 @@ import {FormGroup,FormBuilder} from '@angular/forms';
 import { Router,ActivatedRoute } from '@angular/router';
 import { PostService } from '../services/post.service';
 import { AuthService } from '../services/auth.service';
+import {LogService} from "../services/log.service";
 
 @Component({
   selector: 'app-create-post',
@@ -26,7 +27,8 @@ export class CreatePostComponent implements OnInit {
     private postservice: PostService,
     private lien: ActivatedRoute,
     private fb: FormBuilder,
-    private router: Router) {
+    private router: Router,
+    private logService: LogService,) {
     this.messageForm = this.fb.group({
       titre: [''],
       message: [''],
@@ -65,14 +67,14 @@ export class CreatePostComponent implements OnInit {
   formMessage.append('libelle', this.messageForm.value.message);
   formMessage.append('date_limit', this.messageForm.value.date_limit);
   formMessage.append('codeUE', codeUe);
-    
+
   // Ajouter le type_post si nécessaire
   if (this.messageForm.value.addFile == 1) {
     formMessage.append('type_post', 'devoir');
   }else {
     formMessage.append('type_post', 'message');
   }
-  
+
   // Envoyer la requête via le service
   this.postservice.createPost(formMessage).subscribe({
     next: res => {
@@ -142,7 +144,7 @@ export class CreatePostComponent implements OnInit {
     },
     error: err => console.error('Erreur création du fichier', err)
   });
-  
+
   this.valide();
   }
 

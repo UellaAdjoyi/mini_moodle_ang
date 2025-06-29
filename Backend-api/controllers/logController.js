@@ -34,13 +34,22 @@ console.log('BODY RECU :', req.body);
 // @route   GET /api/logs
 
 const getAllLogs = async (req, res) => {
-  try {
-    const logs = await Log.find({});
-    res.status(200).json(logs);
-  } catch (error) {
-    console.error('Erreur getAllLogs:', error);
-    res.status(500).json({ message: "Erreur serveur lors de la récupération des logs." });
-  }
+    try {
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 20;
+
+        const logs = await Log.find({})
+            .populate('user_id', 'name email')
+            .sort({ date_heure: -1 })
+            .skip((page - 1) * limit)
+            .limit(limit);
+
+        res.status(200).json(logs);
+    } catch (error) {
+        console.error('Erreur getAllLogs:', error);
+        res.status(500).json({ message: "Erreur serveur lors de la récupération des logs." });
+    }
 };
+
 
 module.exports = { getAllLogs, createLog };

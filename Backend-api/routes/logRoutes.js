@@ -16,5 +16,5 @@ router.get('/logAll',getAllLogs )
 
 // Seuls les admins peuvent voir tous les logs
 router.route('/')
-    .get(protect, authorize('admin'), getAllLogs); // Utilisez votre middleware d'autorisation de rôle
+    .get( getAllLogs);
 module.exports = router;

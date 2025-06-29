@@ -4,7 +4,7 @@ export class Post {
     type_post : any;
     titre: any;
     libelle: any;
-    date_heure: any;
+    date_heure_publication: any;
     codeUe?: any;
     id_prof: any;
     date_limite?: any;

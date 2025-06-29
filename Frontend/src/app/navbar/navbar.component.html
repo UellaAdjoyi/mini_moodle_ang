@@ -8,8 +8,9 @@
 <!--      <a class="nav-item nav-link" routerLink="/activites">Activités récentes</a>-->
       <a class="nav-item nav-link" routerLink="/" *ngIf="!userRole">Accueil</a>
       <a class="nav-item nav-link" routerLink="/login" *ngIf="!userRole">Connexion</a>
-      <a class="nav-item nav-link" routerLink="/catalogue" *ngIf="userRole?.includes('ROLE_ADMIN')">Catalogue</a>
       <a class="nav-item nav-link" routerLink="/dashboard" *ngIf="userRole?.includes('ROLE_ADMIN')">Tableau de bord</a>
+      <a class="nav-item nav-link" routerLink="/catalogue" *ngIf="userRole?.includes('ROLE_ADMIN')">Catalogue</a>
+      <a class="nav-item nav-link" routerLink="/logs" *ngIf="userRole?.includes('ROLE_ADMIN')">logs</a>
       <a class="nav-item nav-link" routerLink="/mesCours" *ngIf="userRole?.includes('ROLE_ETUDIANT')">Mes cours</a>
       <a class="nav-item nav-link" routerLink="/mesCours" *ngIf="userRole?.includes('ROLE_PROF')">Mes cours</a>
       <a class="nav-item nav-link" routerLink="/participants" *ngIf="userRole?.includes('ROLE_PROF')">Participants</a>
