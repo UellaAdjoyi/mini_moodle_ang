@@ -1,44 +1,55 @@
 const Log = require('../models/Log');
 
+// create log
+const createLog = async (req, res) => {
+  const { user_id, action, cible_type, cible_id} = req.body;
+
+
+  try {
+    if (!user_id || !action) {
+      return res.status(400).json({ message: 'Veuillez fournir  user_id,  action et  cible_type.' });
+    }
+console.log('BODY RECU :', req.body);
+    const date_heure = new Date();
+
+    const logData = {
+      user_id, action, cible_type, cible_id,
+      date_heure
+    };
+
+    
+
+    const newLog = new Log(logData);
+    const createdLog = await newLog.save();
+
+    res.status(201).json(createdLog);
+
+  } catch (error) {
+    console.error('Erreur createPost:', error);
+    res.status(500).json({ message: 'Erreur serveur lors de la création du post.' });
+  }
+};
+
 // @desc    Récupérer tous les logs (avec pagination et filtres optionnels)
 // @route   GET /api/logs
-// @access  Private (admin)
+
 const getAllLogs = async (req, res) => {
     try {
-        // Options de pagination
         const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 25;
-        const skip = (page - 1) * limit;
+        const limit = parseInt(req.query.limit) || 20;
 
-        // Options de filtre (exemples)
-        const filter = {};
-        if (req.query.userId) filter.user_id = req.query.userId;
-        if (req.query.action) filter.action = req.query.action;
-        if (req.query.cibleType) filter.cible_type = req.query.cibleType;
-        if (req.query.cibleId) filter.cible_id = req.query.cibleId;
-        // On pourrait ajouter des filtres de date
-
-        const logs = await Log.find(filter)
-            .populate('user_id', 'nom prenom email') // Populer l'utilisateur
-            // .populate('cible_id') // Populer la cible si refPath est bien configuré (plus complexe)
-            .sort({ date_heure: -1 }) // Les plus récents en premier
-            .skip(skip)
+        const logs = await Log.find({})
+            .populate('user_id', 'name email')
+            .sort({ date_heure: -1 })
+            .skip((page - 1) * limit)
             .limit(limit);
 
-        const totalLogs = await Log.countDocuments(filter);
-        const totalPages = Math.ceil(totalLogs / limit);
-
-        res.status(200).json({
-            logs,
-            currentPage: page,
-            totalPages,
-            totalLogs
-        });
-
+        res.status(200).json(logs);
     } catch (error) {
         console.error('Erreur getAllLogs:', error);
         res.status(500).json({ message: "Erreur serveur lors de la récupération des logs." });
     }
 };
 
-module.exports = { getAllLogs };
+
+module.exports = { getAllLogs, createLog };

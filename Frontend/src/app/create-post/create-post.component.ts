@@ -2,6 +2,7 @@ import { EventEmitter,Component, OnInit, Output } from '@angular/core';
 import {FormGroup,FormBuilder} from '@angular/forms';
 import { Router,ActivatedRoute } from '@angular/router';
 import { PostService } from '../services/post.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-create-post',
@@ -21,6 +22,7 @@ export class CreatePostComponent implements OnInit {
    dateHeure = this.maintenant.toLocaleString();
 
   constructor(
+    private authService : AuthService,
     private postservice: PostService,
     private lien: ActivatedRoute,
     private fb: FormBuilder,
@@ -63,22 +65,42 @@ export class CreatePostComponent implements OnInit {
   formMessage.append('libelle', this.messageForm.value.message);
   formMessage.append('date_limit', this.messageForm.value.date_limit);
   formMessage.append('codeUE', codeUe);
-
+    
   // Ajouter le type_post si nécessaire
   if (this.messageForm.value.addFile == 1) {
     formMessage.append('type_post', 'devoir');
   }else {
     formMessage.append('type_post', 'message');
   }
-
+  
   // Envoyer la requête via le service
   this.postservice.createPost(formMessage).subscribe({
     next: res => {
       console.log('Message créé', res);
       this.close.emit();
+      // Créer le log après réception du post créé
+      const userId = this.authService.getCurrentUserId()?? '';
+      const formLog = new FormData();
+      formLog.append('user_id', userId);
+      formLog.append('action', 'creation_post');
+      formLog.append('cible_type', 'Post');
+      formLog.append('cible_id', res._id); // on récupère l'ID du post créé
+
+      // Envoyer la requête de création du log
+      this.postservice.createLog(formLog).subscribe({
+        next: logRes => {
+          console.log('log créé', logRes);
+          console.log('log terminé');
+        },
+        error: logErr => {
+          console.error('Erreur création du log', logErr);
+        }
+      });
+
     },
     error: err => console.error('Erreur création du message', err)
   });
+
   this.valide();
 };
 
@@ -93,14 +115,34 @@ export class CreatePostComponent implements OnInit {
     formData.append('type_post', 'fichier');
 
     console.log('Fichier envoyé', formData);
+
     // Envoyer la requête via le service
   this.postservice.createFilePost(formData).subscribe({
     next: res => {
       console.log('fichier posté', res);
-      this.close.emit();
+       this.close.emit();
+       // Créer le log après réception du post créé
+      const userId = this.authService.getCurrentUserId()?? '';
+      const formLog = new FormData();
+      formLog.append('user_id', userId);
+      formLog.append('action', 'creation_post');
+      formLog.append('cible_type', 'Post');
+      formLog.append('cible_id', res._id); // on récupère l'ID du post créé
+
+      // Envoyer la requête de création du log
+      this.postservice.createLog(formLog).subscribe({
+        next: logRes => {
+          console.log('log créé', logRes);
+          console.log('log terminé');
+        },
+        error: logErr => {
+          console.error('Erreur création du log', logErr);
+        }
+      });
     },
     error: err => console.error('Erreur création du fichier', err)
   });
+  
   this.valide();
   }
 

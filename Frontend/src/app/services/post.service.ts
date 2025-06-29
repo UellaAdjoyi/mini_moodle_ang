@@ -34,5 +34,12 @@ export class PostService {
   deletePost(postId: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${postId}`);
   }
-
+  
+private apiUrlLog = 'http://localhost:3000/api/logs';
+//creer log
+    createLog(data: FormData): Observable<any> {
+      return this.http.post(`${this.apiUrlLog}/createLog`, data);
+    }
 }
+
+
