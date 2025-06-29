@@ -5,12 +5,7 @@ const User = require('../models/user');
 const Ue = require('../models/Ue');
 const { createLogEntry } = require('../utils/logger');
 
-
-
-
-
 const loginUser = async (req, res) => {
-  // On utilise 'email' pour la connexion, comme c'est le champ unique standard
   const { email, password } = req.body;
 
   try {
@@ -71,8 +66,6 @@ const getMe = async (req, res) => {
     res.status(500).json({ message: 'Erreur serveur lors de la récupération des informations utilisateur.' });
   }
 };
-
-
 
 const getUserCourses = async (req, res) => {
   try {

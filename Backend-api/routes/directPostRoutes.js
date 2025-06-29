@@ -1,5 +1,10 @@
 const express = require('express');
 const router = express.Router();
+const { protect } = require('../middlewares/authMiddleware');
+
+// Pour un post sans fichier
+
+
 
 const {
     getPostById,
@@ -10,16 +15,16 @@ const {
     createFilePost,
     getAllPosts,
 } = require('../controllers/postController'); // Même contrôleur
-const { protect } = require('../middlewares/authMiddleware');
 
 // route pour créer un post (message)
 const multer = require('multer');
 const upload = multer();
-router.post('/createPost', upload.none(), createPost);
+router.post('/createPost',protect, upload.none(), createPost);
 
 // route pour créer un post (fichier)
 const {uploadSingle} = require("../middlewares/uploadPost");
-router.post('/createFilePost', uploadSingle, createFilePost);
+const authenticateUser = require("../middlewares/authenticateUser");
+router.post('/createFilePost', uploadSingle,protect, createFilePost);
 
 // afficher les posts en fonctions des ue
 router.get('/showPosts/:codeUe', getPostsByUe);
@@ -31,18 +36,15 @@ router.get('/postAll',getAllPosts )
 router.delete('/deletePost/:id', deletePost);
 
 // modifier un post
-router.put('/profile', uploadSingle, updatePost);
+router.put('/profile', uploadSingle,protect, updatePost);
 
 router.route('/:postId')
     .get( getPostById)
-    .put(upload.single('fichier'), updatePost)
-    .delete( deletePost);
+    .put(upload.single('fichier'),protect, updatePost)
+    .delete( protect,deletePost);
 
 
-// Ici, on pourrait aussi ajouter des routes pour la gestion des devoirs remis, par exemple :
-// router.route('/:postId/submit').post(protect, submitAssignment);
-// router.route('/:postId/submissions').get(protect, authorize('prof', 'admin'), getSubmissionsForPost);
-// router.route('/:postId/submissions/:submissionId/grade').put(protect, authorize('prof', 'admin'), gradeSubmission);
+
 
 
 module.exports = router;

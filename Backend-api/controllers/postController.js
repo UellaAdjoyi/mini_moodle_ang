@@ -1,5 +1,8 @@
 const Post = require('../models/Post');
 const UE = require('../models/Ue');
+const Log = require('../models/Log');
+
+
 
 // @desc    Créer un nouveau post dans une UE
 // @route   POST /api/ues/:ueId/posts
@@ -100,6 +103,14 @@ const createPost = async (req, res) => {
 
     const newPost = new Post(postData);
     const createdPost = await newPost.save();
+      const log = new Log({
+          user_id: req.user._id,
+          action: 'creation_post',
+          cible_type: 'Post',
+          cible_id: createdPost._id,
+          cible_details: titre
+      });
+      await log.save();
 
     res.status(201).json(createdPost);
 
@@ -148,7 +159,14 @@ const createFilePost = async (req, res) => {
 
     const newPost = new Post(postData);
     const createdPost = await newPost.save();
-
+      const log = new Log({
+          user_id: req.user._id,
+          action: 'creation_post',
+          cible_type: 'Post',
+          cible_id: createdPost._id,
+          cible_details: titre
+      });
+      await log.save();
     res.status(201).json(createdPost);
 
   } catch (error) {
@@ -204,6 +222,15 @@ const updatePost = async (req, res) => {
         }
 
         await post.save();
+        const log = new Log({
+            user_id: req.user._id,
+            action: 'modification_post',
+            cible_type: 'Post',
+            cible_id: post._id,
+            cible_details: post.titre
+        });
+        await log.save();
+
         res.json(post);
     } catch (err) {
         res.status(500).json({ message: "Erreur serveur", error: err });
@@ -219,8 +246,18 @@ const deletePost = async (req, res) => {
         const deletedPost = await Post.findByIdAndDelete(postId);
 
         if (!deletedPost) {
+
             return res.status(404).json({ message: "Post non trouvé" });
         }
+
+        const log = new Log({
+            user_id: req.user._id,
+            action: 'suppression_post',
+            cible_type: 'Post',
+            cible_id: deletedPost._id,
+            cible_details: deletedPost.titre
+        });
+        await log.save();
 
         res.status(200).json({ message: "Post supprimé avec succès", post: deletedPost });
     } catch (error) {
