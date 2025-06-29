@@ -30,8 +30,7 @@ console.log('BODY RECU :', req.body);
   }
 };
 
-// @desc    Récupérer tous les logs (avec pagination et filtres optionnels)
-// @route   GET /api/logs
+
 
 const getAllLogs = async (req, res) => {
     try {

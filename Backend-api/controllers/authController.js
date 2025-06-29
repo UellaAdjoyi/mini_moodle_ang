@@ -1,8 +1,5 @@
 const generateToken = require('../utils/generateToken');
-const sendEmail = require('../utils/sendEmail');
-const generatePassword = require('../utils/generatePassword');
 const User = require('../models/user');
-const Ue = require('../models/Ue');
 const { createLogEntry } = require('../utils/logger');
 
 const loginUser = async (req, res) => {
@@ -16,10 +13,8 @@ const loginUser = async (req, res) => {
     // Trouver l'utilisateur par email
     const user = await User.findOne({ email });
 
-    // Vérifier si l'utilisateur existe ET si le mot de passe correspond (méthode matchPassword du modèle)
     if (user && (await user.matchPassword(password))) {
-      // Créer un log de connexion APRÈS succès
-            await createLogEntry(user._id, 'connexion'); // Aucune cible spécifique pour le login simple
+            await createLogEntry(user._id, 'connexion');
       res.json({
         _id: user._id,
         nom: user.nom,
@@ -38,34 +33,6 @@ const loginUser = async (req, res) => {
   }
 };
 
-const getMe = async (req, res) => {
-  // req.user est fourni par le middleware `protect` et contient l'objet utilisateur (sans le mot de passe)
-  // directement depuis la base de données.
-  try {
-    // L'utilisateur est déjà chargé par le middleware `protect` dans `req.user`
-    // On peut vouloir le "re-chercher" si on veut des données très à jour ou populer des champs.
-    // Mais pour l'instant, req.user devrait suffire si le middleware fait bien son travail.
-
-    // const user = await User.findById(req.user._id).select('-password').populate('cours.ue_id', 'nom code');
-    // if (user) {
-    //    res.json(user);
-    // } else {
-    //    res.status(404).json({ message: "Utilisateur non trouvé" });
-    // }
-    
-    // Si req.user est déjà bien populé par le middleware (ce qui est le cas avec notre `authMiddleware.js` actuel)
-    if (req.user) {
-        res.json(req.user); // req.user contient déjà _id, nom, prenom, email, role, photo
-    } else {
-        // Ce cas ne devrait pas être atteint si le middleware `protect` fonctionne correctement
-        res.status(404).json({ message: "Utilisateur non trouvé ou non authentifié." });
-    }
-
-  } catch (error) {
-    console.error('Erreur dans getMe:', error);
-    res.status(500).json({ message: 'Erreur serveur lors de la récupération des informations utilisateur.' });
-  }
-};
 
 const getUserCourses = async (req, res) => {
   try {
@@ -102,7 +69,6 @@ removeUserCourse = async (req, res) => {
 
 module.exports = {
   loginUser,
-  getMe,
   getUserCourses,
   removeUserCourse,
 };

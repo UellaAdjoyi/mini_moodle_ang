@@ -9,8 +9,6 @@ const {
 
 const postRouterForUe = require('./postRoutes');
 
-const { createForumForUe, getForumByUe } = require('../controllers/forumController');
-
 const { protect } = require('../middlewares/authMiddleware');
 const upload = require("../middlewares/upload");
 const authenticateUser = require("../middlewares/authenticateUser");
