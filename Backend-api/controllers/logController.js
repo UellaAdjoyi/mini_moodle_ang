@@ -30,8 +30,7 @@ const createLog = async (req, res) => {
   }
 };
 
-// @desc    Récupérer tous les logs (avec pagination et filtres optionnels)
-// @route   GET /api/logs
+
 
 const getAllLogs = async (req, res) => {
     try {

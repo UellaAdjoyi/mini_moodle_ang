@@ -2,10 +2,6 @@ const express = require('express');
 const router = express.Router();
 const { protect } = require('../middlewares/authMiddleware');
 
-// Pour un post sans fichier
-
-
-
 const {
     getPostById,
     getPostsByUe,

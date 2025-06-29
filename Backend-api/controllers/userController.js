@@ -164,7 +164,7 @@ const deleteUser = async (req, res) => {
 const assignUeToUser = async (req, res) => {
   try {
     const { userId } = req.params;
-    const { ueId, role } = req.body; // role attendu ici : 'participant' ou 'enseignant'
+    const { ueId, role } = req.body;
 
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ message: 'Utilisateur non trouvé' });
@@ -172,15 +172,12 @@ const assignUeToUser = async (req, res) => {
     const ue = await Ue.findById(ueId);
     if (!ue) return res.status(404).json({ message: 'UE non trouvée' });
 
-    // Vérification cohérence rôle global et rôle UE
-    const userRoles = user.role; // supposé être un tableau comme ['ROLE_ETUDIANT'] ou ['ROLE_PROF']
+    const userRoles = user.role;
 
-    // Si l'utilisateur a ROLE_ETUDIANT, il ne peut être que participant
     if (userRoles.includes('ROLE_ETUDIANT') && role !== 'participant') {
       return res.status(400).json({ message: "Un étudiant ne peut être que participant." });
     }
 
-    // Si l'utilisateur a ROLE_PROF, il ne peut être que enseignant
     if (userRoles.includes('ROLE_PROF') && role !== 'enseignant') {
       return res.status(400).json({ message: "Un professeur ne peut être que enseignant." });
     }
@@ -192,7 +189,7 @@ const assignUeToUser = async (req, res) => {
         nom: ue.nom,
         imageUe: ue.image || null,
         dernierAcces: new Date(),
-        role: role  // stocker aussi le rôle dans l'UE
+        role: role
       });
 
       await user.save();

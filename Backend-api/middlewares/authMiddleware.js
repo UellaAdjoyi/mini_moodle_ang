@@ -25,7 +25,6 @@ const protect = async (req, res, next) => {
             next(); // Passe au prochain middleware ou à la route
         } catch (error) {
             console.error('Erreur dans le middleware protect (try-catch):', error.message);
-            // Distinguer les erreurs de token invalide/expiré
             if (error.name === 'JsonWebTokenError') {
                 return res.status(401).json({ message: 'Non autorisé, token malformé ou invalide' });
             }
@@ -41,24 +40,12 @@ const protect = async (req, res, next) => {
       return res.status(401).json({ message: 'Non autorisé, en-tête Authorization manquant ou malformé' });
     }
 
-    // Ce bloc est maintenant un peu redondant si le `else` ci-dessus retourne une réponse,
-    // mais on le garde pour le moment comme double sécurité.
     if (!token && !(res.headersSent)) { // Vérifier si une réponse n'a pas déjà été envoyée
         console.log('Aucun token trouvé après vérification de l_en-tête.');
         return res.status(401).json({ message: 'Non autorisé, pas de token fourni (vérification finale)' });
     }
 };
 
-// const admin = (req, res, next) => {
-//     if (req.user && req.user.role === 'ROLE_ADMIN') {
-//         next();
-//     } else {
-//         res.status(403).json({ message: 'Accès interdit. Réservé aux administrateurs.' });
-//     }
-// };
-
-
 module.exports = {
     protect,
-    // admin,
 };

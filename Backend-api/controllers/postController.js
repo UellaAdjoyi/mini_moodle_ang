@@ -1,68 +1,6 @@
 const Post = require('../models/Post');
 const UE = require('../models/Ue');
 const Log = require('../models/Log');
-
-
-
-// @desc    Créer un nouveau post dans une UE
-// @route   POST /api/ues/:ueId/posts
-// @access  Private (enseignant de l'UE ou admin)
-const createPostInUe = async (req, res) => {
-    const { ueId } = req.params;
-    const { type_post, titre, libelle, commentaires_post, date_limite, fichiers_attaches } = req.body;
-
-    try {
-        const ue = await UE.findById(ueId);
-        if (!ue) {
-            return res.status(404).json({ message: "UE non trouvée." });
-        }
-
-        // Vérification des droits : l'utilisateur est-il enseignant de cette UE ou admin ?
-        const isTeacherOfUe = ue.enseignants.some(e => e.user_id.toString() === req.user._id.toString());
-        if (!isTeacherOfUe && req.user.role !== 'admin') {
-             return res.status(403).json({ message: "Accès non autorisé pour créer un post dans cette UE."});
-        }
-
-        if (!type_post || !titre || !libelle) {
-            return res.status(400).json({ message: "Veuillez fournir type, titre et libellé pour le post." });
-        }
-        if (type_post === 'devoir' && !date_limite) {
-            return res.status(400).json({ message: "Veuillez fournir une date limite pour un post de type 'devoir'." });
-        }
-
-        const auteurInfo = {
-            user_id: req.user._id,
-            nom: req.user.nom,
-            prenom: req.user.prenom,
-            email: req.user.email // Optionnel, peut être populé plus tard
-        };
-
-        const newPost = await Post.create({
-            ue_id: ueId,
-            nomUE: ue.nom,       // Dénormalisation
-            codeUE: ue.code,     // Dénormalisation
-            type_post,
-            titre,
-            libelle,
-            commentaires_post,
-            date_limite: type_post === 'devoir' ? date_limite : null,
-            fichiers_attaches: fichiers_attaches || [], // Assurer que c'est un tableau
-            auteur: auteurInfo,
-            devoirs_remis: [] // Initialement vide pour un nouveau post
-        });
-
-        res.status(201).json(newPost);
-
-    } catch (error) {
-        console.error('Erreur createPostInUe:', error);
-        if (error.name === 'ValidationError') {
-            const messages = Object.values(error.errors).map(val => val.message);
-            return res.status(400).json({ message: messages.join(', ') });
-        }
-        res.status(500).json({ message: "Erreur serveur lors de la création du post." });
-    }
-};
-
 //créer un post (message)
 const createPost = async (req, res) => {
   const { codeUE, titre, type_post, libelle, date_limit } = req.body;
@@ -329,9 +267,7 @@ const deletePost = async (req, res) => {
     }
 };
 
-// @desc    Récupérer un post spécifique par son ID
-// @route   GET /api/posts/:postId  (Note: route non imbriquée sous /ues pour plus de flexibilité, ou /api/ues/:ueId/posts/:postId)
-// @access  Private (membre de l'UE du post ou admin)
+
 const getPostById = async (req, res) => {
     const { postId } = req.params;
     try {
@@ -355,13 +291,6 @@ const getPostById = async (req, res) => {
         if (!isParticipant && !isTeacher && req.user.role !== 'admin') {
             return res.status(403).json({ message: "Accès non autorisé pour voir ce post."});
         }
-        
-        // Si le post est un devoir, on pourrait vouloir populer les devoirs_remis avec les infos de l'étudiant
-        // if (post.type_post === 'devoir') {
-        //    await post.populate('devoirs_remis.user_id', 'nom prenom email').execPopulate(); // Mongoose 5
-        //    await post.populate({ path: 'devoirs_remis.user_id', select: 'nom prenom email' }); // Mongoose 6+
-        // }
-
 
         res.status(200).json(post);
 
@@ -376,14 +305,7 @@ const getPostById = async (req, res) => {
 
 
 
-
-// Fonctions pour la gestion des devoirs remis (à venir)
-// POST /api/posts/:postId/submit (pour un étudiant)
-// GET /api/posts/:postId/submissions (pour un enseignant/admin)
-// PUT /api/posts/:postId/submissions/:submissionId/grade (pour un enseignant)
-
 module.exports = {
-    createPostInUe,
     getPostsByUe,
     getPostById,
     updatePost,

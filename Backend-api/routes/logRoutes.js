@@ -1,9 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const { getAllLogs, createLog } = require('../controllers/logController');
-const { protect } = require('../middlewares/authMiddleware');
-const { authorize } = require('../middlewares/roleMiddleware'); // Si vous avez ce middleware
-
 
 
 // route pour créer un log 

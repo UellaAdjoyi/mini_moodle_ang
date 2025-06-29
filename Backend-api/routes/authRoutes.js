@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const {
     loginUser,
-    getMe,
 } = require('../controllers/authController');
 
 const {
@@ -17,7 +16,6 @@ const {
     getUserCourses, resetPassword
 } = require('../controllers/userController');
 const { protect,admin} = require('../middlewares/authMiddleware');
-const upload= require('../middlewares/upload');
 const authenticateUser = require("../middlewares/authenticateUser");
 const {uploadSingle} = require("../middlewares/uploadUsers");
 
@@ -31,7 +29,6 @@ router.get('/photo/:id', getUserPhoto);
 router.post('/login', loginUser);
 
 // Route pour récupérer les infos de l'utilisateur connecté (protégée)
-router.get('/me', protect, getMe);
 router.post('/assign-ue/:userId', assignUeToUser);
 
 router.get('/users', getAllUsers);
@@ -48,9 +45,7 @@ router.get('/profile', authenticateUser, (req, res) => {
     });
 });
 router.post('/reset-password', resetPassword);
-
 router.delete('/users/:userId/cours/:ueId', removeUeFromUser);
 router.get('/:id/cours', getUserCourses);
-
 
 module.exports = router;
