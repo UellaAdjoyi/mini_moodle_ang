@@ -25,28 +25,30 @@ const routes: Routes = [
   {path: 'catalogue', component: CatalogueComponent},
   {path:'mesCours',component:MesCoursComponent},
   {path:'createPost/:codeUe/:nomUe',component: CreatePostComponent},
-  {path: 'forum',component: ForumComponent},
   {path:'profil',component: ProfilComponent},
   {path:'resetPassword',component: ForgotPasswordComponent},
   {
-    path: 'post-etu/:code/:nom',
+    path: 'post-etu/:code/:nom/:ue_id',
     component: EtudiantPostComponent,
     children: [
-      { path: '', redirectTo: 'post', pathMatch: 'full' },
-      { path: 'post', component: ListPostEtuComponent },
-      { path: 'forum', component: ForumComponent }
+      { path: '',      redirectTo: 'post', pathMatch: 'full' },
+      { path: 'post',  component: ListPostEtuComponent },
+      { path: 'forum', component: ForumComponent },
     ]
   },
   {path:'post',component: PostComponent},
-  {path:'post-prof/:code/:nom',component: ShowPostComponent,
+  {
+    path: 'post-prof/:code/:nom/:ue_id',
+    component: ShowPostComponent,
     children: [
-      { path: '', redirectTo: 'post-all', pathMatch: 'full' },
-      {path:'forum-ue',component: ForumComponent},
-      {path:'participants-ue',component:ProfDashboardComponent},
-      {path:'post-all',component: PostListComponent,}
-      // {path:'post-all/:code/:nom',component: PostListComponent,}
+      { path: '',               redirectTo: 'post-all', pathMatch: 'full' },
+      { path: 'post-all',       component: PostListComponent },
+      { path: 'forum-ue',       component: ForumComponent },
+      { path: 'participants-ue', component: ProfDashboardComponent },
     ]
   },
+
+
   {path:'page-ue',component:PageUeComponent},
   {path:'ue/:id',component:UeDetailsComponent},
   {path:'dashboard',component:AdminDashboardComponent},

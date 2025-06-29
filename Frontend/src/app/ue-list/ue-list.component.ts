@@ -33,7 +33,7 @@ export class UeListComponent implements OnInit {
   loadUes() {
     this.ueService.getAllUes().subscribe({
       next: (data) => {
-        console.log('UEs reçues:', data);
+        // console.log('UEs reçues:', data);
         this.ues = data;
       },
       error: (err) => console.error('Erreur lors du chargement des UEs', err)
@@ -107,18 +107,6 @@ export class UeListComponent implements OnInit {
     });
   }
 
-  removeUserFromUe(userId: string, ueId: string) {
-    this.ueService.removeUeFromUser(userId, ueId).subscribe({
-      next: () => {
-        alert('Utilisateur retiré de l’UE');
-        this.loadUes();
-      },
-      error: (err) => {
-        console.error(err);
-        alert('Erreur lors du retrait');
-      }
-    });
-  }
 
   getImageUrl(imageName: string): string {
     return `http://localhost:3000/uploads/ues/${imageName}`;

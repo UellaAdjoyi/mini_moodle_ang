@@ -24,12 +24,6 @@ export class AuthService {
     );
   }
 
-  //creer log
-    createLog(data: FormData): Observable<any> {
-      return this.http.post(`${this.apiUrlLog}/createLog`, data);
-    }
-
-
 
   saveToken(token: string) {
     localStorage.setItem('token', token);
@@ -75,6 +69,12 @@ export class AuthService {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
   }
+  getUserRoles(): string[] {
+    const user = this.getCurrentUser();
+    return user?.role || [];
+  }
+
+
 
 
 }

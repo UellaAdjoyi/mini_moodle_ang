@@ -40,13 +40,13 @@ export class LoginComponent implements OnInit {
     this.authService.login(email!, password!).subscribe({
       next: (user) => {
         console.log('Utilisateur connecté:', user);
-        this.logService.createLog({
-          user_id: user._id,
-          action: 'Connexion',
-        }).subscribe(
-          () => console.log('Log créé'),
-          (err) => console.error('Erreur lors de la création du log', err)
-        );
+        // this.logService.createLog({
+        //   user_id: user._id,
+        //   action: 'Connexion',
+        // }).subscribe(
+        //   () => console.log('Log créé'),
+        //   (err) => console.error('Erreur lors de la création du log', err)
+        // );
 
 
         if (user.role.includes ('ROLE_ETUDIANT')) {
