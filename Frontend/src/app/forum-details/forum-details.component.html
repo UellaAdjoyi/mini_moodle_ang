@@ -1,0 +1,36 @@
+<div *ngIf="loading" class="loading">
+  Chargement...
+</div>
+
+<div *ngIf="errorMsg" class="error">
+  {{ errorMsg }}
+</div>
+
+<div *ngIf="forum" class="forum-container">
+  <h2 class="forum-title">{{ forum.titre }}</h2>
+  <p class="forum-description">{{ forum.description }}</p>
+
+  <h3 class="messages-heading">Messages</h3>
+  <ul class="messages-list">
+    <li *ngFor="let msg of forum.messages" class="message-item">
+      <div class="message-author">
+        <strong>{{ msg.auteur.nom }} {{ msg.auteur.prenom }}</strong>
+      </div>
+      <div class="message-content">
+        {{ msg.contenu }}
+      </div>
+    </li>
+  </ul>
+
+  <div class="new-message-form">
+    <textarea
+      [(ngModel)]="newMessageContent"
+      placeholder="Votre message..."
+      rows="3"
+      class="message-textarea"
+    ></textarea>
+    <button (click)="addMessage()" class="send-button">
+      Envoyer
+    </button>
+  </div>
+</div>

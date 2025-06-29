@@ -18,6 +18,7 @@ import { ShowPostComponent } from './prof/show-post/show-post.component';
 import {ForgotPasswordComponent} from "./forgot-password/forgot-password.component";
 import {LogListComponent} from "./log-list/log-list.component";
 import {EtudiantPostComponent} from "./etudiant/etudiant-post/etudiant-post.component";
+import {ForumDetailsComponent} from "./forum-details/forum-details.component";
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -34,6 +35,8 @@ const routes: Routes = [
       { path: '',      redirectTo: 'post', pathMatch: 'full' },
       { path: 'post',  component: ListPostEtuComponent },
       { path: 'forum', component: ForumComponent },
+      { path: 'forum/:forumId', component: ForumDetailsComponent }
+
     ]
   },
   {path:'post',component: PostComponent},
@@ -41,10 +44,12 @@ const routes: Routes = [
     path: 'post-prof/:code/:nom/:ue_id',
     component: ShowPostComponent,
     children: [
-      { path: '',               redirectTo: 'post-all', pathMatch: 'full' },
-      { path: 'post-all',       component: PostListComponent },
-      { path: 'forum-ue',       component: ForumComponent },
+      { path: '',redirectTo: 'post-all', pathMatch: 'full' },
+      { path: 'post-all',component: PostListComponent },
+      { path: 'forum-ue',component: ForumComponent },
       { path: 'participants-ue', component: ProfDashboardComponent },
+      { path: 'forum-ue/:forumId', component: ForumDetailsComponent },
+
     ]
   },
 
@@ -54,6 +59,8 @@ const routes: Routes = [
   {path:'dashboard',component:AdminDashboardComponent},
   {path:'participants',component:ProfDashboardComponent},
   {path:'logs',component:LogListComponent},
+  { path: 'forum/:id', component: ForumDetailsComponent }
+
 
 ];
 

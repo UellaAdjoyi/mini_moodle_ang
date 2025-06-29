@@ -1,0 +1,50 @@
+.create-forum-form {
+  background: #f8f8f8;
+  border: 1px solid #ddd;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  border-radius: 6px;
+}
+
+.create-forum-form h3 {
+  margin-top: 0;
+}
+
+.create-forum-form .form-group {
+  margin-bottom: 0.75rem;
+}
+
+.create-forum-form .input,
+.create-forum-form .textarea {
+  width: 100%;
+  padding: 0.5rem;
+  box-sizing: border-box;
+  font-size: 1rem;
+}
+
+.create-forum-form .btn {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.create-forum-form .btn:hover {
+  background: #0056b3;
+}
+
+.forum-list {
+  list-style: none;
+  padding: 0;
+}
+
+.forum-item {
+  border-bottom: 1px solid #ddd;
+  padding: 1rem 0;
+}
+
+.forum-item h3 {
+  margin: 0 0 0.5rem 0;
+}

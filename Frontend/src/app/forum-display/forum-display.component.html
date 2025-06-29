@@ -1,7 +1,0 @@
-<div class="list-group">
-  <div *ngFor="let forum of forums" class="list-group-item">
-    <h5>{{ forum.titre }}</h5>
-    <p>{{ forum.description }}</p>
-    <a [routerLink]="['/forum', forum._id]" class="btn btn-sm btn-primary">Voir les messages</a>
-  </div>
-</div>
