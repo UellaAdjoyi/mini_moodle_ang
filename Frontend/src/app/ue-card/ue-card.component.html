@@ -1,15 +1,35 @@
-<div class="card h-100 shadow-sm" (click)="onOpenDetails()" style="cursor: pointer;">
+<div
+  class="card h-100 shadow-sm"
+  (click)="onOpenDetails()"
+  style="cursor: pointer;"
+>
   <div class="course-image">
-    <img [src]="ue.imageUrl || 'assets/images/ue.png'" class="card-img-top" alt="Image de l'UE" (error)="onImageError($event)" />
-
+    <img
+      [src]="ue.imageUrl || 'assets/images/ue.png'"
+      class="card-img-top"
+      alt="Image de l'UE"
+      (error)="onImageError($event)"
+    />
   </div>
   <div class="card-body">
-    <a *ngIf="role === 'ROLE_ETUDIANT'" [routerLink]="['/post-etu', ue.code, ue.nom]" (click)="$event.stopPropagation(); createLog()">
+    <!-- Pour l'étudiant -->
+    <a
+      *ngIf="role === 'ROLE_ETUDIANT'"
+      [routerLink]="['/post-etu', ue.code, ue.nom, ue._id]"
+      (click)="$event.stopPropagation(); createLog()"
+    >
       <h5 class="card-title">{{ ue.nom }}</h5>
     </a>
-    <a *ngIf="role === 'ROLE_PROF'" [routerLink]="['/post-prof', ue.code, ue.nom]" (click)="$event.stopPropagation(); createLog()">
+
+    <!-- Pour le professeur -->
+    <a
+      *ngIf="role === 'ROLE_PROF'"
+      [routerLink]="['/post-prof', ue.code, ue.nom, ue._id]"
+      (click)="$event.stopPropagation(); createLog()"
+    >
       <h5 class="card-title">{{ ue.nom }}</h5>
     </a>
+
     <p class="card-text">{{ ue.description }}</p>
     <p *ngIf="role === 'ROLE_ETUDIANT'" class="text-muted">
       Dernier accès : {{ ue.dernier_acc_etu }}
@@ -17,6 +37,5 @@
     <p *ngIf="role === 'ROLE_PROF'" class="text-muted">
       Nombre d'étudiants : {{ ue.participants?.length }}
     </p>
-
   </div>
 </div>

@@ -1,4 +1,5 @@
 const UE = require('../models/Ue');
+const Log = require('../models/Log');
 const fs = require('fs');
 const path = require('path');
 
@@ -60,6 +61,14 @@ const createUe = async (req, res) => {
         });
 
         const createdUe = await newUe.save();
+        const log = new Log({
+            user_id: req.user._id,
+            action: 'creation_ue',
+            cible_type: 'UE',
+            cible_id: createdUe._id,
+            cible_details: nom
+        });
+        await log.save();
         res.status(201).json(createdUe);
 
     } catch (error) {
@@ -97,6 +106,15 @@ const updateUe = async (req, res) => {
         ue.image = image;
 
         const updatedUe = await ue.save();
+        const log = new Log({
+            user_id: req.user._id,
+            action: 'modification_ue',
+            cible_type: 'UE',
+            cible_id: ue._id,
+            cible_details: ue.nom
+        });
+        await log.save();
+
         res.status(200).json(updatedUe);
     } catch (error) {
         console.error('Erreur updateUe:', error);
@@ -120,6 +138,15 @@ const deleteUe = async (req, res) => {
         }
 
         await ue.deleteOne();
+        const log = new Log({
+            user_id: req.user._id,
+            action: 'suppression_ue',
+            cible_type: 'UE',
+            cible_id: ue._id,
+            cible_details: ue.nom
+        });
+        await log.save();
+
         res.status(200).json({ message: 'UE supprimée avec succès.' });
     } catch (error) {
         console.error('Erreur deleteUe:', error);

@@ -2,6 +2,8 @@ const User = require("../models/User");
 const generatePassword = require("../utils/generatePassword");
 const sendEmail = require("../utils/sendEmail");
 const Ue = require("../models/Ue");
+const Log = require('../models/Log');
+
 
 const registerUser = async (req, res) => {
   const { nom, prenom, email, role, serviceProf, bureauProf } = req.body;
@@ -63,6 +65,8 @@ const updateUser = async (req, res) => {
 
 
     await user.save();
+
+
     res.json(user);
   } catch (err) {
     res.status(500).json({ message: "Erreur serveur", error: err });

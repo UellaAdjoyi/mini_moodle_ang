@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const { // Fonctions du contrôleur d'authentification
+const {
     loginUser,
     getMe,
 } = require('../controllers/authController');
 
-const { // Fonctions du contrôleur d'authentification
+const {
     registerUser,
      getAllUsers,
     updateUser,
@@ -23,7 +23,7 @@ const {uploadSingle} = require("../middlewares/uploadUsers");
 
 
 // Route pour l'enregistrement
-router.post('/register',uploadSingle , registerUser);
+router.post('/register',uploadSingle ,registerUser);
 router.put('/updateUser/:id', uploadSingle, updateUser);
 router.get('/photo/:id', getUserPhoto);
 

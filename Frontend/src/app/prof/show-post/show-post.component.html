@@ -3,10 +3,29 @@
     <h1>UE : {{ nomUe }} </h1>
 
     <div class="nav-links">
-      <a class="nav-item nav-link" routerLink="post-all" routerLinkActive="active" (click)="setTab('post')">Post</a>
-      <a class="nav-item nav-link" routerLink="participants-ue" routerLinkActive="active" (click)="setTab('participant')">Participants</a>
-      <a class="nav-item nav-link" routerLink="forum-ue" routerLinkActive="active" (click)="setTab('forum')">Forum</a>
+      <a
+        class="nav-item nav-link"
+        routerLink="post-all"
+        routerLinkActive="active"
+        (click)="setTab('post')">
+        Post
+      </a>
+      <a
+        class="nav-item nav-link"
+        routerLink="participants-ue"
+        routerLinkActive="active"
+        (click)="setTab('participant')">
+        Participants
+      </a>
+      <a
+        class="nav-item nav-link"
+        [routerLink]="['forum-ue', ueId]"
+        routerLinkActive="active"
+        (click)="setTab('forum')"
+      >Forum</a>
+
     </div>
+
 
     <!-- Bouton déplacé ici, en haut, affiché si isOnPostAll -->
     <div *ngIf="isOnPostAll" class="mt-4">

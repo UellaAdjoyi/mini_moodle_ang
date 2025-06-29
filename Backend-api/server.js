@@ -35,7 +35,7 @@ app.use('/api/posts', directPostRoutes);
 app.use('/api/forums', forumRoutes); // Routes pour les forums
 app.use('/api/logs', logRoutes); // Routes pour les logs
 app.use('/api/admin', adminRoutes);
-
+app.use('/api/forums', forumRoutes);
 app.use('/api/user', userRoutes);
 
 // Route de test

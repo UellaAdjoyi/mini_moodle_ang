@@ -13,7 +13,7 @@
       <a class="nav-item nav-link" routerLink="/logs" *ngIf="userRole?.includes('ROLE_ADMIN')">logs</a>
       <a class="nav-item nav-link" routerLink="/mesCours" *ngIf="userRole?.includes('ROLE_ETUDIANT')">Mes cours</a>
       <a class="nav-item nav-link" routerLink="/mesCours" *ngIf="userRole?.includes('ROLE_PROF')">Mes cours</a>
-      <a class="nav-item nav-link" routerLink="/participants" *ngIf="userRole?.includes('ROLE_PROF')">Participants</a>
+      <a class="nav-item nav-link" routerLink="/participants" *ngIf="userRole?.includes('ROLE_PROF')">Tableau de bord</a>
     </div>
 
     <!-- Partie droite : avatar + dropdown -->

@@ -34,9 +34,4 @@ router.get('/participants',authenticateUser, getCoursesByEnseignant);
 router.get('/statistiques',authenticateUser,getProfDashboardStats);
 
 
-router.route('/:ueId/forum')
-    .post(protect, createForumForUe)  // Créer le forum pour l'UE
-    .get(protect, getForumByUe);     // Récupérer le forum de l'UE
-
-
 module.exports = router;

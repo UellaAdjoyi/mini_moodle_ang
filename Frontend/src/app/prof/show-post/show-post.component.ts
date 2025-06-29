@@ -10,28 +10,39 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./show-post.component.css']
 })
 export class ShowPostComponent implements OnInit {
-
-  codeUe: string | null = null;
-  nomUe: string | null = null;
-
-  activeTab: 'post' | 'forum' | 'participant' = 'post';
-
+  codeUe!: string;
+  nomUe!: string;
+  ueId!: string;
   isOnPostAll = false;
 
   constructor(private router: Router, private route: ActivatedRoute) {
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe(() => {
-      this.isOnPostAll = this.router.url.includes('post-all');
-    });
-  }
-
-  setTab(tab: 'post' | 'forum' | 'participant') {
-    this.activeTab = tab;
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(() => {
+        this.isOnPostAll = this.router.url.includes('post-all');
+      });
   }
 
   ngOnInit(): void {
-    this.codeUe = this.route.snapshot.paramMap.get('code');
-    this.nomUe = this.route.snapshot.paramMap.get('nom');
+    // Récupère code, nom et ue_id du parent
+    const params = this.route.snapshot.paramMap;
+    this.codeUe = params.get('code')!;
+    this.nomUe = params.get('nom')!;
+    this.ueId   = params.get('ue_id')!;  // <-- on lit maintenant ue_id
+  }
+
+  setTab(tab: 'post' | 'forum' | 'participant') {
+    this.isOnPostAll = (tab === 'post');
+    let routeSegment: string;
+    if (tab === 'post') {
+      routeSegment = 'post-all';
+    } else if (tab === 'forum') {
+      routeSegment = 'forum-ue';
+    } else {
+      routeSegment = 'participants-ue';
+    }
+
+    this.router.navigate([routeSegment], { relativeTo: this.route });
+
   }
 }
