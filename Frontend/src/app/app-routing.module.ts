@@ -17,6 +17,7 @@ import {ProfDashboardComponent} from "./prof-dashboard/prof-dashboard.component"
 import { ShowPostComponent } from './prof/show-post/show-post.component';
 import {ForgotPasswordComponent} from "./forgot-password/forgot-password.component";
 import {LogListComponent} from "./log-list/log-list.component";
+import {EtudiantPostComponent} from "./etudiant/etudiant-post/etudiant-post.component";
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -27,7 +28,15 @@ const routes: Routes = [
   {path: 'forum',component: ForumComponent},
   {path:'profil',component: ProfilComponent},
   {path:'resetPassword',component: ForgotPasswordComponent},
-  {path:'post-etu/:code/:nom',component: ListPostEtuComponent},
+  {
+    path: 'post-etu/:code/:nom',
+    component: EtudiantPostComponent,
+    children: [
+      { path: '', redirectTo: 'post', pathMatch: 'full' },
+      { path: 'post', component: ListPostEtuComponent },
+      { path: 'forum', component: ForumComponent }
+    ]
+  },
   {path:'post',component: PostComponent},
   {path:'post-prof/:code/:nom',component: ShowPostComponent,
     children: [

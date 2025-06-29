@@ -1,0 +1,12 @@
+<div class="container-center">
+  <div class="rectangle">
+    <h1>UE : {{ nomUe }}</h1>
+
+    <div class="nav-links">
+      <a class="nav-item nav-link" routerLink="post" routerLinkActive="active" (click)="setTab('post')">Posts</a>
+      <a class="nav-item nav-link" routerLink="forum" routerLinkActive="active" (click)="setTab('forum')">Forum</a>
+    </div>
+
+    <router-outlet></router-outlet>
+  </div>
+</div>

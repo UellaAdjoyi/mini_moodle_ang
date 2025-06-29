@@ -1,14 +1,7 @@
-<div *ngIf="isLoading">
-  Chargement des posts...
+<div *ngIf="posts.length === 0">
+  Aucun post disponible pour cette UE.
 </div>
 
-<div *ngIf="!isLoading && posts.length > 0">
-  <h2>Nombre de posts = {{ posts.length }}</h2>
-  <div *ngFor="let post of posts">
-  </div>
-  <app-post  ></app-post>
-</div>
-
-<div *ngIf="!isLoading && posts.length === 0">
-  Aucun post disponible.
+<div *ngFor="let post of posts" class="mb-3">
+  <app-post [post]="post" [isProf]="false" [codeUe]="codeUe"></app-post>
 </div>
