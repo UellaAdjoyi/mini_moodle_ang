@@ -1,0 +1,43 @@
+.rectangle {
+  margin-top: 2% ;
+  width: 1350px;
+  height: 600px;
+  border-radius: 10px;
+  background-color: #f4f4f9;
+  padding: 2%;
+  overflow: auto;
+
+}
+.container-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+h1 {
+  text-align: center;
+  color: #333;
+}
+.nav-links {
+  display: flex;
+  justify-content: center;
+  border-bottom: 2px solid #ddd;
+  margin-bottom: 20px;
+}
+
+.nav-links a {
+  padding: 10px 20px;
+  text-decoration: none;
+  color: #333;
+  border-bottom: 3px solid transparent;
+  transition: border-color 0.3s, color 0.3s;
+}
+
+.nav-links a:hover {
+  color: #007bff;
+  border-bottom: 3px solid #007bff;
+}
+
+.nav-links a.active {
+  color: #007bff;
+  border-bottom: 3px solid #007bff;
+}

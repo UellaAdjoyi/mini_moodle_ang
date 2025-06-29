@@ -39,6 +39,7 @@ import { ShowPostComponent } from './prof/show-post/show-post.component';
 import { UePageComponent } from './ue-page/ue-page.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { LogListComponent } from './log-list/log-list.component';
+import { EtudiantPostComponent } from './etudiant/etudiant-post/etudiant-post.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,8 @@ import { LogListComponent } from './log-list/log-list.component';
     ForgotPasswordComponent,
     ListPostEtuComponent,
     PostComponent,
-    LogListComponent
+    LogListComponent,
+    EtudiantPostComponent
   ],
   imports: [
     BrowserModule,
