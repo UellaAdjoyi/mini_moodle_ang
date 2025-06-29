@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../services/auth.service";
 import {Router} from "@angular/router";
+import {LogService} from "../services/log.service";
 
 @Component({
   selector: 'app-login',
@@ -19,6 +20,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router,
+    private logService: LogService,
   ) { }
 
   ngOnInit(): void {
@@ -28,9 +30,9 @@ export class LoginComponent implements OnInit {
     const formData = new FormData();
     formData.append('user_id', '');
     formData.append('action','Connexion' );
-    
-  
-   
+
+
+
     if (this.loginForm.invalid) return;
 
     const { email, password } = this.loginForm.value;
@@ -38,13 +40,14 @@ export class LoginComponent implements OnInit {
     this.authService.login(email!, password!).subscribe({
       next: (user) => {
         console.log('Utilisateur connecté:', user);
-        this.authService.createLog(formData).subscribe({
-          next: res => {
-            console.log('log créé', res);
-            
-          },
-          error: err => console.error('Erreur création du log', err)
-          });
+        this.logService.createLog({
+          user_id: user._id,
+          action: 'Connexion',
+        }).subscribe(
+          () => console.log('Log créé'),
+          (err) => console.error('Erreur lors de la création du log', err)
+        );
+
 
         if (user.role.includes ('ROLE_ETUDIANT')) {
           this.router.navigate(['/mesCours']);
