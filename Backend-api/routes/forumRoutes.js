@@ -1,20 +1,10 @@
-// backend-api/routes/forumRoutes.js
 const express = require('express');
-const router = express.Router(); // Pas besoin de mergeParams ici si les routes sont directes
-const {
-    addMessageToForum,
-    updateForumDetails,
-    // getForumById (si on veut une route pour obtenir un forum par son ID direct)
-} = require('../controllers/forumController');
-const { protect } = require('../middlewares/authMiddleware');
+const router = express.Router();
+const forumController = require('../controllers/forumController');
 
-// Route pour mettre à jour les détails d'un forum (titre/description)
-router.route('/:forumId')
-    .put(protect, updateForumDetails);
-    // .get(protect, getForumById); // Si on ajoute getForumById au contrôleur
-
-// Route pour ajouter un message à un forum spécifique
-router.route('/:forumId/messages')
-    .post(protect, addMessageToForum);
+router.post('/', forumController.createForum);
+router.get('/ue/:ue_id', forumController.getForumsByUE);
+router.get('/:id', forumController.getForumById);
+router.post('/:id/messages', forumController.addMessageToForum);
 
 module.exports = router;
