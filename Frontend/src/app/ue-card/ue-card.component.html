@@ -4,10 +4,10 @@
 
   </div>
   <div class="card-body">
-    <a *ngIf="role === 'ROLE_ETUDIANT'" [routerLink]="['/post-etu', ue.code, ue.nom]" (click)="$event.stopPropagation()">
+    <a *ngIf="role === 'ROLE_ETUDIANT'" [routerLink]="['/post-etu', ue.code, ue.nom]" (click)="$event.stopPropagation(); createLog()">
       <h5 class="card-title">{{ ue.nom }}</h5>
     </a>
-    <a *ngIf="role === 'ROLE_PROF'" [routerLink]="['/post-prof', ue.code, ue.nom]" (click)="$event.stopPropagation()">
+    <a *ngIf="role === 'ROLE_PROF'" [routerLink]="['/post-prof', ue.code, ue.nom]" (click)="$event.stopPropagation(); createLog()">
       <h5 class="card-title">{{ ue.nom }}</h5>
     </a>
     <p class="card-text">{{ ue.description }}</p>

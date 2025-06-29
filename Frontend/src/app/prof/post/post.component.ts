@@ -44,20 +44,23 @@ export class PostComponent implements OnInit,OnChanges {
     return result;
   }
 
-  deletePost(postId: string) {
-    if (confirm('Êtes-vous sûr de vouloir supprimer ce post ?')) {
-      this.postService.deletePost(postId).subscribe({
-        next: () => {
-          this.deleted.emit(postId);
-          this.loadPosts()
-        },
-        error: err => {
-          console.error('Erreur suppression :', err);
-          alert('Erreur lors de la suppression.');
-        }
-      });
-    }
+
+deletePost(postId: string) {
+  if (confirm('Êtes-vous sûr de vouloir supprimer ce post ?')) {
+    this.postService.deletePost(postId).subscribe({
+      next: () => {
+        this.deleted.emit(postId);
+        window.location.reload();
+      },
+      error: err => {
+        console.error('Erreur suppression :', err);
+        alert('Erreur lors de la suppression.');
+      }
+    });
   }
+}
+
+
 
   openEditModal(post: Post) {
     this.postToEdit = { ...post };
@@ -74,7 +77,7 @@ export class PostComponent implements OnInit,OnChanges {
       next: (updatedPost) => {
         this.updated.emit(updatedPost);
         this.postToEdit = null;
-        this.loadPosts();
+        window.location.reload();
       },
       error: err => {
         console.error('Erreur modification :', err);

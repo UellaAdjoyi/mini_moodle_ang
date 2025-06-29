@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthService} from "../services/auth.service";
 import {Router} from '@angular/router';
-
+import { PostService } from '../services/post.service';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -14,6 +14,7 @@ export class NavbarComponent implements OnInit {
   user: { nom?: string; prenom?: string; photoUrl?: string } = {};
 
   constructor(
+    private postService: PostService,
     private authService: AuthService,
     private router: Router,
   ) {}
@@ -66,10 +67,27 @@ export class NavbarComponent implements OnInit {
 
 
   logout() {
+    const userId = this.authService.getCurrentUserId()?? '';
+      const formLog = new FormData();
+      formLog.append('user_id', userId);
+      formLog.append('action', 'deconnexion');
+
+
+      // Envoyer la requête de création du log
+      this.postService.createLog(formLog).subscribe({
+        next: logRes => {
+          console.log('log créé', logRes);
+          console.log('log terminé');
+        },
+        error: logErr => {
+          console.error('Erreur création du log', logErr);
+        }
+      });
     this.authService.logout();
     this.router.navigate(['/']);
     this.userRole = null;
     this.user = {};
+
   }
 
 }
