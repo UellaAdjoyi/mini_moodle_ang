@@ -1,0 +1,40 @@
+<div class="container mt-4">
+  <h2 class="mb-4 text-primary">Liste des logs</h2>
+
+  <div *ngIf="logs.length > 0; else noLogs">
+    <div class="table-responsive shadow-sm rounded">
+      <table class="table table-hover align-middle">
+        <thead class="table-dark">
+        <tr>
+          <th scope="col">Utilisateur</th>
+          <th scope="col">Action</th>
+          <th scope="col">Date & Heure</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let log of logs">
+          <td *ngIf="isUserObject(log.user_id); else showId">
+            <strong>{{ log.user_id.email }}</strong><br>
+            <small class="text-muted">ID: {{ log.user_id._id }}</small>
+          </td>
+
+          <ng-template #showId>
+            <td>
+              <strong>{{ log.user_id || 'Inconnu' }}</strong>
+            </td>
+          </ng-template>
+
+          <td>{{ log.action }}</td>
+          <td>{{ log.date_heure | date:'short' }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <ng-template #noLogs>
+    <div class="alert alert-info mt-3" role="alert">
+      Aucun log trouvé.
+    </div>
+  </ng-template>
+</div>
